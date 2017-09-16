@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="2dp">
+
+    <TextView
+        android:id="@+id/productListQty"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_weight="0"
+        android:background="@android:color/holo_orange_dark"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:text="99" />
+
+    <ImageView
+        android:id="@+id/productListImage"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_weight="0"
+        android:elevation="0dp"
+        android:scaleType="fitCenter"
+        app:srcCompat="@android:color/darker_gray" />
+
+    <RelativeLayout
+        android:id="@+id/relativelayoutProductList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:layout_weight="0">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutProductList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/btnDecQtyProductList"
+            android:layout_weight="0"
+            android:orientation="vertical"
+            android:paddingBottom="2dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="2dp">
+
+            <TextView
+                android:id="@+id/productListName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="top"
+                android:text="Test g"
+                android:textColor="@android:color/black"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/productListPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="top"
+                android:text="TextView"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnDecQtyProduct"
+            style="@android:style/Widget.ImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_menu_close" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
