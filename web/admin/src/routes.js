@@ -6,6 +6,7 @@ import Test from './views/Test.vue'
 import Company from './views/Company.vue'
 import Units from './views/Units.vue'
 import Customer from './views/Customer.vue'
+import CustomerForm from './views/CustomerForm.vue'
 
 import Product from './views/Info.vue'
 import User from './views/Info.vue'
@@ -24,6 +25,7 @@ let routes = [
 			{ path: '/units', component: Units, name: 'Units' },
 			{ path: '/product', component: Product, name: 'Product'  },
 			{ path: '/customer', component: Customer, name: 'Customer'  },
+			{ path: '/customer/:id', component: CustomerForm, name: 'Customer' , hidden: true },
         ]
     },
 	{
