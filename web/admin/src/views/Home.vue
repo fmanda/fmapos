@@ -33,7 +33,7 @@
 				<el-dropdown trigger="hover">
 					<span class="el-dropdown-link userinfo-inner">
 						<!-- <img :src="this.sysUserAvatar" />  -->
-						{{user.name}} @ {{user.company.name}}
+						{{user.user_name}} @ {{user.company.name}}
 					</span>
 					<el-dropdown-menu slot="dropdown">
 						<el-dropdown-item @click.native="selectCompany">Select Company</el-dropdown-item>

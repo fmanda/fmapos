@@ -10,7 +10,6 @@
 			<el-checkbox v-model="checked" checked class="remember">Remember Me</el-checkbox>
 		<el-form-item style="width:100%;">
 			<el-button type="primary" style="width:100%;" @click.native.prevent="handleSubmit2" :loading="logining">Login</el-button>
-		<!--<el-button @click.native.prevent="handleReset2">Reset</el-button>-->
 		</el-form-item>
 	</el-form>
 </template>
@@ -28,7 +27,7 @@
 			},
 			rules2: {
 				account: [
-						{ required: true, message: 'Account Required', trigger: 'blur' },
+						{ required: true, message: 'User Required', trigger: 'blur' },
 					],
 				checkPass: [
 						{ required: true, message: 'Password Required', trigger: 'blur' },
@@ -48,14 +47,14 @@
 						this.logining = true;
 						//NProgress.start();
 						var loginParams = { user_name: this.ruleForm2.account, password: this.ruleForm2.checkPass };
-
 						var vm = this;
 						axios.post(CONFIG.rest_url + '/login', loginParams)
 						.then(function(response) {
 							vm.logining = false;
 							var user = response.data;
 							if (user){
-								vm.$message('welcome ' || user.user_name );
+								console.log(user);
+								vm.$message('welcome ' + user.user_name );
 								sessionStorage.setItem('user', JSON.stringify(user));
 								vm.$router.push({ path: '/' });
 							}else{

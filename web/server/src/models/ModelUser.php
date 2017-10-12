@@ -38,8 +38,8 @@
 				.' where user_name = "'. $user.'"'
 				.' and password = "'. $password.'"'
 			);
-			$user = $obj[0];
-			if (isset($user)) {
+			if (isset($obj[0])) {
+				$user = $obj[0];
 				$user->company =  ModelCompany::retrieve($user->company_id);
 				return $user;
 			}

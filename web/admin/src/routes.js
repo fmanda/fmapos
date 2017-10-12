@@ -1,17 +1,18 @@
 //
 import Home from './views/Home.vue'
+import NotFound from './views/404.vue'
 import Info from './views/Info.vue'
 import Test from './views/Test.vue'
 import Login from './views/Login.vue'
-
 import Company from './views/Company.vue'
 import Units from './views/Units.vue'
 import Customer from './views/Customer.vue'
 import CustomerForm from './views/CustomerForm.vue'
+import Product from './views/Product.vue'
+import ProductForm from './views/ProductForm.vue'
 
-import Product from './views/Info.vue'
 import User from './views/Info.vue'
-import NotFound from './views/404.vue'
+
 
 // { path: '/hidden', component: Info, name: 'Customer', hidden: true  },
 
@@ -34,6 +35,7 @@ let routes = [
 			{ path: '/product', component: Product, name: 'Product'  },
 			{ path: '/customer', component: Customer, name: 'Customer'  },
 			{ path: '/customer/:id', component: CustomerForm, name: 'CustomerForm' , hidden: true },
+			{ path: '/product/:id', component: ProductForm, name: 'ProductForm' , hidden: true },
         ]
     },
 	{

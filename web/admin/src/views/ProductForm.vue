@@ -10,33 +10,29 @@
 			>
 		</el-alert>
 		<el-form label-position="right"  label-width="150px" :model="form" ref="form" :rules="rules">
-			<el-form-item label="Pilih Unit/Cabang" prop="unit_id">
-				<el-select v-model="form.unit_id" filterable placeholder="Select" style="margin-bottom:10px">
-					<el-option v-for="item in units" :key="item.id"	:label="item.name" :value="item.id">
-					</el-option>
-				</el-select>
+			<el-form-item label="SKU" prop="sku">
+				<el-input v-model="form.sku"></el-input>
 			</el-form-item>
-
-			<el-form-item label="Kode Customer" prop="code">
-				<el-input v-model="form.code"></el-input>
-			</el-form-item>
-			<el-form-item label="Nama Customer" prop="name">
+			<el-form-item label="Product Name" prop="name">
 				<el-input v-model="form.name"></el-input>
 			</el-form-item>
-			<el-form-item label="Alamat">
-				<el-input type="textarea" v-model="form.address"></el-input>
-			</el-form-item>
-			<el-form-item label="Kategori">
+			<el-form-item label="Category">
 				<el-select v-model="form.category" filterable allow-create placeholder="Select" style="margin-bottom:10px">
 					<el-option v-for="item in categories" :key="item.category"	:label="item.category" :value="item.category">
 					</el-option>
 				</el-select>
 			</el-form-item>
-			<el-form-item label="No. Telepon">
-				<el-input type="tel" v-model="form.phone"></el-input>
+			<el-form-item label="UOM">
+				<el-select v-model="form.uom" filterable allow-create placeholder="Select" style="margin-bottom:10px">
+					<el-option v-for="item in uoms" :key="item.uom"	:label="item.uom" :value="item.uom">
+					</el-option>
+				</el-select>
 			</el-form-item>
-			<el-form-item label="Email Address">
-				<el-input type="email" v-model="form.email"></el-input>
+			<el-form-item label="Unit Price">
+				<el-input type="number" v-model="form.price"></el-input>
+			</el-form-item>
+			<el-form-item label="Tax (%)">
+				<el-input type="number" v-model="form.tax"></el-input>
 			</el-form-item>
 		</el-form>
 
@@ -56,17 +52,17 @@
 		data () {
 			return{
 				selectedCompany : {id : 0},
-				units : [],
+				uoms : [],
 				categories : [],
 				form : {
 					id: 0,
-					unit_id: null,
 					category : '',
-					code: '',
+					barcode : '',
+					sku: '',
 					name : '',
-					address : '',
-					phone : '',
-					email : ''
+					uom : '',
+					price : 0,
+					tax : 0
 				},
 				error : {
 					status : false,
@@ -74,9 +70,8 @@
 					description : 'Error description'
 				},
 				rules : {
-					unit_id: [{ required: true, message: 'Please Select Unit' }],
-					code: [{ required: true, message: 'Please Input Customer Code' }],
-					name: [{ required: true, message: 'Please Input Customer Name' }],
+					sku: [{ required: true, message: 'Please Input SKU' }],
+					name: [{ required: true, message: 'Please Input Product Name' }],
 				}
 			}
 		},
@@ -86,18 +81,14 @@
 				user = JSON.parse(user);
 				this.selectedCompany = user.company;
 			}
-			//units
-			var vm = this;
-			axios.get(CONFIG.rest_url + '/unitsof/' + this.selectedCompany.id).then(function(response) {
-				vm.units = response.data;
+			var vm=this;
+			axios.get(CONFIG.rest_url + '/productcategoryof/' + this.selectedCompany.id).then(function(response) {
+				if (response.data)	vm.categories = response.data;
 			})
-			.catch(function(error) {
-				vm.showErrorMessage(error);
-			});
-			axios.get(CONFIG.rest_url + '/customercategoryof/' + this.selectedCompany.id).then(function(response) {
-				if (response.data)
-					vm.categories = response.data;
+			axios.get(CONFIG.rest_url + '/productuomof/' + this.selectedCompany.id).then(function(response) {
+				if (response.data)	vm.uoms = response.data;
 			})
+
 			.catch(function(error) {
 				vm.showErrorMessage(error);
 			});
@@ -109,17 +100,17 @@
 				if (id == 0){
 					this.form.id = 0;
 					this.form.company_id = this.selectedCompany.id;
-					this.form.unit_id = null;
-					this.form.code = '';
+					this.form.sku = '';
+					this.form.barcode = '';
 					this.form.name = '';
 					this.form.category = '';
-					this.form.address = '';
-					this.form.phone = '';
-					this.form.email = '';
+					this.form.uom = '';
+					this.form.price = 0;
+					this.form.tax = 0;
 					return;
 				}
 				var vm = this;
-				axios.get(CONFIG.rest_url + '/customer/' + id)
+				axios.get(CONFIG.rest_url + '/product/' + id)
 				.then(function(response) {
 					vm.form = response.data;
 					vm.form.company_id = vm.selectedCompany.id;
@@ -132,7 +123,7 @@
 				this.$refs.form.validate((valid) => {
 					if (valid) {
 						var vm = this;
-						axios.post(CONFIG.rest_url + '/customer', vm.form)
+						axios.post(CONFIG.rest_url + '/product', vm.form)
 						.then(function(response) {
 							vm.$message('Data berhasil diupdate');
 							vm.back();
@@ -145,7 +136,7 @@
 			},
 			back(){
 				this.$router.push({
-				    path: '/customer'
+				    path: '/product'
 				})
 			},
 			showErrorMessage(error){
