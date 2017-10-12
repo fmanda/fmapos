@@ -32,5 +32,6 @@ $app->get('/hello/{name}', function (Request $request, Response $response) {
 
 require '../src/routes/company.php';
 require '../src/routes/customer.php';
+require '../src/routes/user.php';
 
 $app->run();

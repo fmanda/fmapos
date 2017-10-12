@@ -129,7 +129,7 @@
 			},
 			logout: function () {
 				var _this = this;
-				this.$confirm('test', 'test', {
+				this.$confirm('Anda yakin untuk logout', 'Logout', {
 					//type: 'warning'
 				}).then(() => {
 					sessionStorage.removeItem('user');

@@ -14,6 +14,19 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+	if (to.path == '/login') {
+		sessionStorage.removeItem('user');
+	}
+	let user = JSON.parse(sessionStorage.getItem('user'));
+	if (!user && to.path != '/login' && to.path != '/404')  {
+		next({ path: '/login' })
+	} else {
+		next()
+	}
+})
+
+
 new Vue({
   el: '#app',
   router,
