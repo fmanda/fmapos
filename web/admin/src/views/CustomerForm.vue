@@ -11,7 +11,7 @@
 		</el-alert>
 		<el-form label-position="right"  label-width="150px" :model="form" ref="form" :rules="rules">
 			<el-form-item label="Pilih Unit/Cabang" prop="unit_id">
-				<el-select v-model="form.unit_id" filterable placeholder="Select" style="margin-bottom:10px">
+				<el-select v-model="form.unit_id" filterable placeholder="Select">
 					<el-option v-for="item in units" :key="item.id"	:label="item.name" :value="item.id">
 					</el-option>
 				</el-select>
@@ -27,7 +27,7 @@
 				<el-input type="textarea" v-model="form.address"></el-input>
 			</el-form-item>
 			<el-form-item label="Kategori">
-				<el-select v-model="form.category" filterable allow-create placeholder="Select" style="margin-bottom:10px">
+				<el-select v-model="form.category" filterable allow-create placeholder="Select">
 					<el-option v-for="item in categories" :key="item.category"	:label="item.category" :value="item.category">
 					</el-option>
 				</el-select>
@@ -151,7 +151,7 @@
 			showErrorMessage(error){
 				this.error.status = true;
 				this.error.title = error.message;
-				if (error.response=undefined){
+				if (error.response!=undefined){
 					this.error.description = error.response.data;
 				}else{
 					this.error.description = error;
@@ -166,9 +166,9 @@
 	.el-form {
 		width: 500px;
 	}
-	/*.el-form-item{
+	.el-form-item{
 		margin-bottom: 10px;
-	}*/
+	}
 	.footer{
 		margin-left: 150px;
 	}

@@ -9,7 +9,7 @@
 			@close="error.status = false"
 			>
 		</el-alert>
-		<el-form label-position="right"  label-width="150px" :model="form" ref="form" :rules="rules">
+		<el-form label-position="right" label-width="150px" :model="form" ref="form" :rules="rules">
 			<el-form-item label="SKU" prop="sku">
 				<el-input v-model="form.sku"></el-input>
 			</el-form-item>
@@ -17,13 +17,13 @@
 				<el-input v-model="form.name"></el-input>
 			</el-form-item>
 			<el-form-item label="Category">
-				<el-select v-model="form.category" filterable allow-create placeholder="Select" style="margin-bottom:10px">
+				<el-select v-model="form.category" filterable allow-create placeholder="Select">
 					<el-option v-for="item in categories" :key="item.category"	:label="item.category" :value="item.category">
 					</el-option>
 				</el-select>
 			</el-form-item>
 			<el-form-item label="UOM">
-				<el-select v-model="form.uom" filterable allow-create placeholder="Select" style="margin-bottom:10px">
+				<el-select v-model="form.uom" filterable allow-create placeholder="Select">
 					<el-option v-for="item in uoms" :key="item.uom"	:label="item.uom" :value="item.uom">
 					</el-option>
 				</el-select>
@@ -36,11 +36,22 @@
 			</el-form-item>
 		</el-form>
 
+		<el-table
+			ref = "unittable"
+			:data="units"
+			stripe
+			style="width:500px"
+			class="productform"
+			@selection-change="handleSelectionChange">
+			<el-table-column type="selection" width="55"></el-table-column>
+			<el-table-column prop="name" label="Active Unit / Cabang"></el-table-column>
+		</el-table>
 
-		<span class="footer">
+		<span class="productform">
 			<el-button type="primary" @click="saveData">Confirm</el-button>
 			<el-button @click="back()">Cancel</el-button>
 		</span>
+
 	</div>
 </template>
 
@@ -62,8 +73,11 @@
 					name : '',
 					uom : '',
 					price : 0,
-					tax : 0
+					tax : 0,
+					units : []
 				},
+				units : [],
+				selectedunits : [],
 				error : {
 					status : false,
 					title : 'Error Occured',
@@ -82,6 +96,7 @@
 				this.selectedCompany = user.company;
 			}
 			var vm=this;
+
 			axios.get(CONFIG.rest_url + '/productcategoryof/' + this.selectedCompany.id).then(function(response) {
 				if (response.data)	vm.categories = response.data;
 			})
@@ -89,11 +104,13 @@
 				if (response.data)	vm.uoms = response.data;
 			})
 
-			.catch(function(error) {
-				vm.showErrorMessage(error);
-			});
+			axios.get(CONFIG.rest_url + '/unitsof/' + this.selectedCompany.id).then(function(response) {
+				if (response.data)	{
+					vm.units = response.data;
+					vm.loadByID(vm.$route.params.id);
+				}
+			})
 
-			this.loadByID(this.$route.params.id);
 		},
 		methods:{
 			loadByID(id){
@@ -110,14 +127,29 @@
 					return;
 				}
 				var vm = this;
-				axios.get(CONFIG.rest_url + '/product/' + id)
-				.then(function(response) {
+				axios.get(CONFIG.rest_url + '/product/' + id).then(function(response) {
 					vm.form = response.data;
 					vm.form.company_id = vm.selectedCompany.id;
+					vm.fetchunits();
 				})
 				.catch(function(error) {
 					vm.showErrorMessage(error);
 				});
+			},
+			fetchunits(){
+				var temp = [];
+
+				//because toggleRowSelection overwrite form.units
+				for (var i=0; i<this.form.units.length; i++) temp.push(this.form.units[i]);
+				console.log(temp);
+				for (var i=0; i<temp.length; i++){
+					for (var j=0; j<this.units.length; j++){
+						if (temp[i].unit_id == this.units[j].id){
+							this.$refs.unittable.toggleRowSelection(this.units[j])
+							break;
+						}
+					}
+				}
 			},
 			saveData(){
 				this.$refs.form.validate((valid) => {
@@ -142,12 +174,18 @@
 			showErrorMessage(error){
 				this.error.status = true;
 				this.error.title = error.message;
-				if (error.response=undefined){
+				if (error.response!=undefined){
 					this.error.description = error.response.data;
 				}else{
 					this.error.description = error;
 				}
 			},
+			handleSelectionChange(val){
+				this.form.units = [];
+				for (var i=0; i<val.length; i++){
+					this.form.units.push({"unit_id" : val[i].id});
+				}
+			}
 		}
 	}
 
@@ -157,10 +195,14 @@
 	.el-form {
 		width: 500px;
 	}
+	.el-form-item {
+		margin-bottom: 10px;
+	}
 	/*.el-form-item{
 		margin-bottom: 10px;
 	}*/
-	.footer{
+	.productform{
+		margin-bottom: 20px;
 		margin-left: 150px;
 	}
 </style>

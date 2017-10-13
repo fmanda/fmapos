@@ -143,7 +143,7 @@
 			showErrorMessage(error){
 				this.error.status = true;
 				this.error.title = error.message;
-				if (error.response=undefined){
+				if (error.response!=undefined){
 					this.error.description = error.response.data;
 				}else{
 					this.error.description = error;

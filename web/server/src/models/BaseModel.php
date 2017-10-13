@@ -27,6 +27,7 @@
 		}
 
 		public static function generateSQLInsert($obj){
+			$classname = get_called_class();
 			try{
 				if ($obj == null){
 					throw new Exception("[BaseModel] Object is null \n");
@@ -43,6 +44,8 @@
 						$strvalue = $strvalue . ",";
 					}
 				    $sql = $sql. $field;
+					if (!isset($obj->{$field}))
+						throw new Exception("undeclared property $field on object $classname", 1);
 					$strvalue = $strvalue. "'". $obj->{$field} ."'";
 				}
 				$sql = "insert into ". static::getTableName() . "(" . $sql .")";
@@ -56,11 +59,15 @@
 		public static function generateSQLUpdate($obj){
 			$strvalue = "";
 			$fields = static::getFields();
+			$classname = get_called_class();
 			foreach ($fields as $field) {
 				if ($field == "uid") continue;
 				if ($strvalue<>""){
 					$strvalue = $strvalue . ",";
 				}
+				if (!isset($obj->{$field}))
+					throw new Exception("undeclared property $field on object $classname", 1);
+
 				$strvalue = $strvalue. $field ." = '". $obj->{$field} ."'";
 			}
 			$sql = "update ". static::getTableName() . " set " . $strvalue;
