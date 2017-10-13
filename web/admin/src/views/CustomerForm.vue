@@ -167,7 +167,7 @@
 		width: 500px;
 	}
 	.el-form-item{
-		margin-bottom: 10px;
+		margin-bottom: 20px;
 	}
 	.footer{
 		margin-left: 150px;

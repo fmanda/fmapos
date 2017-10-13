@@ -29,10 +29,12 @@
 				</el-select>
 			</el-form-item>
 			<el-form-item label="Unit Price">
-				<el-input type="number" v-model="form.price"></el-input>
+				<currencyinput v-model="form.price" style="width:150px"></currencyinput>
+				<!-- <el-input type="number" v-model="form.price" style="width:120px"></el-input> -->
 			</el-form-item>
 			<el-form-item label="Tax (%)">
-				<el-input type="number" v-model="form.tax"></el-input>
+				<currencyinput v-model="form.tax" style="width:100px"></currencyinput>
+				<!-- <el-input type="number" v-model="form.tax"></el-input> -->
 			</el-form-item>
 		</el-form>
 
@@ -46,6 +48,7 @@
 			<el-table-column type="selection" width="55"></el-table-column>
 			<el-table-column prop="name" label="Active Unit / Cabang"></el-table-column>
 		</el-table>
+		<!-- <currencyinput v-model="form.price"></currencyinput> -->
 
 		<span class="productform">
 			<el-button type="primary" @click="saveData">Confirm</el-button>
@@ -57,9 +60,13 @@
 
 <script>
 	import axios from 'axios';
+	import currencyinput from '../components/CurrencyInput.vue'
 	var CONFIG = require('../../config.json');
 
 	export default {
+		components: {
+			currencyinput
+		},
 		data () {
 			return{
 				selectedCompany : {id : 0},
@@ -196,7 +203,7 @@
 		width: 500px;
 	}
 	.el-form-item {
-		margin-bottom: 10px;
+		margin-bottom: 20px;
 	}
 	/*.el-form-item{
 		margin-bottom: 10px;
