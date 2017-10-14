@@ -25,14 +25,22 @@
 				if (!static::isNewTransaction($obj)){
 					$sql = ModelUnitProduct::generateSQLDelete(
 						'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
+					$sql = $sql . ModelModifier::generateSQLDelete(
+						'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
 					$db->prepare($sql)->execute();
 				}
 				static::saveObjToDB($obj, $db);
-				//insert units
+
 				foreach($obj->units as $item){
 					$item->company_id = $obj->company_id;
 					$item->product_id = $obj->id;
 					ModelUnitProduct::saveObjToDB($item, $db);
+				}
+
+				foreach($obj->modifiers as $item){
+					$item->company_id = $obj->company_id;
+					$item->product_id = $obj->id;
+					ModelModifier::saveObjToDB($item, $db);
 				}
 
 				$db->commit();
@@ -44,10 +52,18 @@
 		}
 
 		public static function deleteFromDB($id){
-			$str = static::generateSQLDelete("id=". $id);
-			$str = $str . ModelUnitProduct::generateSQLDelete(
-				'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
-			DB::executeSQL($str);
+			try{
+				$obj = parent::retrieve($id);
+				$str = static::generateSQLDelete("id=". $id);
+				$str = $str . ModelUnitProduct::generateSQLDelete(
+					'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
+				$str = $str . ModelModifier::generateSQLDelete(
+					'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
+				DB::executeSQL($str);
+			} catch (Exception $e) {
+				$db->rollback();
+				throw $e;
+			}
 		}
 
 	}
@@ -56,6 +72,14 @@
 		public static function getFields(){
 			return array(
 				"uid", "company_id", "product_id", "unit_id"
+			);
+		}
+	}
+
+	class ModelModifier extends BaseModel{
+		public static function getFields(){
+			return array(
+				"uid", "company_id", "product_id", "name", "price"
 			);
 		}
 	}

@@ -36,8 +36,10 @@
 				$strvalue = "";
 				$fields = static::getFields();
 				foreach ($fields as $field) {
-					if ($field == "uid"){
-						$obj->{$field} = DB::GUID();
+					if ($field == "uid") {
+						if (($obj->{$field} == null) || ($obj->{$field} = '')){
+							$obj->{$field} = DB::GUID();
+						}
 					}
 					if ($sql<>""){
 						$sql = $sql . ",";
@@ -51,7 +53,7 @@
 				$sql = "insert into ". static::getTableName() . "(" . $sql .")";
 				$sql = $sql. "values(" . $strvalue . ");";
 				return $sql;
-			}catch(Exception $e){
+			}catch(Exception $e){				
 				throw $e;
 			}
 		}
