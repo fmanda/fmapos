@@ -10,7 +10,6 @@ import Customer from './views/Customer.vue'
 import CustomerForm from './views/CustomerForm.vue'
 import Product from './views/Product.vue'
 import ProductForm from './views/ProductForm.vue'
-
 import User from './views/Info.vue'
 
 
@@ -27,15 +26,42 @@ let routes = [
 	{
         path: '/',
         component: Home,
+		name: 'Dashboard',
+        iconCls: 'fa fa-bar-chart',
+        children: [
+            { path: '/Dashboard', component: User, name: 'Sales', iconCls:'fa fa-bar-chart'},
+        ]
+    },
+	{
+        path: '/',
+        component: Home,
 		name: 'Master',
         iconCls: 'fa fa-tags',
         children: [
-            { path: '/company', component: Company, name: 'Company' },
-			{ path: '/units', component: Units, name: 'Units' },
-			{ path: '/product', component: Product, name: 'Product'  },
-			{ path: '/customer', component: Customer, name: 'Customer'  },
+            { path: '/company', component: Company, name: 'Company', iconCls:'fa fa-building'},
+			{ path: '/units', component: Units, name: 'Units', iconCls:'fa fa-sitemap'},
+			{ path: '/product', component: Product, name: 'Product', iconCls:'fa fa-tags'},
+			{ path: '/customer', component: Customer, name: 'Customer', iconCls:'fa fa-user'},
 			{ path: '/customer/:id', component: CustomerForm, name: 'CustomerForm' , hidden: true },
 			{ path: '/product/:id', component: ProductForm, name: 'ProductForm' , hidden: true },
+        ]
+    },
+	{
+        path: '/',
+        component: Home,
+		name: 'Sales',
+        iconCls: 'fa fa-credit-card-alt',
+        children: [
+            { path: '/sales', component: User, name: 'Sales', iconCls:'fa fa-credit-card-alt'},
+        ]
+    },
+	{
+        path: '/',
+        component: Home,
+		name: 'Reports',
+        iconCls: 'fa fa-file-text',
+        children: [
+            { path: '/reports', component: User, name: 'Sales Report', iconCls:'fa fa-file-text'},
         ]
     },
 	{
@@ -44,7 +70,7 @@ let routes = [
 		name: 'Setting',
         iconCls: 'fa fa-id-card-o',
         children: [
-            { path: '/user', component: User, name: 'User'  },
+            { path: '/user', component: User, name: 'User', iconCls:'fa fa-users'},
         ]
     },
 	{

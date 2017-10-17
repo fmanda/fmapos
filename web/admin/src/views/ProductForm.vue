@@ -1,10 +1,13 @@
 <template>
 	<div>
 		<div style="margin-bottom:30px; padding-bottom:10px; overflow: hidden; border-bottom:1px solid #A9A9A9;">
-			<span style="font-size: 18px;color: #8492a6;line-height: 40px">Update Data Customer</span>
+			<span style="font-size: 18px;color: #8492a6;line-height: 40px">Update Data Product</span>
 			<span style="float:right">
-			<el-button @click="saveData" type="primary">Simpan Data</el-button>
-			<el-button @click="back()" >Batal</el-button>
+			<el-button @click="saveData" type="primary">
+				<i class="fa fa-check"/>
+				Simpan Data
+			</el-button>
+			<el-button @click="back()" ><i class="fa fa-times"/> Batal</el-button>
 			</span>
 		</div>
 
@@ -79,7 +82,7 @@
 				</tbody>
 			</table>
 			<br />
-			<el-button @click="addModifier">Tambah Modifier</el-button>
+			<el-button @click="addModifier"><i class="fa fa-plus"/> Tambah Modifier</el-button>
 		</div>
 
 		<br />
