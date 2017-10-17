@@ -13,6 +13,8 @@
 			$obj = parent::retrieve($id);
 			if (isset($obj)) $obj->units = ModelUnitProduct::retrieveList(
 				'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
+			if (isset($obj)) $obj->modifiers = ModelModifier::retrieveList(
+				'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
 			return $obj;
 		}
 
@@ -32,6 +34,7 @@
 				static::saveObjToDB($obj, $db);
 
 				foreach($obj->units as $item){
+					$item->id = 0; //force insert;
 					$item->company_id = $obj->company_id;
 					$item->product_id = $obj->id;
 					ModelUnitProduct::saveObjToDB($item, $db);

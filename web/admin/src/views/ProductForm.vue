@@ -1,5 +1,13 @@
 <template>
 	<div>
+		<div style="margin-bottom:30px; padding-bottom:10px; overflow: hidden; border-bottom:1px solid #A9A9A9;">
+			<span style="font-size: 18px;color: #8492a6;line-height: 40px">Update Data Customer</span>
+			<span style="float:right">
+			<el-button @click="saveData" type="primary">Simpan Data</el-button>
+			<el-button @click="back()" >Batal</el-button>
+			</span>
+		</div>
+
 		<el-alert v-if="error.status"
 			v-bind:title="error.title"
 			type="error"
@@ -50,10 +58,32 @@
 		</el-table>
 		<!-- <currencyinput v-model="form.price"></currencyinput> -->
 
-		<span class="productform">
-			<el-button type="primary" @click="saveData">Confirm</el-button>
-			<el-button @click="back()">Cancel</el-button>
-		</span>
+		<div style="margin-left:150px;width:500px">
+			<table class="el-table"
+				cellspacing="0" border="0" cellpadding="0">
+				<thead><tr>
+					<th style="padding:10px">Nama Modifier</th>
+					<th style="padding:10px" align="right" width="150px">Price</th>
+					<th style="padding:10px" align="right" width="50px"></th>
+				</tr></thead>
+				<tbody>
+					<tr v-for="item in form.modifiers">
+						<td style="padding:5px"><el-input v-model="item.name"></el-input></td>
+						<td style="padding:5px"><currencyinput v-model="item.price" style="width:150px"></currencyinput></td>
+						<td>
+							<el-button @click="delModifier(item)" type="text" style="float:right;margin-right:10px">
+								Delete
+							</el-button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br />
+			<el-button @click="addModifier">Tambah Modifier</el-button>
+		</div>
+
+		<br />
+
 
 	</div>
 </template>
@@ -81,7 +111,8 @@
 					uom : '',
 					price : 0,
 					tax : 0,
-					units : []
+					units : [],
+					modifiers : []
 				},
 				units : [],
 				selectedunits : [],
@@ -148,7 +179,6 @@
 
 				//because toggleRowSelection overwrite form.units
 				for (var i=0; i<this.form.units.length; i++) temp.push(this.form.units[i]);
-				console.log(temp);
 				for (var i=0; i<temp.length; i++){
 					for (var j=0; j<this.units.length; j++){
 						if (temp[i].unit_id == this.units[j].id){
@@ -192,6 +222,13 @@
 				for (var i=0; i<val.length; i++){
 					this.form.units.push({"unit_id" : val[i].id});
 				}
+			},
+			addModifier(){
+				this.form.modifiers.push({name:'',price:'0'});
+			},
+			delModifier(item){
+				var idx = this.form.modifiers.indexOf(item);
+				this.form.modifiers.splice(idx,1);
 			}
 		}
 	}
