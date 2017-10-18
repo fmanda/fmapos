@@ -1,5 +1,14 @@
 <template>
 	<div>
+		<div style="margin-bottom:30px; padding-bottom:10px; overflow: hidden; border-bottom:1px solid #A9A9A9;">
+			<span style="font-size: 18px;color: #8492a6;line-height: 40px">Update Data Customer</span>
+			<span style="float:right">
+			<el-button @click="saveData" type="primary">
+				<i class="fa fa-check"/>Simpan Data
+			</el-button>
+			<el-button @click="back()" ><i class="fa fa-times"/> Batal</el-button>
+			</span>
+		</div>
 		<el-alert v-if="error.status"
 			v-bind:title="error.title"
 			type="error"
@@ -41,10 +50,7 @@
 		</el-form>
 
 
-		<span class="footer">
-			<el-button type="primary" @click="saveData">Confirm</el-button>
-			<el-button @click="back()">Cancel</el-button>
-		</span>
+
 	</div>
 </template>
 

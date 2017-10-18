@@ -7,6 +7,11 @@ require_once '../src/classes/db.php';
 
 $app = new \Slim\App;
 
+
+$container = $app->getContainer();
+$container['upload_folder'] = 'uploads';
+$container['upload_directory'] = __DIR__ . DIRECTORY_SEPARATOR . $container['upload_folder'];
+
 // $app->options('/{routes:.+}', function ($request, $response, $args) {
 //     return $response;
 // });
@@ -19,8 +24,8 @@ $app->add(function ($req, $res, $next) {
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
 
-$app->get('/', function () {
-    echo "server ready";
+$app->get('/', function (Request $request, Response $response) {
+    echo "server ready at " . $request->getUri();
 });
 
 $app->get('/hello/{name}', function (Request $request, Response $response) {
@@ -34,5 +39,6 @@ require '../src/routes/company.php';
 require '../src/routes/customer.php';
 require '../src/routes/user.php';
 require '../src/routes/product.php';
+require '../src/routes/upload.php';
 
 $app->run();

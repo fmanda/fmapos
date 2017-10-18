@@ -1,1 +1,3 @@
 /*.rar
+/web/server/public/*.log
+*.log

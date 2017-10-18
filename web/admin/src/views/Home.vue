@@ -21,7 +21,7 @@
 
 		<el-col :span="24" class="header">
 			<el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
-				{{collapsed?'': sysName}}
+				<strong>{{collapsed?'': sysName}}</strong>
 			</el-col>
 			<el-col :span="10">
 				<div class="tools" @click.prevent="collapse">
@@ -49,6 +49,7 @@
 					class="el-menu-vertical-demo" @open="handleopen" @close="handleclose" @select="handleselect"
 					unique-opened router
 					:collapse = "collapsed"
+					theme ="dark"
 				>
 					<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
 						<el-submenu :index="index+''" v-if="!item.leaf">
@@ -58,7 +59,9 @@
 							</template>
 							<el-menu-item
 								v-for="child in item.children" :index="child.path" :key="child.path"
-								v-if="!child.hidden">
+								v-if="!child.hidden"
+							>
+								<i :class="child.iconCls" ></i>
 								{{child.name}}
 							</el-menu-item>
 						</el-submenu>
@@ -94,7 +97,7 @@
 			return {
 				debug: true,
 				dialogVisible: false,
-				sysName:'KUMO',
+				sysName:'K U M O',
 				collapsed: false,
 				user: {
 					name : 'fmanda',
@@ -272,7 +275,7 @@
 				width: 230px;
 			}
 			.content-container {
-				background: #f1f2f7;
+				background: #f1f1f1;
 				flex:1;
 				// position: absolute;
 				// right: 0px;
