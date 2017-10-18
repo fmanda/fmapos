@@ -22,10 +22,21 @@
 		</el-alert>
 		<el-form label-position="right" label-width="150px" :model="form" ref="form" :rules="rules">
 			<el-form-item label="SKU" prop="sku">
-				<el-input v-model="form.sku"></el-input>
+				<el-input v-model="form.sku" style="width:230px"></el-input>
 			</el-form-item>
 			<el-form-item label="Product Name" prop="name">
 				<el-input v-model="form.name"></el-input>
+			</el-form-item>
+			<el-form-item label="Photos" prop="img_url">
+				<el-upload
+					class="avatar-uploader"
+					:action="postURL"
+					:on-success="handlePictureSuccess"
+					:before-upload="beforePictureUpload">
+					<img v-if="imageUrl" :src="imageUrl" class="avatar">
+					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
+
 			</el-form-item>
 			<el-form-item label="Category">
 				<el-select v-model="form.category" filterable allow-create placeholder="Select">
@@ -102,9 +113,11 @@
 		},
 		data () {
 			return{
+				postURL : CONFIG.rest_url + '/upload',
 				selectedCompany : {id : 0},
 				uoms : [],
 				categories : [],
+				imageUrl: '',
 				form : {
 					id: 0,
 					category : '',
@@ -232,7 +245,24 @@
 			delModifier(item){
 				var idx = this.form.modifiers.indexOf(item);
 				this.form.modifiers.splice(idx,1);
-			}
+			},
+			handlePictureSuccess(res, file) {
+                this.imageUrl = res;
+            },
+            beforePictureUpload(file) {
+                const isJPG = file.type === 'image/jpeg';
+                const isLt1M = file.size / 1024 / 1024 < 0.5;
+
+                if (!isJPG) {
+                    this.$message.error('Product picture must be JPG format!');
+                }
+                if (!isLt1M) {
+                    this.$message.error('Product picture size can not exceed 512 MB!');
+                }
+				// if (isJPG && isLt1M)
+				// 	this.imageUrl = URL.createObjectURL(file.raw);
+                return isJPG && isLt1M;
+            }
 		}
 	}
 
@@ -240,7 +270,7 @@
 
 <style scoped>
 	.el-form {
-		width: 500px;
+		width: 650px;
 	}
 	.el-form-item {
 		margin-bottom: 20px;
@@ -252,4 +282,30 @@
 		margin-bottom: 20px;
 		margin-left: 150px;
 	}
+</style>
+
+<style>
+	.avatar-uploader .el-upload {
+	    border: 1px dashed #d9d9d9;
+	    border-radius: 6px;
+	    cursor: pointer;
+	    position: relative;
+	    overflow: hidden;
+	  }
+	  .avatar-uploader .el-upload:hover {
+	    border-color: #20a0ff;
+	  }
+	  .avatar-uploader-icon {
+	    font-size: 28px;
+	    color: #8c939d;
+	    width: 178px;
+	    height: 178px;
+	    line-height: 178px;
+	    text-align: center;
+	  }
+	  .avatar {
+	    width: 178px;
+	    height: 178px;
+	    display: block;
+	  }
 </style>
