@@ -35,25 +35,27 @@
 				$sql = "";
 				$strvalue = "";
 				$fields = static::getFields();
-				foreach ($fields as $field) {
+				foreach ($fields as $field) {					
 					if ($field == "uid") {
 						if (($obj->{$field} == null) || ($obj->{$field} = '')){
 							$obj->{$field} = DB::GUID();
 						}
 					}
+					if (!isset($obj->{$field})) continue;
+
 					if ($sql<>""){
 						$sql = $sql . ",";
 						$strvalue = $strvalue . ",";
 					}
 				    $sql = $sql. $field;
-					if (!isset($obj->{$field}))
-						throw new Exception("undeclared property $field on object $classname", 1);
+					// if (!isset($obj->{$field}))
+					// 	throw new Exception("undeclared property $field on object $classname", 1);
 					$strvalue = $strvalue. "'". $obj->{$field} ."'";
 				}
 				$sql = "insert into ". static::getTableName() . "(" . $sql .")";
 				$sql = $sql. "values(" . $strvalue . ");";
 				return $sql;
-			}catch(Exception $e){				
+			}catch(Exception $e){
 				throw $e;
 			}
 		}
