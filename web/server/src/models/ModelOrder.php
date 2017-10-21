@@ -2,6 +2,10 @@
 	require_once '../src/models/BaseModel.php';
 
 	class ModelOrder extends BaseModel{
+		public static function getTableName(){
+			return 'Orders';
+		}
+
 		public static function getFields(){
 			return array(
 				"uid", "company_id", "unit_id", "orderno", "orderdate", "amount",
@@ -14,8 +18,8 @@
 		//override
 		public static function retrieve($id){
 			$obj = parent::retrieve($id);
-			if (isset($obj)) $obj->modifiers = ModelOrderItem::retrieveList(
-				'company_id = '. $obj->company_id .' and order_id = '. $obj->id);
+			// if (isset($obj)) $obj->modifiers = ModelOrderItem::retrieveList(
+			// 	'company_id = '. $obj->company_id .' and order_id = '. $obj->id);
 			return $obj;
 		}
 

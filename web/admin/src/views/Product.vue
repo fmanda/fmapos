@@ -93,14 +93,17 @@
 		  	}
 		},
 		beforeMount(){
-			var user = sessionStorage.getItem('user');
-			if (user) {
-				user = JSON.parse(user);
-				this.selectedCompany = user.company;
-			}
+			this.initCompany();
 			this.refreshData(true);
 		},
 		methods:{
+			initCompany(){
+				var user = sessionStorage.getItem('user');
+				if (user) {
+					user = JSON.parse(user);
+					this.selectedCompany = user.company;
+				}
+			},
 			refreshData(reset){
 				if (reset) {
 					this.currentpage = 1;

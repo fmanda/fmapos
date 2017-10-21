@@ -6,6 +6,11 @@ require_once '../src/models/ModelORder.php';
 require_once '../src/classes/DB.php';
 
 //debug
+
+$app->get('/test', function ($request, $response) {
+	echo "test";
+});
+
 $app->get('/order', function ($request, $response) {
 	try{
 		$list = ModelOrder::retrieveList();
@@ -18,12 +23,24 @@ $app->get('/order', function ($request, $response) {
 	}
 });
 
-
-$app->get('/orderof/{id}', function ($request, $response) {
-	$id = $request->getAttribute('id');
+$app->get('/orderof/{id}/{date1}/{date2}/{limit}/{page}/[{fieldname}/{keyword}]', function ($request, $response, $args) {
 	try{
-		$list = ModelOrder::retrieveList('company_id = ' . $id);
-		return json_encode($list);
+		$keyword = '';
+		$fieldname = 'orderno';
+		if (isset($args['keyword'])) $keyword = $args['keyword'];
+		if (isset($args['fieldname'])) $fieldname = $args['fieldname'];
+
+		$sql = "select a.*, b.name as customer from orders a left join customer b on a.customer_id=b.id";
+		if ($fieldname == "customer"){
+			$fieldname = "b.name";
+		}else{
+			$fieldname = "a.". $fieldname;
+		}
+		$sql = $sql ." where ".$fieldname." like '%" . $keyword ."%'";
+		$sql = $sql . " and a.company_id = ". $args['id'];
+		echo $sql;
+		$data = DB::paginateQuery($sql, $args['limit'], $args['page']);
+		return json_encode($data);
 	}catch(Exception $e){
 		$msg = $e->getMessage();
 		return $response->withStatus(500)
@@ -50,8 +67,15 @@ $app->post('/order', function ($request, $response) {
 
 //retrieve
 $app->get('/order/{id}', function ($request, $response, $args) {
-	$test = ModelOrder::retrieve($args['id']);
-	return json_encode($test);
+	try{
+		$obj = ModelOrder::retrieve($args['id']);
+		return json_encode($obj);
+	}catch(Exception $e){
+		$msg = $e->getMessage();
+		return $response->withStatus(500)
+			->withHeader('Content-Type', 'text/html')
+			->write($msg);
+	}
 });
 
 //delete

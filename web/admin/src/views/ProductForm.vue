@@ -144,11 +144,7 @@
 			}
 		},
 		beforeMount(){
-			var user = sessionStorage.getItem('user');
-			if (user) {
-				user = JSON.parse(user);
-				this.selectedCompany = user.company;
-			}
+			this.initCompany();
 			var vm=this;
 
 			axios.get(CONFIG.rest_url + '/productcategoryof/' + this.selectedCompany.id).then(function(response) {
@@ -167,6 +163,13 @@
 
 		},
 		methods:{
+			initCompany(){
+				var user = sessionStorage.getItem('user');
+				if (user) {
+					user = JSON.parse(user);
+					this.selectedCompany = user.company;
+				}
+			},
 			loadByID(id){
 				if (id == 0){
 					this.form.id = 0;
@@ -183,7 +186,15 @@
 				var vm = this;
 				axios.get(CONFIG.rest_url + '/product/' + id).then(function(response) {
 					vm.form = response.data;
-					vm.form.company_id = vm.selectedCompany.id;
+
+
+					if (vm.form.company_id != vm.selectedCompany.id){
+						vm.$message.error('This Company has no access for this product id');
+						vm.$router.push({
+						    path: '/product'
+						})
+					}
+
 					vm.fetchunits();
 				})
 				.catch(function(error) {

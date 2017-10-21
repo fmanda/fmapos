@@ -55,7 +55,8 @@ $app->get('/productof/{id}/{limit}/{page}/[{fieldname}/{keyword}]', function ($r
 		$fieldname = 'name';
 		if (isset($args['keyword'])) $keyword = $args['keyword'];
 		if (isset($args['fieldname'])) $fieldname = $args['fieldname'];
-		$sql = "select * from Product where ".$fieldname." like '%" . $keyword ."%'";
+		$sql = "select * from Product where ".$fieldname." like '%" . $keyword ."%'"
+			. " and company_id = ". $args['id'];
 		$data = DB::paginateQuery($sql, $args['limit'], $args['page']);
 		return json_encode($data);
 	}catch(Exception $e){

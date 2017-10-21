@@ -128,7 +128,14 @@
 				axios.get(CONFIG.rest_url + '/customer/' + id)
 				.then(function(response) {
 					vm.form = response.data;
-					vm.form.company_id = vm.selectedCompany.id;
+
+					if (vm.form.company_id != vm.selectedCompany.id){
+						vm.$message.error('This Company has no access for this customer id');
+						vm.$router.push({
+						    path: '/customer'
+						})
+					}
+
 				})
 				.catch(function(error) {
 					vm.showErrorMessage(error);
