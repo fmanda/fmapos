@@ -30,7 +30,7 @@ public class ModelOrder extends BaseModel implements Serializable{
     @TableField
     private Double change;
     @TableField
-    private String uuid;
+    private String uid;
     @TableField
     private int uploaded;
 
@@ -210,12 +210,12 @@ public class ModelOrder extends BaseModel implements Serializable{
         this.change = change;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setUid(String uuid) {
+        this.uid = uuid;
     }
 
     public int getUploaded() {

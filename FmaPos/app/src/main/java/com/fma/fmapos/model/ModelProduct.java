@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ModelProduct extends BaseModel implements Serializable{
     @TableField
-    private String guid;
+    private String uid;
     @TableField
     private String name;
     @TableField( fieldName = "sku")
@@ -73,12 +73,12 @@ public class ModelProduct extends BaseModel implements Serializable{
         this.price = price;
     }
 
-    public String getGuid() {
-        return guid;
+    public String geUid() {
+        return uid;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setUid(String guid) {
+        this.uid = guid;
     }
 
     public String getBarcode() {
