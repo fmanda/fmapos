@@ -1,4 +1,5 @@
 package com.fma.fmapos.facade;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class MainActivity extends BaseActivity {
 //        SQLiteDatabase trans = db.getWritableDatabase();
 //        db.dummyProduct(trans);
 
-//        startActivity(new Intent(this, OrderCreateActivity.class));
+        startActivity(new Intent(this, RestActivity.class));
         final PrinterHelper printerHelper = new PrinterHelper(this);
         Button btnPrint = (Button) findViewById(R.id.btnPrint);
         final EditText edTestPrint = (EditText) findViewById(R.id.edTestPrint);

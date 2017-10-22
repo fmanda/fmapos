@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fma.fmapos">
-
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -29,6 +29,7 @@
         <activity android:name=".facade.CustomerCreateActivity"></activity>
         <activity android:name=".facade.OrderFinishActivity"></activity>
         <activity android:name=".facade.OrderActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".facade.RestActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".facade.ProductActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".facade.CustomerActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".facade.SettingActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
