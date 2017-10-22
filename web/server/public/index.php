@@ -7,10 +7,7 @@ require_once '../src/classes/db.php';
 
 $app = new \Slim\App;
 
-
-$container = $app->getContainer();
-$container['upload_folder'] = 'uploads';
-$container['upload_directory'] = __DIR__ . DIRECTORY_SEPARATOR . $container['upload_folder'];
+require_once 'variables.php';
 
 // $app->options('/{routes:.+}', function ($request, $response, $args) {
 //     return $response;

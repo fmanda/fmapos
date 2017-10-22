@@ -77,13 +77,13 @@
 			return {
 				dialogVisible : false,
 				selectedCompany : {id : 0},
-				selectedPeriod : null,
+				selectedPeriod : [],
 				items : [],
 				fields : [
 					{fieldname : 'orderno', caption : 'Order No', width: 120},
 					{fieldname : 'orderdate', caption : 'Order Date', width: 120},
-					{fieldname : 'unit', caption : 'Address', width: 120},
-					{fieldname : 'customer', caption : 'Address', width: null},
+					{fieldname : 'unit_name', caption : 'Unit', width: 120},
+					{fieldname : 'customer', caption : 'Customer', width: null},
 					{fieldname : 'amount', caption : 'Amount', width: 120},
 					{fieldname : 'payment', caption : 'Payment', width: 120}
 				],
@@ -134,12 +134,15 @@
 
 		},
 		beforeMount(){
+			this.selectedPeriod[0] = new Date();
+			this.selectedPeriod[1] = new Date();
+
 			var user = sessionStorage.getItem('user');
 			if (user) {
 				user = JSON.parse(user);
 				this.selectedCompany = user.company;
 			}
-			// this.refreshData(true);
+			this.refreshData(true);
 		},
 		methods:{
 			refreshData(reset){
@@ -205,7 +208,7 @@
 			},
 			handleDelete(index, item){
 				var vm = this;
-				this.$confirm('Anda yaking menghapus data ini?', 'Warning', {
+				this.$confirm('Anda yakin menghapus data ini?', 'Warning', {
 		        	confirmButtonText: 'Ya',
 			        cancelButtonText: 'Batal',
 			        type: 'warning'

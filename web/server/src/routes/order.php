@@ -30,16 +30,21 @@ $app->get('/orderof/{id}/{date1}/{date2}/{limit}/{page}/[{fieldname}/{keyword}]'
 		if (isset($args['keyword'])) $keyword = $args['keyword'];
 		if (isset($args['fieldname'])) $fieldname = $args['fieldname'];
 
-		$sql = "select a.*, b.name as customer from orders a left join customer b on a.customer_id=b.id";
+		$sql = "select a.*, b.name as unit_name, c.name as customer from orders a
+			left join units b on a.unit_id=b.id
+			left join customer c on a.customer_id=c.id";
+
 		if ($fieldname == "customer"){
-			$fieldname = "b.name";
+			$fieldname = "c.name";
+		}else if ($fieldname == "unit_name"){
+				$fieldname = "b.name";
 		}else{
 			$fieldname = "a.". $fieldname;
 		}
 		$sql = $sql ." where ".$fieldname." like '%" . $keyword ."%'";
 		$sql = $sql . " and a.company_id = ". $args['id'];
 		$sql = $sql . " and a.orderdate between '". $args['date1'] . "' and '" . $args['date2']. "'";
-	
+
 		$data = DB::paginateQuery($sql, $args['limit'], $args['page']);
 		return json_encode($data);
 	}catch(Exception $e){

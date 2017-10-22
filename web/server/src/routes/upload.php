@@ -7,19 +7,23 @@ require_once '../src/classes/DB.php';
 $app->post('/upload', function ($request, $response) {
 	// $company_id = $request->getAttribute('company_id');
 	try{
-		$directory = $this->get('upload_directory');
-
+		$directory = $this->get('temp_directory');
 		if (!file_exists($directory)) {
 		    mkdir($directory, 0777, true);
 		}
 	    $uploadedFiles = $request->getUploadedFiles();
 		$uploadedFile  = $uploadedFiles["file"];
 		$extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+
 		$filename = DB::guid(). '.' . $extension; //
 	    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
 
-		return $request->getUri()->getScheme() .'://'. $request->getUri()->getHost()
-			. DIRECTORY_SEPARATOR .$this->get('upload_folder'). DIRECTORY_SEPARATOR .$filename;
+		$obj = new stdClass();
+		$obj->url = $request->getUri()->getScheme() .'://'. $request->getUri()->getHost()
+			. DIRECTORY_SEPARATOR .$this->get('temp_folder'). DIRECTORY_SEPARATOR .$filename;
+		$obj->filename = $filename;
+
+		return json_encode($obj);
 	}catch(Exception $e){
 		$msg = $e->getMessage();
 		return $response->withStatus(500)
@@ -32,7 +36,10 @@ $app->post('/upload', function ($request, $response) {
 $app->get('/upload/{filename}', function ($request, $response) {
 	$filename = $request->getAttribute('filename');
 	$filename = $this->get('upload_directory'). DIRECTORY_SEPARATOR .$filename;
-	echo '<img src="'.$filename.'" />';
+	$image = @file_get_contents($filename);
+	$response->write($image);
+	return $response->withHeader('Content-Type', FILEINFO_MIME_TYPE);
+	// echo '<img src="'.$filename.'" />';
 });
 
 

@@ -30,7 +30,7 @@
 			<el-form-item label="Photos" prop="img_url">
 				<el-upload
 					class="avatar-uploader"
-					:action="postURL"
+					:action="imgPOSTURL"
 					:on-success="handlePictureSuccess"
 					:before-upload="beforePictureUpload">
 					<img v-if="imageUrl" :src="imageUrl" class="avatar">
@@ -113,7 +113,7 @@
 		},
 		data () {
 			return{
-				postURL : CONFIG.rest_url + '/upload',
+				imgPOSTURL : CONFIG.rest_url + '/upload',
 				selectedCompany : {id : 0},
 				uoms : [],
 				categories : [],
@@ -127,6 +127,7 @@
 					uom : '',
 					price : 0,
 					tax : 0,
+					img: '',
 					units : [],
 					modifiers : []
 				},
@@ -187,14 +188,13 @@
 				axios.get(CONFIG.rest_url + '/product/' + id).then(function(response) {
 					vm.form = response.data;
 
-
 					if (vm.form.company_id != vm.selectedCompany.id){
 						vm.$message.error('This Company has no access for this product id');
 						vm.$router.push({
 						    path: '/product'
 						})
 					}
-
+					if (vm.form.img != '') vm.imageUrl = CONFIG.rest_url + '/upload/' + vm.form.img;
 					vm.fetchunits();
 				})
 				.catch(function(error) {
@@ -258,7 +258,8 @@
 				this.form.modifiers.splice(idx,1);
 			},
 			handlePictureSuccess(res, file) {
-                this.imageUrl = res;
+                this.imageUrl = res.url;
+				this.form.img = res.filename;
             },
             beforePictureUpload(file) {
                 const isJPG = file.type === 'image/jpeg';
@@ -268,7 +269,7 @@
                     this.$message.error('Product picture must be JPG format!');
                 }
                 if (!isLt1M) {
-                    this.$message.error('Product picture size can not exceed 512 MB!');
+                    this.$message.error('Product picture size can not exceed 512 KB!');
                 }
 				// if (isJPG && isLt1M)
 				// 	this.imageUrl = URL.createObjectURL(file.raw);

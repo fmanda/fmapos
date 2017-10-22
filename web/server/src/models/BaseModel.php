@@ -35,12 +35,15 @@
 				$sql = "";
 				$strvalue = "";
 				$fields = static::getFields();
-				foreach ($fields as $field) {					
+				foreach ($fields as $field) {
 					if ($field == "uid") {
-						if (($obj->{$field} == null) || ($obj->{$field} = '')){
-							$obj->{$field} = DB::GUID();
+						if (!isset($obj->uid)){
+							$obj->uid = DB::GUID();
+						}else if (($obj->uid == null) || ($obj->uid = '')){
+							$obj->uid = DB::GUID();
 						}
 					}
+
 					if (!isset($obj->{$field})) continue;
 
 					if ($sql<>""){
@@ -107,7 +110,8 @@
 					$obj->id = $db->lastInsertId();
 				}
 			} catch (Exception $e) {
-				$db->rollback();
+				echo $sql;
+				// $db->rollback(); //handle rollback diluar
 				throw $e;
 			}
 		}

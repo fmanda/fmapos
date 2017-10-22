@@ -73,12 +73,27 @@ $app->post('/product', function ($request, $response) {
 	$obj = json_decode($json);
 	try{
 		$str = ModelProduct::saveToDB($obj);
+		try{
+			$filename = $obj->img;
+			$temp = $this->get('temp_directory') . DIRECTORY_SEPARATOR . $filename ;
+			$upload = $this->get('upload_directory');
+			if (!file_exists($upload)) mkdir($directory, 0777, true);
+			$upload = $upload. DIRECTORY_SEPARATOR . $filename;
+			echo $temp . "\n" . $upload;
+			if (file_exists($temp)) rename($temp, $upload);
+
+		}catch(Exception $e){
+			return $response->withStatus(500)
+				->withHeader('Content-Type', 'text/html')
+				->write($e->getMessage());
+		}
+
 		return json_encode($obj);
+
 	}catch(Exception $e){
-		$msg = $e->getMessage();
 		return $response->withStatus(500)
 			->withHeader('Content-Type', 'text/html')
-			->write($msg);
+			->write($e->getMessage());
 	}
 
 });

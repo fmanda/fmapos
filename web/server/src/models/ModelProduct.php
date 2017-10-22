@@ -4,7 +4,7 @@
 	class ModelProduct extends BaseModel{
 		public static function getFields(){
 			return array(
-				"uid", "company_id", "sku", "name", "uom", "price", "tax", "barcode", "category"
+				"uid", "company_id", "sku", "name", "uom", "price", "tax", "barcode", "category", "img"
 			);
 		}
 
