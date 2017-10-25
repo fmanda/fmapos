@@ -39,6 +39,14 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="16dp" />
 
+        <Button
+            android:id="@+id/btnPostObject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post Object"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="16dp" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyle"

@@ -54,7 +54,7 @@ public class BaseModel implements Serializable {
         return str;
     }
 
-    public static String getGUID(){
+    public static String generateUID(){
         return UUID.randomUUID().toString();
     }
 

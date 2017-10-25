@@ -59,7 +59,7 @@
 				$sql = $sql. "values(" . $strvalue . ");";
 				return $sql;
 			}catch(Exception $e){
-				throw $e;
+				throw $e ;
 			}
 		}
 
@@ -69,11 +69,13 @@
 			$classname = get_called_class();
 			foreach ($fields as $field) {
 				if ($field == "uid") continue;
+				if (!isset($obj->{$field})) continue;
+				// if (!isset($obj->{$field}))
+				// 	throw new Exception("undeclared property $field on object $classname", 1);
+
 				if ($strvalue<>""){
 					$strvalue = $strvalue . ",";
-				}
-				if (!isset($obj->{$field}))
-					throw new Exception("undeclared property $field on object $classname", 1);
+				}				
 
 				$strvalue = $strvalue. $field ." = '". $obj->{$field} ."'";
 			}
