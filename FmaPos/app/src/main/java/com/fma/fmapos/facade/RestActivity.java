@@ -58,7 +58,8 @@ public class RestActivity extends BaseActivity {
         btnRestObject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testRestObject("http://10.0.2.1/customer/4");
+//                testRestObject("http://10.0.2.1/customer/4");
+                testRestObject("http://10.0.2.1/customerof/405");
             }
         });
 
@@ -101,12 +102,16 @@ public class RestActivity extends BaseActivity {
     private void testRestObject(String url) {
         final String REQUEST_TAG = "com.fmapos.volleyObjectRequest";
         progressBar.setVisibility(View.VISIBLE);
-        GsonRequest<ModelCustomer> gsonReq = new GsonRequest<ModelCustomer>(url, ModelCustomer.class,
-            new Response.Listener<ModelCustomer>() {
+        GsonRequest<ModelCustomer[]> gsonReq = new GsonRequest<ModelCustomer[]>(url, ModelCustomer[].class,
+            new Response.Listener<ModelCustomer[]>() {
                 @Override
-                public void onResponse(ModelCustomer response) {
-                    customer = response;
-                    Toast.makeText(RestActivity.this, response.getName(), Toast.LENGTH_SHORT).show();
+                public void onResponse(ModelCustomer[] response) {
+//                    customer = response;
+                    String custlist = "";
+                    for (ModelCustomer cust : response){
+                        custlist += cust.getName() + "\n";
+                    }
+                    Toast.makeText(RestActivity.this, custlist, Toast.LENGTH_SHORT).show();
                 }
             }, new Response.ErrorListener() {
             @Override
