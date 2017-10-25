@@ -49,7 +49,7 @@ public class OrderItemListAdapter extends RecyclerView.Adapter<OrderItemListAdap
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.item = this.items.get(i);
         Double qty = viewHolder.item.getQty();
-        Double price = viewHolder.item.getProduct().getPrice();
+        Double price = viewHolder.item.getTotal();
 
         viewHolder.txtOrderItemName.setText(
                 viewHolder.item.getProduct().getName() + " x" + String.valueOf(qty.intValue())

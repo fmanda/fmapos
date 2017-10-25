@@ -70,7 +70,8 @@ public class ControllerProduct {
         Cursor cursor = rdb.rawQuery("select * from product where id='"
                 + String.valueOf(id)  + "'", null);
         ModelProduct prod = new ModelProduct();
-        prod.loadFromCursor(cursor);
+        if (cursor.moveToNext())
+            prod.loadFromCursor(cursor);
         return prod;
     }
 

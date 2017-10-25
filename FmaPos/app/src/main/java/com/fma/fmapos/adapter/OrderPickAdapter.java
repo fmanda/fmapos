@@ -2,7 +2,11 @@ package com.fma.fmapos.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.test.AndroidTestCase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,11 +26,13 @@ public class OrderPickAdapter extends RecyclerView.Adapter<OrderPickAdapter.View
     private List<LookupProduct> products;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context context;
     ImageHelper img;
 
     // data is passed into the constructor
     public OrderPickAdapter(Context context, List<LookupProduct> data) {
         img = new ImageHelper(context);
+        this.context = context;
         this.mInflater = LayoutInflater.from(context);
         this.products = data;
     }
@@ -45,7 +51,7 @@ public class OrderPickAdapter extends RecyclerView.Adapter<OrderPickAdapter.View
         LookupProduct product = products.get(position);
 
         holder.productListName.setText(product.getName());
-        holder.productListPrice.setText(CurrencyHelper.format(product.getPrice()));
+        holder.productListPrice.setText(CurrencyHelper.format(product.getPrice(), Boolean.TRUE));
 
         Double qty = product.getQty();
         holder.productListQty.setText(String.valueOf(qty.intValue() ));
@@ -54,7 +60,14 @@ public class OrderPickAdapter extends RecyclerView.Adapter<OrderPickAdapter.View
             holder.productListQty.setVisibility(View.VISIBLE);
             holder.productListImage.setVisibility(View.GONE);
             holder.btnDecQtyProduct.setVisibility(View.VISIBLE);
+//            holder.cvProduct.setCardBackgroundColor(Color.RED );
+//            holder.cvProduct.setCardBackgroundColor( ContextCompat.getColor(this.context,
+//                    R.color.colorLightOrange ));
+            holder.cvProduct.setCardBackgroundColor( ContextCompat.getColor(this.context,
+                    R.color.colorRowHighlight ));
         }else{
+            holder.cvProduct.setCardBackgroundColor(Color.WHITE );
+
             img.setFileName(String.valueOf(product.getId()));
             Bitmap bmp = img.load();
             if (bmp != null) {
@@ -82,6 +95,7 @@ public class OrderPickAdapter extends RecyclerView.Adapter<OrderPickAdapter.View
         public ImageView productListImage;
         public ImageButton btnDecQtyProduct;
         public LinearLayout linearLayoutProductList;
+        public CardView cvProduct;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -92,6 +106,7 @@ public class OrderPickAdapter extends RecyclerView.Adapter<OrderPickAdapter.View
             productListImage = (ImageView) itemView.findViewById(R.id.productListImage);
             btnDecQtyProduct = (ImageButton) itemView.findViewById(R.id.btnDecQtyProduct);
             linearLayoutProductList = (LinearLayout) itemView.findViewById(R.id.linearLayoutProductList);
+            cvProduct = (CardView) itemView.findViewById(R.id.cvProduct);
 
             btnDecQtyProduct.setOnClickListener(this);
             itemView.setOnClickListener(this);

@@ -1,5 +1,7 @@
 package com.fma.fmapos.facade.fragment;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,15 +31,21 @@ import java.util.List;
 
 public class PickModifierFragment extends DialogFragment {
     List<ModelModifier> modifiers;
-    ControllerProduct controllerProduct;
     ModifierPickAdapter modifierPickAdapter;
     ListView listViewPickModifier;
     LookupProduct modelProduct;
-    PickProductFragment parent;
+    ModifierSelectListener modifierSelectListener;
     int qty = 1;
     TextView txtQty;
     TextView txtNotes;
 
+    public interface ModifierSelectListener{
+        void onFinishSelectModifider(LookupProduct product, Integer qty, String notes);
+    }
+
+    public void setSelectListener(ModifierSelectListener modifierSelectListener){
+        this.modifierSelectListener = modifierSelectListener;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pick_modifier, container, false);
@@ -63,8 +71,7 @@ public class PickModifierFragment extends DialogFragment {
         btnYes.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                parent.updateQtyProduct(modelProduct,qty, txtNotes.getText().toString());
-                parent.refreshAdapter();
+                modifierSelectListener.onFinishSelectModifider(modelProduct, qty, txtNotes.getText().toString());
                 dismiss();
             }
         });
@@ -83,7 +90,7 @@ public class PickModifierFragment extends DialogFragment {
             }
         });
 
-        this.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
+//        this.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
         return view;
     }
 
@@ -93,8 +100,7 @@ public class PickModifierFragment extends DialogFragment {
         listViewPickModifier.setAdapter(modifierPickAdapter);
     }
 
-    public void prepare(PickProductFragment parent, LookupProduct modelProduct){
-        this.parent = parent;
+    public void setProduct(LookupProduct modelProduct){
         this.modelProduct = modelProduct;
     }
 
@@ -103,4 +109,15 @@ public class PickModifierFragment extends DialogFragment {
         if (this.qty<1) this.qty=1;
         txtQty.setText(String.valueOf(this.qty));
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+//        Dialog dialog = getDialog();
+//        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+//        dialog.getWindow().setLayout(width,ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
+
+
+
 }

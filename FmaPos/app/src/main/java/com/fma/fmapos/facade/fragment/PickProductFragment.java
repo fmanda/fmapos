@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.fma.fmapos.controller.ControllerOrder;
 import com.fma.fmapos.controller.ControllerProduct;
 import com.fma.fmapos.facade.OrderCreateActivity;
 import com.fma.fmapos.model.LookupProduct;
+import com.fma.fmapos.model.ModelCustomer;
 import com.fma.fmapos.model.ModelOrder;
 import com.fma.fmapos.model.ModelOrderItem;
 
@@ -47,21 +49,22 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
         controllerProduct = new ControllerProduct(getActivity());
         orders.setOrderno(new ControllerOrder(getActivity()).generateNewNumber());
         products = controllerProduct.getProductListByFilter("","");
-        restoreProductSelection(products);
+        restoreProductSelection();
+
+        orderAdapter = new OrderPickAdapter(getActivity(), products);
+        orderAdapter.setClickListener(this);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.rvProducts);
         int numberOfColumns = 1;
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
-        orderAdapter = new OrderPickAdapter(getActivity(), products);
-
-        orderAdapter.setClickListener(this);
         recyclerView.setAdapter(orderAdapter);
+
         refreshAdapter();
 
         return view;
     }
 
-    public void restoreProductSelection(List<LookupProduct> products) {
+    public void restoreProductSelection() {
         for (LookupProduct product : products) {
             for (ModelOrderItem orderItem : orders.getItems()) {
                 if (product.getId() == orderItem.getProduct().getId() ) {
@@ -73,8 +76,6 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
 
 
     public void refreshAdapter(int position){
-//        recyclerView.getAdapter().notifyItemChanged(position);
-//        if (this.parent != null) parent.summaryOrder();
         refreshAdapter();
     }
 
@@ -93,7 +94,15 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
 
         FragmentManager fm = getFragmentManager();
         PickModifierFragment pickModifierFragment = new PickModifierFragment();
-        pickModifierFragment.prepare(this, product);
+        pickModifierFragment.setProduct(product);
+        pickModifierFragment.setSelectListener(new PickModifierFragment.ModifierSelectListener() {
+            @Override
+            public void onFinishSelectModifider(LookupProduct product, Integer qty, String notes) {
+                updateQtyProduct(product,qty, notes);
+                refreshAdapter();
+            }
+        });
+
         pickModifierFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
         pickModifierFragment.show(fm, "Pilih Modifier");
     }
@@ -106,7 +115,7 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
     public void setMode(Boolean isTablet){
         int numberOfColumns = 1;
         if (isTablet) {
-            numberOfColumns = 4;
+            numberOfColumns = 3;
         };
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), numberOfColumns));
     }
@@ -127,4 +136,7 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
     }
 
 
+    public void loadModelOrder(ModelOrder modelOrder) {
+        this.orders.copyObject(modelOrder);
+    }
 }

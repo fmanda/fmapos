@@ -22,11 +22,14 @@ public class ModelHelper {
 
     public static List<Field> getFields(Object obj){
         List<Field> fields = new ArrayList<Field>();
-        for (Field field : obj.getClass().getDeclaredFields()) {
-            fields.add(field);
-        }
-        if (obj.getClass().getSuperclass() != null){
-            fields.addAll(ModelHelper.getFields(obj));
+
+        Class<?> current = obj.getClass();
+        while (current.getSuperclass() != null) {
+            for (Field field : current.getDeclaredFields()) {
+                fields.add(field);
+            }
+            current = current.getSuperclass();
+            if (!BaseModel.class.isAssignableFrom(current)) { break; }
         }
         return fields;
     }
@@ -97,7 +100,9 @@ public class ModelHelper {
         if (field.getType().isAssignableFrom(Integer.class) || field.getType().isAssignableFrom(int.class))  {
             str = "0";
             if (value != null) str = String.valueOf((Integer) value);
-        }else if (field.getType().isAssignableFrom(Double.class)| field.getType().isAssignableFrom(Float.class)) {
+        }else if (field.getType().isAssignableFrom(Double.class)
+                || field.getType().isAssignableFrom(double.class)
+                || field.getType().isAssignableFrom(Float.class)) {
             str = "0.0";
             if (value != null) str = String.valueOf((Double) value);
         }else if (field.getType().isAssignableFrom(String.class)){
@@ -220,6 +225,19 @@ public class ModelHelper {
     public static String generateDropMetaData(BaseModel obj){
         return "drop table if exists " + obj.getTableName() + ";";
     }
+
+    public static void copyObject(BaseModel source, BaseModel into){
+        List<Field> fields = getFields(source);
+        for (Field field : fields) {
+            field.setAccessible(true);
+
+            try {
+                field.set(into, field.get(source));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public static boolean loadFromCursor(BaseModel obj, Cursor cursor){
         Boolean result = false;
         if (cursor.getCount() == 0) return false;
@@ -234,7 +252,9 @@ public class ModelHelper {
 
                 if (field.getType().isAssignableFrom(Integer.class) || field.getType().isAssignableFrom(int.class))  {
                     field.set(obj, cursor.getInt(i));
-                }else if (field.getType().isAssignableFrom(Double.class)| field.getType().isAssignableFrom(Float.class)) {
+                }else if (field.getType().isAssignableFrom(Double.class)
+                        || field.getType().isAssignableFrom(double.class)
+                        || field.getType().isAssignableFrom(Float.class)) {
                     field.set(obj, cursor.getDouble(i));
                 }else if (field.getType().isAssignableFrom(String.class)){
                     field.set(obj, cursor.getString(i) );

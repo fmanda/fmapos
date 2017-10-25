@@ -5,6 +5,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
 
+import static java.lang.Boolean.FALSE;
+
 public class CurrencyHelper
 {
     public static final Locale LOCALE = new Locale("id", "ID");
@@ -12,11 +14,20 @@ public class CurrencyHelper
     private static final DecimalFormatSymbols symbols = numberFormat.getDecimalFormatSymbols();
 
 
-    public static String format(double paramDouble)
+    public static String format(double paramDouble, Boolean withCurrency)
     {
-        symbols.setCurrencySymbol("");
+        if (!withCurrency) {
+            symbols.setCurrencySymbol("");
+        }else{
+            symbols.setCurrencySymbol("Rp ");
+        }
         numberFormat.setDecimalFormatSymbols(symbols);
         return numberFormat.format(paramDouble);
+    }
+
+    public static String format(double paramDouble)
+    {
+        return format(paramDouble, Boolean.TRUE);
     }
 
     public static String format(long paramLong)
@@ -28,8 +39,8 @@ public class CurrencyHelper
     public static Double revert(String paramString)
             throws ParseException
     {
-        symbols.setCurrencySymbol("");
-        numberFormat.setDecimalFormatSymbols(symbols);
+//        symbols.setCurrencySymbol("");
+//        numberFormat.setDecimalFormatSymbols(symbols);
         return Double.valueOf(numberFormat.parse(paramString).doubleValue());
     }
 }

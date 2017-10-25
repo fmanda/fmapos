@@ -20,19 +20,21 @@ public class ModelOrder extends BaseModel implements Serializable{
     @TableField
     private Date orderdate = new Date();
     @TableField
-    private Double amount;
+    private Double amount = 0.0;
     @TableField
-    private Double payment;
+    private Double payment = 0.0;
     @TableField
-    private Double cashpayment;
+    private Double cashpayment = 0.0;
     @TableField
-    private Double cardpayment;
+    private Double cardpayment = 0.0;
     @TableField
-    private Double change;
+    private Double change = 0.0;
     @TableField
-    private String uid;
+    private String uuid;
     @TableField
     private int uploaded;
+    @TableField
+    private int status = 0; //0:created/hold, 1:paid, 2:void
 
     private List<ModelOrderItem> items = new ArrayList<ModelOrderItem>();
     private ModelCustomer customer = new ModelCustomer();
@@ -51,7 +53,6 @@ public class ModelOrder extends BaseModel implements Serializable{
     }
 
     public void addItem(ModelOrderItem item){
-        item.setNotes(item.getProduct().getDebugModifiers());
         this.items.add(item);
     }
 
@@ -210,12 +211,12 @@ public class ModelOrder extends BaseModel implements Serializable{
         this.change = change;
     }
 
-    public String getUid() {
-        return uid;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUid(String uuid) {
-        this.uid = uuid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public int getUploaded() {
@@ -228,7 +229,7 @@ public class ModelOrder extends BaseModel implements Serializable{
 
     public void saveToDBAll(SQLiteDatabase db) {
         Log.d("DB","Order.saveToDBAll");
-        reUpdateData();
+        refreshAmount();
         db.beginTransaction();
         try {
             super.saveToDB(db ,true);
@@ -246,12 +247,21 @@ public class ModelOrder extends BaseModel implements Serializable{
         }
     }
 
-    private void reUpdateData(){
+    public void refreshAmount(){
         this.amount = this.getSummary();
     }
 
+    public Double getTotalCustPayment(){
+        return (this.cashpayment + this.cardpayment);
+    }
 
+    public int getStatus() {
+        return status;
+    }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
 };
 
 

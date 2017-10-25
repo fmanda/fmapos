@@ -1,9 +1,12 @@
 package com.fma.fmapos.facade.fragment;
 
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +27,9 @@ public class PickCustomerFragment extends DialogFragment implements CustomerList
     ControllerCustomer controllerCustomer;
     CustomerListAdapter customerListAdapter;
     RecyclerView recyclerView;
+    CustomerSelectListener customerSelectListener;
 
-    public OrderFinishFragment parent;
+//    public OrderFinishFragment parent;
 
 
     @Override
@@ -51,24 +55,36 @@ public class PickCustomerFragment extends DialogFragment implements CustomerList
             }
         });
 
+//        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+//        int height = ViewGroup.LayoutParams.MATCH_PARENT;
+//        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
+//        view.setLayoutParams(layoutParams);
+
         return view;
     }
 
-
-
-    public void prepare(OrderFinishFragment parent){
-        this.parent = parent;
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        int width = ViewGroup.LayoutParams.MATCH_PARENT;
+        int height = ViewGroup.LayoutParams.MATCH_PARENT;
+        dialog.getWindow().setLayout(width, height);
     }
 
-    public void selectCustomer(ModelCustomer customer){
-        parent.setCustomer(customer);
+
+    public interface CustomerSelectListener{
+        void OnSelectCustomer(ModelCustomer modelCustomer);
     }
 
+    public void SetCustomerSelectListener(CustomerSelectListener customerSelectListener){
+        this.customerSelectListener = customerSelectListener;
+    }
 
     @Override
     public void onItemClick(View view, int position) {
         ModelCustomer customer = customers.get(position);
-        selectCustomer(customer);
+        customerSelectListener.OnSelectCustomer(customer);
         dismiss();
     }
 }

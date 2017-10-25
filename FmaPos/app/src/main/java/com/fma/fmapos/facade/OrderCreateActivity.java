@@ -1,35 +1,37 @@
 package com.fma.fmapos.facade;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
-import android.widget.Switch;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fma.fmapos.R;
 import com.fma.fmapos.adapter.CategoryListAdapter;
+import com.fma.fmapos.controller.ControllerCustomer;
+import com.fma.fmapos.controller.ControllerOrder;
 import com.fma.fmapos.controller.ControllerProduct;
+import com.fma.fmapos.controller.ControllerSetting;
 import com.fma.fmapos.facade.fragment.OrderFinishFragment;
 import com.fma.fmapos.facade.fragment.PickProductFragment;
 import com.fma.fmapos.helper.CurrencyHelper;
+import com.fma.fmapos.model.ModelCustomer;
+import com.fma.fmapos.model.ModelOrder;
+import com.fma.fmapos.model.ModelOrderPreset;
 
 import java.util.List;
 
@@ -39,17 +41,18 @@ import java.util.List;
  */
 
 
-public class OrderCreateActivity extends AppCompatActivity implements CategoryListAdapter.ItemClickListener {
+public class OrderCreateActivity extends AppCompatActivity implements CategoryListAdapter.ItemClickListener{
     PickProductFragment pickProductFragment;
     OrderFinishFragment orderFinishFragment;
-    EditText txtSearchProductList;
-    Spinner spCategory;
-    Switch swFilter;
+//    EditText txtSearchProductList;
     LinearLayout pnlCreateOrderSearch;
     ControllerProduct controllerProduct;
     RecyclerView rvCategory;
     public String categoryFilter = "";
     List<String> categories;
+    SearchView txtSearchProduct;
+    ModelOrder modelorder;
+    TabLayout tabsPreset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +65,9 @@ public class OrderCreateActivity extends AppCompatActivity implements CategoryLi
 
         pickProductFragment.setParent(this);
         pickProductFragment.setMode(isTablet());
+        modelorder = pickProductFragment.orders;
+
+        tabsPreset = (TabLayout) findViewById(R.id.tabsPreset);
 
         if (getSupportActionBar() != null){
             if (isTablet()){
@@ -75,85 +81,167 @@ public class OrderCreateActivity extends AppCompatActivity implements CategoryLi
             }
         }
 
-//        spCategory = (Spinner) findViewById(R.id.spCategory);
+//        txtSearchProductList = (EditText) findViewById(R.id.txtSearchProductList);
+//        txtSearchProductList.addTextChangedListener(new TextWatcher() {
+//            Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
+//            Runnable workRunnable;
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                handler.removeCallbacks(workRunnable);
+//                workRunnable = new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        searchProduct();
+//                    }
+//                };
+//                handler.postDelayed(workRunnable, 500 /*delay*/);
+//            }
+//        });
 
-        txtSearchProductList = (EditText) findViewById(R.id.txtSearchProductList);
-        txtSearchProductList.clearFocus();
-        txtSearchProductList.addTextChangedListener(new TextWatcher() {
-            Handler handler = new Handler(Looper.getMainLooper() /*UI thread*/);
-            Runnable workRunnable;
+        txtSearchProduct = (SearchView) findViewById(R.id.txtSearchProduct);
+        txtSearchProduct.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                handler.removeCallbacks(workRunnable);
-                workRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        searchProduct();
-                    }
-                };
-                handler.postDelayed(workRunnable, 500 /*delay*/);
+            public boolean onQueryTextChange(String s) {
+                searchProduct(s);
+                return false;
             }
         });
 
         //test category
         controllerProduct = new ControllerProduct(this);
         categories = controllerProduct.getListCategory();
-        spCategory = (Spinner) findViewById(R.id.spCategory);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, categories);
-        adapter.setDropDownViewResource(R.layout.spinner_item);
-        spCategory.setAdapter(adapter);
-        spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                categoryFilter = "";
-                if (position>0) categoryFilter = categories.get(position);
-                searchProduct();
+
+//        rvCategory = (RecyclerView) findViewById(R.id.rvCategory);
+//        if (rvCategory != null){
+//            CategoryListAdapter categoryListAdapter = new CategoryListAdapter(this,
+//                    controllerProduct.getListCategory());
+//            rvCategory.setAdapter(categoryListAdapter);
+//            rvCategory.setLayoutManager(new GridLayoutManager(this, 1));
+//            categoryListAdapter.setClickListener(this);
+//        }
+
+        //tab
+        generateCategoryTab();
+        generatePresetTab();
+        loadData();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private void loadData() {
+        Intent intent = getIntent();
+        if (intent==null) return;
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey("modelOrder")) {
+                ModelOrder modelOrder = (ModelOrder) intent.getSerializableExtra("modelOrder");
+                ControllerOrder controllerOrder = new ControllerOrder(this);
+                controllerOrder.reLoadAll(modelOrder);
+                pickProductFragment.loadModelOrder(modelOrder);
+                pickProductFragment.restoreProductSelection();
+                pickProductFragment.refreshAdapter();
+                getSupportActionBar().setTitle("Update Order");
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        //end
-
-        swFilter = (Switch) findViewById(R.id.swFilter);
-        swFilter.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                showOrHideSearch();
-            }
-        });
-
-        showOrHideSearch();
-
-
-        rvCategory = (RecyclerView) findViewById(R.id.rvCategory);
-        if (rvCategory != null){
-            CategoryListAdapter categoryListAdapter = new CategoryListAdapter(this,
-                    controllerProduct.getListCategory());
-            rvCategory.setAdapter(categoryListAdapter);
-            rvCategory.setLayoutManager(new GridLayoutManager(this, 1));
-            categoryListAdapter.setClickListener(this);
         }
+
 
 
     }
 
-    private void showOrHideSearch() {
-        if (swFilter.isChecked()){
-            pnlCreateOrderSearch.setVisibility(View.VISIBLE);
+    private void hideOnScreenKeyboard(View v) {
+        if (v==null) return;
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+
+    private void generateCategoryTab() {
+        TabLayout tabsCategory = (TabLayout) findViewById(R.id.tabsCategory);
+        if (tabsCategory==null) return;
+        tabsCategory.setPadding(0,0,0,0);
+
+        tabsCategory.removeAllTabs();
+
+        for (String category : categories) {
+            TabLayout.Tab tab = tabsCategory.newTab();
+            tab.setText(category);
+            tabsCategory.addTab(tab);
+        }
+
+
+        tabsCategory.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                filterCategory(tab.getPosition());
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+
+    }
+
+    private void generatePresetTab() {
+
+        if (tabsPreset==null) return;
+        tabsPreset.setPadding(0,0,0,0);
+
+        tabsPreset.removeAllTabs();
+
+        ControllerSetting controllerSetting = new ControllerSetting(this);
+        List<ModelOrderPreset> modelOrderPresets = controllerSetting.getOrderPreset();
+
+        for (ModelOrderPreset modelOrderPreset : modelOrderPresets) {
+            TabLayout.Tab tab = tabsPreset.newTab();
+            tab.setText(modelOrderPreset.getName());
+            tab.setTag(modelOrderPreset);
+            tabsPreset.addTab(tab);
+        }
+
+        if (tabsPreset.getTabCount() == 0) {
+            tabsPreset.setVisibility(View.GONE);
         }else{
-            pnlCreateOrderSearch.setVisibility(View.GONE);
+            setOrderPreset();
         }
+
+        tabsPreset.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setOrderPreset();
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+
+
     }
 
+    private void setOrderPreset() {
+        TabLayout.Tab tab = tabsPreset.getTabAt(tabsPreset.getSelectedTabPosition());
+        if (tab==null) return;
+        ModelOrderPreset modelOrderPreset = (ModelOrderPreset) tab.getTag();
+        if (modelOrderPreset==null) return;
+        if (modelOrderPreset.getDefault_customer_id()>0){
+            ModelCustomer modelCustomer = new ControllerCustomer(this).getCustomer(
+                    modelOrderPreset.getDefault_customer_id()
+            );
+            if (modelCustomer==null) return;
+            modelorder.setCustomer(modelCustomer);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -187,9 +275,7 @@ public class OrderCreateActivity extends AppCompatActivity implements CategoryLi
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
                 if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-                    v.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(v.getContext().INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    hideOnScreenKeyboard(v);
                 }
             }
         }
@@ -222,25 +308,29 @@ public class OrderCreateActivity extends AppCompatActivity implements CategoryLi
         }
 
         TextView txtSummaryProductList = (TextView) findViewById(R.id.txtSummaryProductList);
-        TextView txtCountProductList = (TextView) findViewById(R.id.txtCountProductList);
         txtSummaryProductList.setText("Total: " + CurrencyHelper.format(pickProductFragment.orders.getSummary()) );
-        txtCountProductList.setText("Items: " + String.valueOf(pickProductFragment.orders.itemCount()) );
     }
 
-    private void searchProduct(){
+    private void searchProduct(String productName){
         pickProductFragment.products.clear();
         pickProductFragment.products.addAll(
                 pickProductFragment.controllerProduct.getProductListByFilter(
-                        categoryFilter,  txtSearchProductList.getText().toString()) );
-        pickProductFragment.restoreProductSelection(pickProductFragment.products);
+                        categoryFilter,  productName.toString()) );
+        pickProductFragment.restoreProductSelection();
         pickProductFragment.refreshAdapter();
     }
 
 
     @Override
     public void onItemClick(View view, int position) {
+        filterCategory(position);
+    }
+
+    private void filterCategory(int position) {
         categoryFilter = "";
         if (position>0) categoryFilter = categories.get(position);
-        searchProduct();
+        searchProduct("");
     }
+
+
 }

@@ -11,8 +11,6 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -29,75 +27,53 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_centerInParent="false"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@color/colorPrimary"
             android:gravity="bottom"
             android:minHeight="2dp"
-            android:paddingBottom="5dp"
             android:paddingRight="2dp"
-            android:paddingTop="5dp"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="0dp">
 
-            <Switch
-                android:id="@+id/swFilter"
-                android:layout_width="wrap_content"
+            <SearchView
+                android:id="@+id/txtSearchProduct"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="false"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
-                android:checked="false"
-                android:gravity="center_vertical"
-                android:text="FILTER "
-                android:textColor="@android:color/background_light" />
+                android:layout_toLeftOf="@+id/txtSummaryProductList"
+                app:queryHint="Search Product .." />
+
+            <EditText
+                android:id="@+id/txtSearchProductList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/txtSummaryProductList"
+                android:layout_weight="1"
+                android:autoLink="none"
+                android:autoText="false"
+                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:ems="10"
+                android:hint="Search Products ..."
+                android:inputType="text"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:theme="@android:style/Widget.Material.SearchView"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/txtSummaryProductList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginLeft="5dp"
-                android:elevation="0dp"
-                android:fontFamily="sans-serif-condensed"
-                android:gravity="center_vertical"
-                android:paddingBottom="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:text="9999999"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtCountProductList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="false"
-                android:layout_marginLeft="5dp"
-                android:elevation="0dp"
-                android:fontFamily="sans-serif-condensed"
-                android:paddingBottom="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp"
-                android:text="9999"
-                android:textColor="@android:color/white"
-                android:textSize="20dp"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/btnSaveProductList"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="10dp"
-                android:background="@android:drawable/ic_menu_save"
-                android:backgroundTint="@android:color/black"
-                android:onClick="onBtnProductListSave"
-                android:visibility="gone" />
+                android:elevation="0dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="0"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:visibility="visible" />
 
         </RelativeLayout>
 
@@ -106,37 +82,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rlCreateOrderBar"
-            android:background="@android:color/holo_orange_light"
             android:focusable="true"
             android:focusableInTouchMode="true"
+            android:orientation="vertical"
             android:visibility="visible"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
-            <Spinner
-                android:id="@+id/spCategory"
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabsCategory"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_centerInParent="false"
                 android:layout_toLeftOf="@+id/txtSummaryProductList"
-                android:layout_toRightOf="@+id/lbCategory"
-                android:layout_weight="0"
-                android:minHeight="0dp"
-                android:spinnerMode="dialog" />
-
-            <EditText
-                android:id="@+id/txtSearchProductList"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableLeft="@android:drawable/ic_menu_search"
-                android:ems="10"
-                android:hint="Search Products ..."
-                android:inputType="textPersonName"
-                android:nextFocusLeft="@id/txtSearchProductList"
-                android:nextFocusUp="@id/txtSearchProductList"
-                android:textSize="14sp" />
+                android:background="@color/colorSecondary"
+                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/colorWhite"
+                app:tabTextColor="@color/colorWhite">
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="0dp"
+                    android:paddingBottom="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingLeft="0dp"
+                    android:paddingRight="0dp"
+                    android:paddingStart="0dp"
+                    android:paddingTop="0dp"
+                    android:text="Left" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Center" />
+
+                <android.support.design.widget.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Right" />
+            </android.support.design.widget.TabLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_weight="1"
+                android:background="@color/emptyBackground"
+                android:orientation="horizontal"
+                android:visibility="gone"></LinearLayout>
+
         </LinearLayout>
 
         <fragment
@@ -144,6 +139,7 @@
             android:name="com.fma.fmapos.facade.fragment.PickProductFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -153,6 +149,42 @@
             tools:layout_constraintLeft_creator="1"
             tools:layout_constraintRight_creator="1"
             tools:layout_constraintTop_creator="1" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabsPreset"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/txtSummaryProductList"
+            android:layout_weight="0"
+            android:background="@color/colorPrimary"
+            app:tabIndicatorColor="@color/colorWhite"
+            app:tabSelectedTextColor="@color/colorWhite"
+            app:tabTextColor="@color/colorWhite"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="0dp"
+                android:paddingBottom="0dp"
+                android:paddingEnd="0dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="0dp"
+                android:paddingStart="0dp"
+                android:paddingTop="0dp"
+                android:text="Left" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Center" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Right" />
+        </android.support.design.widget.TabLayout>
 
     </LinearLayout>
 

@@ -45,7 +45,7 @@
                 android:layout_height="40dp"
                 android:layout_margin="3dp"
                 android:layout_weight="0"
-                android:background="@android:color/holo_red_light"
+                android:background="@color/colorSecondary"
                 android:text="cancel" />
 
         </LinearLayout>

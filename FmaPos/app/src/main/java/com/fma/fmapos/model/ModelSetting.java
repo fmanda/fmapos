@@ -39,6 +39,24 @@ public class ModelSetting extends BaseModel {
     }
 
     public static void initMetaData(SQLiteDatabase db) {
+        //company_info
+        new ModelSetting("company_name","[your-company-name]").saveToDB(db);
+        new ModelSetting("company_address","[your company address]\n[your company address]").saveToDB(db);
+        new ModelSetting("company_phone","[company-phone]").saveToDB(db);
+
+        //printer
+        new ModelSetting("printer_char_width","32").saveToDB(db);
+        new ModelSetting("single_line_product","true").saveToDB(db);
+
         new ModelSetting("cashier_printer","").saveToDB(db);
+        new ModelSetting("kitchen_printer","").saveToDB(db);
+        new ModelSetting("print_to_kitchen","false").saveToDB(db);
+        new ModelSetting("print_to_cashier","true").saveToDB(db);
+
+        //struk
+        new ModelSetting("print_customer_info","true").saveToDB(db);
+        new ModelSetting("custom_header","").saveToDB(db);
+        new ModelSetting("print_custom_header","false").saveToDB(db);
+        new ModelSetting("print_footer","**** LUNAS ****").saveToDB(db);
     }
 }

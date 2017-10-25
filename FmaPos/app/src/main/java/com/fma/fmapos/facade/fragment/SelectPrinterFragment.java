@@ -41,15 +41,22 @@ public class SelectPrinterFragment extends DialogFragment implements PrinterList
     RecyclerView recyclerView;
     PrinterListAdapter adapter;
     BluetoothAdapter bluetoothAdapter;
-    BluetoothDevice bluetoothDevice;
-    String varName;
-    SettingActivity parent;
+    ModelSetting modelSetting;
+    private SelectPrinterListener mSelectListener;
 
+    public interface SelectPrinterListener{
+        void onSelectPrinter(ModelSetting setting,ModelPrinter printer);
+    }
+
+    public void setSelectListener(SelectPrinterListener mSelectListener, ModelSetting modelSetting) {
+        this.modelSetting = modelSetting;
+        this.mSelectListener = mSelectListener;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_select_printer, container, false);
-        getDialog().setTitle("Pilih Customer");
+        getDialog().setTitle("Pilih Printer");
 
         recyclerView = (RecyclerView) view.findViewById(R.id.rvDevices);
 
@@ -103,27 +110,14 @@ public class SelectPrinterFragment extends DialogFragment implements PrinterList
     }
 
 
-    public void savePrinter(ModelPrinter printer){
-        ModelSetting setting = new ModelSetting(varName, printer.getName());
-        DBHelper db = new DBHelper(getActivity());
-        SQLiteDatabase trans = db.getWritableDatabase();
-        setting.saveToDB(trans);
-    }
-
 
     @Override
     public void onItemClick(View view, int position) {
         ModelPrinter printer = printers.get(position);
-        savePrinter(printer);
-        parent.loadData();
+        if (mSelectListener != null) mSelectListener.onSelectPrinter(this.modelSetting, printer);
         dismiss();
     }
 
-    public void setVarName(String varName) {
-        this.varName = varName;
-    }
 
-    public void setParent(SettingActivity parent) {
-        this.parent = parent;
-    }
+
 }

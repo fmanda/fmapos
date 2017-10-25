@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/emptyBackground"
     tools:context="com.fma.fmapos.facade.OrderFinishActivity">
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -22,63 +24,32 @@
         <LinearLayout
             android:id="@+id/pnlHeaderOrderFinish"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="@color/colorDarkGrey"
-            android:orientation="horizontal"
-            android:padding="0dp">
+            android:layout_height="45dp"
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/txtOrderNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="0"
-                android:fontFamily="sans-serif-condensed"
-                android:gravity="right"
-                android:padding="5dp"
-                android:text="#0000000"
-                android:textAlignment="viewStart"
-                android:textColor="@android:color/background_light"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnLookupCustomer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/holo_blue_dark"
-                android:drawableLeft="@drawable/ic_menu_account"
-                android:drawableTint="@android:color/background_light"
-                android:fontFamily="sans-serif-condensed"
-                android:gravity="left|center_vertical"
-                android:padding="10dp"
-                android:text="Pilih Customer"
-                android:textAlignment="inherit"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnDelCustomer"
-                android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_weight="0"
-                android:background="@android:color/holo_blue_dark"
-                android:drawableLeft="@drawable/ic_menu_close"
-                android:drawableTint="@android:color/background_light"
-                android:gravity="left|center_vertical"
-                android:padding="10dp"
-                android:textAlignment="inherit"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/white"
-                android:textStyle="bold" />
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:text="Nomor Order :"
+                android:textAlignment="textEnd"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
 
+            <TextView
+                android:id="@+id/txtLine"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_weight="0"
+                android:background="@color/emptyBackground" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -87,6 +58,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/linearLayOutSummaryOrderItem"
             android:layout_below="@+id/pnlHeaderOrderFinish"
+            android:layout_marginTop="5dp"
             android:layout_weight="0" />
 
         <LinearLayout
@@ -96,25 +68,38 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="false"
             android:layout_alignParentRight="false"
+            android:layout_margin="0dp"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:padding="0dp"
             android:visibility="visible"
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
             <Button
-                android:id="@+id/btnCancelOrder"
+                android:id="@+id/btnHoldOrder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/holo_red_light"
-                android:drawableLeft="@drawable/ic_menu_close"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/colorSecondary"
                 android:drawableTint="@android:color/background_light"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="10dp"
-                android:text="BATAL"
+                android:text="HOLD"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btnPayOrder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@color/colorPrimary"
+                android:fontFamily="sans-serif-condensed"
+                android:padding="10dp"
+                android:text="BAYAR"
                 android:textColor="@android:color/white"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -122,34 +107,19 @@
             <Button
                 android:id="@+id/btnSaveOrder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@android:color/holo_orange_dark"
-                android:drawableLeft="@drawable/ic_menu_floppy"
+                android:background="@color/colorPrimary"
                 android:drawableTint="@android:color/background_light"
                 android:fontFamily="sans-serif-condensed"
                 android:padding="10dp"
-                android:text="SIMPAN"
+                android:text="proses"
+                android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@android:color/white"
                 android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/btnPayOrder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_weight="1"
-                android:background="@android:color/holo_green_dark"
-                android:drawableLeft="@drawable/ic_menu_checkall"
-                android:fontFamily="sans-serif-condensed"
-                android:padding="10dp"
-                android:text="BAYAR"
-                android:textColor="@android:color/white"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -163,13 +133,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="5dp"
                 android:layout_weight="0"
-                android:background="?attr/colorButtonNormal"
-                android:paddingBottom="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:paddingTop="5dp">
+                android:background="@color/emptyBackground">
 
             </RelativeLayout>
 

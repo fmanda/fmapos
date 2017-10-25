@@ -3,18 +3,13 @@ package com.fma.fmapos.facade;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
 
 import com.fma.fmapos.R;
-import com.fma.fmapos.adapter.CustomerListAdapter;
-import com.fma.fmapos.adapter.OrderListAdapter;
-import com.fma.fmapos.controller.ControllerCustomer;
+import com.fma.fmapos.adapter.OrderHoldAdapter;
 import com.fma.fmapos.controller.ControllerOrder;
-import com.fma.fmapos.model.ModelCustomer;
 import com.fma.fmapos.model.ModelOrder;
 
 import java.util.List;
@@ -26,7 +21,7 @@ import java.util.List;
 public class OrderActivity extends BaseActivity {
     List<ModelOrder> orders;
     ControllerOrder controllerOrder;
-    OrderListAdapter orderListAdapter;
+    OrderHoldAdapter orderHoldAdapter;
     RecyclerView rvOrders;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +43,23 @@ public class OrderActivity extends BaseActivity {
     }
 
     public void loadOrders(){
-        orders = controllerOrder.getOrderList();
-        orderListAdapter = new OrderListAdapter(this, orders);
-        rvOrders.setAdapter(orderListAdapter);
+        orders = controllerOrder.getOrderList(Boolean.TRUE);
+        orderHoldAdapter = new OrderHoldAdapter(this, orders);
+        rvOrders.setAdapter(orderHoldAdapter);
         rvOrders.setLayoutManager(new GridLayoutManager(this, 1));
+
+        orderHoldAdapter.SetSelectHoldOrderListener(new OrderHoldAdapter.SelectHoldOrderListener() {
+            @Override
+            public void onSelectHoldOrder(ModelOrder modelOrder) {
+                loadOrder(modelOrder);
+            }
+        });
+    }
+
+    private void loadOrder(ModelOrder modelOrder) {
+        Intent intent = new Intent(this, OrderCreateActivity.class);
+        intent.putExtra("modelOrder", modelOrder);
+        startActivity(intent);
     }
 
     public void fabOnClick(){

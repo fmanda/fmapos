@@ -5,7 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fma.fmapos.helper.DBHelper;
+import com.fma.fmapos.model.ModelModifier;
 import com.fma.fmapos.model.ModelOrder;
+import com.fma.fmapos.model.ModelOrderItem;
+import com.fma.fmapos.model.ModelOrderModifier;
+import com.fma.fmapos.model.ModelProduct;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,18 +28,60 @@ public class ControllerOrder {
     }
 
 
-    public List<ModelOrder> getOrderList(){
+    public List<ModelOrder> getOrderList(Boolean isHoldOrderOnly){
+        ControllerCustomer controllerCustomer = new ControllerCustomer(context);
         List<ModelOrder> orders = new ArrayList<ModelOrder>();
 
         DBHelper db = new DBHelper(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
-        Cursor cursor = rdb.rawQuery("select * from orders limit 100", null);
+        String sql = "select * from orders limit 1000";
+        if (isHoldOrderOnly) sql = "select * from orders where status=0";
+
+        Cursor cursor = rdb.rawQuery(sql, null);
         while (cursor.moveToNext()){
             ModelOrder modelOrder = new ModelOrder();
             modelOrder.loadFromCursor(cursor);
+            if (modelOrder.getCustomer_id()>0){
+                modelOrder.setCustomer(controllerCustomer.getCustomer(modelOrder.getCustomer_id()));
+            }
             orders.add(modelOrder);
         }
         return orders;
+    }
+
+    public void reLoadAll(ModelOrder modelOrder){
+//        ControllerCustomer controllerCustomer = new ControllerCustomer(context);
+
+
+        DBHelper db = new DBHelper(context);
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        String sql = "select * from orderitem where order_id = " + String.valueOf(modelOrder.getId());
+
+        Cursor cursor = rdb.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            ModelOrderItem modelOrderItem = new ModelOrderItem();
+            modelOrderItem.loadFromCursor(cursor);
+            reLoadAll(modelOrderItem);
+            modelOrder.addItem(modelOrderItem);
+        }
+    }
+
+    private void reLoadAll(ModelOrderItem modelOrderItem){
+        ControllerProduct controllerProduct = new ControllerProduct(context);
+
+        ModelProduct modelProduct = controllerProduct.retrieveProduct(modelOrderItem.getProduct_id());
+        modelOrderItem.setProduct(modelProduct);
+
+        DBHelper db = new DBHelper(context);
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        String sql = "select * from ordermodifier where orderitem_id = " + String.valueOf(modelOrderItem.getId());
+
+        Cursor cursor = rdb.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            ModelOrderModifier modelOrderModifier = new ModelOrderModifier();
+            modelOrderModifier.loadFromCursor(cursor);
+            modelOrderItem.addModifier(modelOrderModifier);
+        }
     }
 
     public String generateNewNumber(){
@@ -49,9 +95,9 @@ public class ControllerOrder {
 
         int iorderno = 0;
 
-        newNumber += String.valueOf(c.get(Calendar.YEAR));
-        newNumber = newNumber.substring(newNumber.length()-2);
-        newNumber += String.valueOf(c.get(Calendar.MONTH));
+//        newNumber += String.valueOf(c.get(Calendar.YEAR));
+//        newNumber = newNumber.substring(newNumber.length()-2);
+//        newNumber += String.valueOf(c.get(Calendar.MONTH));
 
         try {
             String sql = "select max(orderno) from orders where orderdate >= " + String.valueOf(d.getTime());
@@ -59,7 +105,7 @@ public class ControllerOrder {
             if (cursor.moveToNext()) {
                 String str = cursor.getString(0);
                 //str = str.replace(newNumber,"");
-                str = str.substring(str.length()-4);
+//                str = str.substring(str.length()-4);
                 if (!str.equals("")) iorderno = Integer.parseInt(str);
             }
         }
@@ -67,7 +113,7 @@ public class ControllerOrder {
         }
 
         iorderno++;
-        newNumber += String.format("%04d", iorderno);
+        newNumber += String.format("%05d", iorderno);
         return newNumber;
 
     }

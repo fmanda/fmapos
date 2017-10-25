@@ -8,9 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.fma.fmapos.model.BaseModel;
 import com.fma.fmapos.model.ModelCustomer;
 import com.fma.fmapos.model.ModelModifier;
+import com.fma.fmapos.model.ModelMoneyPreset;
 import com.fma.fmapos.model.ModelOrder;
 import com.fma.fmapos.model.ModelOrderItem;
 import com.fma.fmapos.model.ModelOrderModifier;
+import com.fma.fmapos.model.ModelOrderPreset;
 import com.fma.fmapos.model.ModelProduct;
 import com.fma.fmapos.model.ModelSetting;
 
@@ -43,9 +45,13 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(new ModelOrderItem().generateMetaData());
         db.execSQL(new ModelOrderModifier().generateMetaData());
         db.execSQL(new ModelSetting().generateMetaData());
+        db.execSQL(new ModelMoneyPreset(0).generateMetaData());
+        db.execSQL(new ModelOrderPreset().generateMetaData());
 
         //init
         ModelSetting.initMetaData(db);
+        ModelMoneyPreset.initMetaData(db);
+        ModelOrderPreset.initMetaData(db);
     }
 
     @Override
@@ -83,6 +89,8 @@ public class DBHelper extends SQLiteOpenHelper {
             cust.saveToDB(db);
         };
 
+
+
     }
 
     public void dropAllTables(SQLiteDatabase db){
@@ -93,6 +101,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(new ModelOrderItem().generateDropMetaData());
         db.execSQL(new ModelOrderModifier().generateDropMetaData());
         db.execSQL(new ModelSetting().generateDropMetaData());
+        db.execSQL(new ModelMoneyPreset(0).generateDropMetaData());
+        db.execSQL(new ModelOrderPreset().generateDropMetaData());
     }
 
     public void resetDatabase(SQLiteDatabase db){

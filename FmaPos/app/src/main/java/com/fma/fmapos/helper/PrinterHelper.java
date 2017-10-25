@@ -11,13 +11,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fma.fmapos.controller.ControllerSetting;
+import com.fma.fmapos.model.ModelSetting;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by fmanda on 08/21/17.
@@ -36,12 +39,24 @@ public class PrinterHelper {
     String value = "";
     Context context;
     String printerName = "EP5802AI";
+    List<ModelSetting> settings;
     ControllerSetting setting;
+
+    int printerCharWidth = 32;
+
+    public void setPrinterName(String printerName){
+        this.printerName = printerName;
+    }
 
     public PrinterHelper(Context context){
         this.context = context;
-        setting = new ControllerSetting(this.context);
-        this.printerName = setting.getCashierPrinter();
+        try {
+            setting = new ControllerSetting(this.context);
+            settings = setting.getSettings();
+            printerCharWidth = Integer.valueOf(setting.getSettingStr(settings, "printer_char_width"));
+        }catch(Exception e){
+            Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public boolean ConnectPrinter(){
@@ -163,7 +178,7 @@ public class PrinterHelper {
 
     public String getDoubleSeparator(){
         String str = "";
-        while (str.length()<32){
+        while (str.length()<printerCharWidth){
             str += "=";
         }
         return str;
@@ -171,7 +186,7 @@ public class PrinterHelper {
 
     public String getSingleSeparator(){
         String str = "";
-        while (str.length()<32){
+        while (str.length()<printerCharWidth){
             str += "-";
         }
         return str;
@@ -215,6 +230,20 @@ public class PrinterHelper {
         final byte[] AlignRight = {27, 97,50};
         String s = new String(AlignRight);
         return s;
+    }
+
+    public String mergeLeftRight(String sLeft, String sRight){
+        int i = sLeft.length();
+        int j = sRight.length();
+
+        int paramInt = 0;
+        while (paramInt < printerCharWidth - (i + j) )
+        {
+            sLeft += " ";
+            paramInt += 1;
+        }
+        sLeft += sRight;
+        return sLeft;
     }
 
 }

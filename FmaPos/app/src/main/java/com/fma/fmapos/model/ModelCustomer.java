@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class ModelCustomer extends BaseModel implements Serializable{
     @TableField
-    private String uid;
+    private String guid;
     @TableField
     private String name;
     @TableField
@@ -20,12 +20,12 @@ public class ModelCustomer extends BaseModel implements Serializable{
     public ModelCustomer(){
     }
 
-    public String getUid() {
-        return uid;
+    public String getGuid() {
+        return guid;
     }
 
-    public void setUid(String guid) {
-        this.uid = guid;
+    public void setGuid(String guid) {
+        this.guid = guid;
     }
 
     public String getName() {

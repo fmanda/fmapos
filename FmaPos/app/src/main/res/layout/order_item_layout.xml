@@ -48,7 +48,8 @@
             android:paddingLeft="10dp"
             android:text="Modifier 1"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/txtOrderItemNotes"
@@ -58,8 +59,9 @@
             android:fontFamily="sans-serif-condensed"
             android:paddingLeft="10dp"
             android:text="Modifier 1"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="14sp" />
+            android:textColor="@color/colorLightRed"
+            android:textSize="14sp"
+            android:visibility="visible" />
     </LinearLayout>
 
 

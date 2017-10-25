@@ -22,6 +22,7 @@ import com.fma.fmapos.R;
 import com.fma.fmapos.adapter.OrderItemListAdapter;
 import com.fma.fmapos.facade.MainActivity;
 import com.fma.fmapos.facade.OrderActivity;
+import com.fma.fmapos.facade.PaymentActivity;
 import com.fma.fmapos.helper.CurrencyHelper;
 import com.fma.fmapos.helper.DBHelper;
 import com.fma.fmapos.helper.OrderPrinterHelper;
@@ -39,12 +40,10 @@ public class OrderFinishFragment extends Fragment{
     TextView txtOrderFinishPPN;
     TextView txtOrderFinishTotal;
     TextView txtOrderNo;
-    Button btnLookupCustomer;
-    Button btnDelCustomer;
-    Button btnCancelOrder;
 
-    Button btnSaveOrder;
+//    Button btnSaveOrder;
     Button btnPayOrder;
+    Button btnHoldOrder;
 
     public ModelOrder modelOrder;
 
@@ -64,35 +63,43 @@ public class OrderFinishFragment extends Fragment{
         txtOrderFinishTotal = (TextView) view.findViewById(R.id.txtOrderFinishTotal);
         txtOrderNo = (TextView) view.findViewById(R.id.txtOrderNo);
 
-        btnLookupCustomer = (Button) view.findViewById(R.id.btnLookupCustomer);
-        btnDelCustomer = (Button) view.findViewById(R.id.btnDelCustomer);
 
-        btnCancelOrder = (Button) view.findViewById(R.id.btnCancelOrder);
-        btnSaveOrder = (Button) view.findViewById(R.id.btnSaveOrder);
+//        btnSaveOrder = (Button) view.findViewById(R.id.btnSaveOrder);
         btnPayOrder = (Button) view.findViewById(R.id.btnPayOrder);
+        btnHoldOrder = (Button) view.findViewById(R.id.btnHoldOrder);
 
-        btnLookupCustomer.setOnClickListener(new View.OnClickListener(){
+
+//        btnSaveOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                modelOrder.setStatus(1); //print to kitchen
+//                saveData();
+//            }
+//        });
+
+        btnHoldOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogCustomer();
-            }
-        });
-
-        btnDelCustomer.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                setCustomer(null);
-            }
-        });
-
-        btnSaveOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                modelOrder.setStatus(0); //without print
                 saveData();
             }
         });
 
+        btnPayOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                payOrder();
+            }
+        });
+
         return view;
+    }
+
+    private void payOrder() {
+        Intent intent = new Intent(getActivity(), PaymentActivity.class);
+        intent.putExtra("modelOrder", modelOrder);
+        startActivity(intent);
+
     }
 
     public void loadOrder(ModelOrder modelOrder){
@@ -105,39 +112,17 @@ public class OrderFinishFragment extends Fragment{
         txtOrderFinishSubTotal.setText(CurrencyHelper.format(modelOrder.getSubTotal()));
         txtOrderFinishPPN.setText(CurrencyHelper.format(modelOrder.getTax()));
         txtOrderFinishTotal.setText(CurrencyHelper.format(modelOrder.getSummary()));
-        txtOrderNo.setText(modelOrder.getOrderno());
-    }
-
-    public void setCustomer(ModelCustomer modelCustomer){
-        modelOrder.setCustomer(modelCustomer);
-        if (modelCustomer != null) {
-            btnLookupCustomer.setText(modelCustomer.getName());
-        }else{
-            btnLookupCustomer.setText("Pilih Customer");
-        }
-    }
-
-    public void showDialogCustomer(){
-        FragmentManager fm = getFragmentManager();
-        PickCustomerFragment pickCustomerFragment = new PickCustomerFragment();
-        pickCustomerFragment.prepare(this);
-        pickCustomerFragment.setStyle(DialogFragment.STYLE_NORMAL, R.style.CustomDialog);
-        pickCustomerFragment.show(fm, "Pilih Customer");
+        txtOrderNo.setText("#" + modelOrder.getOrderno());
     }
 
     private void saveData(){
         DBHelper db = new DBHelper(getActivity());
         SQLiteDatabase trans = db.getWritableDatabase();
-
         modelOrder.saveToDBAll(trans);
-
-        OrderPrinterHelper printer = new OrderPrinterHelper(getActivity());
-        printer.PrintOrder(modelOrder);
+//        OrderPrinterHelper printer = new OrderPrinterHelper(getActivity());
+//        printer.PrintOrder(modelOrder);
 
         startActivity(new Intent(getActivity(), OrderActivity.class));
-//        Activity parent = getActivity();
-//        if (parent != null){
-//            parent.finish();
-//        }
     }
+
 }

@@ -62,6 +62,10 @@ public class BaseModel implements Serializable {
         return ModelHelper.loadFromCursor(this, cursor);
     }
 
+    public void copyObject(BaseModel source){
+        ModelHelper.copyObject(source, this);
+    }
+
     public String debugToString(){
         return ModelHelper.debugToString(this);
     }
