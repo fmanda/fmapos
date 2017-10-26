@@ -30,6 +30,19 @@ public class ControllerCustomer {
         }
         return null;
     }
+
+    public ModelCustomer getCustomer(String uid){
+        DBHelper db = new DBHelper(context);
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        Cursor cursor = rdb.rawQuery("select * from customer where uid = " + String.valueOf(uid), null);
+        if (cursor.moveToNext()){
+            ModelCustomer customer = new ModelCustomer();
+            customer.loadFromCursor(cursor);
+            return customer;
+        }
+        return null;
+    }
+
     public List<ModelCustomer> getCustomerList(){
         List<ModelCustomer> customers = new ArrayList<ModelCustomer>();
 

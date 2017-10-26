@@ -1,4 +1,4 @@
-package com.fma.fmapos.helper;
+package com.fma.fmapos.controller;
 
 import android.content.Context;
 import android.graphics.Bitmap;

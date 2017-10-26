@@ -5,24 +5,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.fma.fmapos.R;
-import com.fma.fmapos.helper.AppSingleton;
+import com.fma.fmapos.controller.AppSingleton;
+import com.fma.fmapos.controller.ControllerRest;
 import com.fma.fmapos.helper.GsonRequest;
 import com.fma.fmapos.model.ModelCustomer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
+import java.util.ResourceBundle;
 
 
 /**
@@ -37,6 +33,7 @@ public class RestActivity extends BaseActivity {
     ProgressBar progressBar;
     ModelCustomer customer;
     Gson gson;
+    ControllerRest controllerRest;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,11 +44,13 @@ public class RestActivity extends BaseActivity {
         btnRestObject = (Button) findViewById(R.id.btnRestObject);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
+        controllerRest = new ControllerRest(this.getApplicationContext());
 
         btnRestText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                testRestText("http://10.0.2.1/company");
+                controllerRest.UpdateCustomers();
+//                testRestText("http://10.0.2.1/company");
             }
         });
 
