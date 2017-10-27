@@ -103,6 +103,8 @@ public class BaseActivity extends AppCompatActivity
             startActivity(new Intent(this, PresetActivity.class));
         } else if (id == R.id.nav_order_history) {
             startActivity(new Intent(this, OrderHistoryActivity.class));
+        } else if (id == R.id.nav_sync) {
+            startActivity(new Intent(this, RestActivity.class));
         }
         this.finish();
 

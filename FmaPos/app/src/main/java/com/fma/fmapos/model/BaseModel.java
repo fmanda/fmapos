@@ -16,6 +16,7 @@ import java.util.UUID;
 public class BaseModel implements Serializable {
     @TableField
     protected int id = 0;
+    public boolean restclient = true; //always true, for post rest data
 
     public int getId() {
         return id;
@@ -88,7 +89,6 @@ public class BaseModel implements Serializable {
         }
 
     }
-
 
     public void saveToDB(SQLiteDatabase db){
         db.execSQL(this.generateSQL());

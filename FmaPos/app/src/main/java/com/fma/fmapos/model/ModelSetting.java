@@ -58,5 +58,8 @@ public class ModelSetting extends BaseModel {
         new ModelSetting("custom_header","").saveToDB(db);
         new ModelSetting("print_custom_header","false").saveToDB(db);
         new ModelSetting("print_footer","**** LUNAS ****").saveToDB(db);
+
+        new ModelSetting("company_id","405").saveToDB(db);
+        new ModelSetting("unit_id","1").saveToDB(db);
     }
 }

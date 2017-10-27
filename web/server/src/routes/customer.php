@@ -10,7 +10,7 @@ $app->get('/customercategoryof/{id}', function ($request, $response) {
 	$id = $request->getAttribute('id');
 	try{
 		$sql = 'select distinct category from customer where company_id = ' . $id
-			.' and category is not null and category <>"" ';		
+			.' and category is not null and category <>"" ';
 		$list = DB::openQuery($sql);
 		return json_encode($list);
 	}catch(Exception $e){
@@ -93,4 +93,17 @@ $app->delete('/customer/{id}', function (Request $request, Response $response) {
 			->withHeader('Content-Type', 'text/html')
 			->write($msg);
 	}
+});
+
+//retrieve
+$app->get('/customertest', function ($request, $response, $args) {
+
+
+	$dbobj = DB::openQuery("select id from customer where uid= '474C8785-FF77-3E7E-29E1-32599B365E5F'") ;
+	// if (isset($dbobj[0])) {
+	// 	if (isset($dbobj[0]->id)){
+	// 		$obj->id = $dbobj[0]->id;
+	// 	}
+	// }
+	echo $dbobj[0]->id;
 });

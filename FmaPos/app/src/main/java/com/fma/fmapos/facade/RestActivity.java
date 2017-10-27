@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -27,11 +28,10 @@ import java.util.ResourceBundle;
 
 public class RestActivity extends BaseActivity {
 
-    Button btnRestText;
-    Button btnRestObject;
-    Button btnPostObject;
+    Button btnDownload;
+    Button btnUpload;
     ProgressBar progressBar;
-    ModelCustomer customer;
+    TextView txtLog;
     Gson gson;
     ControllerRest controllerRest;
 
@@ -39,33 +39,40 @@ public class RestActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_rest, this.mainframe);
 
-        btnRestText = (Button) findViewById(R.id.btnRestText);
-        btnPostObject = (Button) findViewById(R.id.btnPostObject);
-        btnRestObject = (Button) findViewById(R.id.btnRestObject);
+        btnDownload = (Button) findViewById(R.id.btnDownload);
+        btnUpload = (Button) findViewById(R.id.btnUpload);
+        txtLog = (TextView) findViewById(R.id.txtLog);
+        txtLog.setText("");
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
         controllerRest = new ControllerRest(this.getApplicationContext());
 
-        btnRestText.setOnClickListener(new View.OnClickListener() {
+        controllerRest.setListener(new ControllerRest.Listener() {
             @Override
-            public void onClick(View v) {
-                controllerRest.UpdateCustomers();
-//                testRestText("http://10.0.2.1/company");
+            public void onSuccess(String msg) {
+                txtLog.append(msg + "\n");
+            }
+
+            @Override
+            public void onError(String msg) {
+                txtLog.append(msg + "\n");
             }
         });
 
-        btnRestObject.setOnClickListener(new View.OnClickListener() {
+        btnDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                testRestObject("http://10.0.2.1/customer/4");
-                testRestObject("http://10.0.2.1/customerof/405");
+                txtLog.setText("");
+                controllerRest.DownloadCustomers();
             }
         });
 
-        btnPostObject.setOnClickListener(new View.OnClickListener() {
+        btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tetPostObject("http://10.0.2.1/customer");
+                txtLog.setText("");
+                controllerRest.UploadCustomers();
             }
         });
 
@@ -74,82 +81,6 @@ public class RestActivity extends BaseActivity {
         gson = gsonBuilder.create();
 
     }
-
-    private void testRestText(String url) {
-        final String REQUEST_TAG = "com.fmapos.volleyStringRequest";
-        progressBar.setVisibility(View.VISIBLE);
-        StringRequest strReq = new StringRequest(url,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Toast.makeText(RestActivity.this, response.toString(), Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(REQUEST_TAG, error.toString());
-                    Toast.makeText(RestActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
-        );
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(strReq, REQUEST_TAG);
-    }
-
-    private void testRestObject(String url) {
-        final String REQUEST_TAG = "com.fmapos.volleyObjectRequest";
-        progressBar.setVisibility(View.VISIBLE);
-        GsonRequest<ModelCustomer[]> gsonReq = new GsonRequest<ModelCustomer[]>(url, ModelCustomer[].class,
-            new Response.Listener<ModelCustomer[]>() {
-                @Override
-                public void onResponse(ModelCustomer[] response) {
-//                    customer = response;
-                    String custlist = "";
-                    for (ModelCustomer cust : response){
-                        custlist += cust.getName() + "\n";
-                    }
-                    Toast.makeText(RestActivity.this, custlist, Toast.LENGTH_SHORT).show();
-                }
-            }, new Response.ErrorListener() {
-            @Override
-                public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RestActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        );
-
-
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(gsonReq, REQUEST_TAG);
-    }
-
-    private void tetPostObject(String url){
-        final String REQUEST_TAG = "com.fmapos.volleyObjectPost";
-        if (customer == null) {
-            Toast.makeText(this, "Customer = null", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        customer.setName("Edited From Android");
-
-        progressBar.setVisibility(View.VISIBLE);
-        GsonRequest<ModelCustomer> gsonReq = new GsonRequest<ModelCustomer>(url, customer,
-            new Response.Listener<ModelCustomer>() {
-                @Override
-                public void onResponse(ModelCustomer response) {
-                    Toast.makeText(RestActivity.this, response.getName(), Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(RestActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-            }
-        }
-        );
-        AppSingleton.getInstance(getApplicationContext()).addToRequestQueue(gsonReq, REQUEST_TAG);
-    }
-
 
 }
 

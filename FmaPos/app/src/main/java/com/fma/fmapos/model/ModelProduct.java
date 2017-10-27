@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ModelProduct extends BaseModel implements Serializable{
     @TableField
-    private String guid;
+    private String uid;
     @TableField
     private String name;
     @TableField( fieldName = "sku")
@@ -31,7 +31,12 @@ public class ModelProduct extends BaseModel implements Serializable{
     @TableField
     private String category;
     @TableField
+    private Integer company_id;
+    @TableField
     private String uom;
+    @TableField
+    private String img;
+
 
     public List<ModelModifier> modifiers = new ArrayList<ModelModifier>();
 
@@ -73,12 +78,12 @@ public class ModelProduct extends BaseModel implements Serializable{
         this.price = price;
     }
 
-    public String getGuid() {
-        return guid;
+    public String getUid() {
+        return uid;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setUid(String guid) {
+        this.uid = guid;
     }
 
     public String getBarcode() {
@@ -175,5 +180,21 @@ public class ModelProduct extends BaseModel implements Serializable{
             if (modifier.checked) str += modifier.getName();
         }
         return str;
+    }
+
+    public Integer getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(Integer company_id) {
+        this.company_id = company_id;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

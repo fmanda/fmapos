@@ -91,6 +91,24 @@ public class ControllerSetting {
         }
     }
 
+    public Integer getCompanyID(){
+        ModelSetting setting = getSetting(getSettings(), "company_id");
+        if (setting != null) {
+            return Integer.parseInt(setting.getVarvalue());
+        }else{
+            return 0;
+        }
+    }
+
+    public Integer getUnitID(){
+        ModelSetting setting = getSetting(getSettings(), "unit_id");
+        if (setting != null) {
+            return Integer.parseInt(setting.getVarvalue());
+        }else{
+            return 0;
+        }
+    }
+
     public ModelSetting getSetting(List<ModelSetting> settings, String varname){
         try {
             for (ModelSetting setting : settings) {

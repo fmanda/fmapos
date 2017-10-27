@@ -16,16 +16,40 @@ public class ModelCustomer extends BaseModel implements Serializable{
     private String code;
     @TableField
     private Date date_modified;
+    @TableField
+    private String address;
+    @TableField
+    private String category;
+    @TableField
+    private Integer company_id;
+    @TableField
+    private Integer unit_id;
+
+    public Integer getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(Integer company_id) {
+        this.company_id = company_id;
+    }
+
+    public Integer getUnit_id() {
+        return unit_id;
+    }
+
+    public void setUnit_id(Integer unit_id) {
+        this.unit_id = unit_id;
+    }
 
     public ModelCustomer(){
     }
 
-    public String getUID() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUID(String guid) {
-        this.uid = guid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -68,10 +92,7 @@ public class ModelCustomer extends BaseModel implements Serializable{
         this.category = category;
     }
 
-    @TableField
-    private String address;
-    @TableField
-    private String category;
+
 
 
     @Override

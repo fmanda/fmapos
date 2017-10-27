@@ -17,6 +17,7 @@
 			if (isset($obj[0])) return $obj[0];
 		}
 
+
 		public static function retrieveList($filter=''){
 			$sql = 'select * from '.static::getTableName().' where 1=1 ';
 			if ($filter<>''){
@@ -39,7 +40,7 @@
 					if ($field == "uid") {
 						if (!isset($obj->uid)){
 							$obj->uid = DB::GUID();
-						}else if (($obj->uid == null) || ($obj->uid = '')){
+						}else if (($obj->uid == null) || ($obj->uid == '')){
 							$obj->uid = DB::GUID();
 						}
 					}
@@ -75,7 +76,7 @@
 
 				if ($strvalue<>""){
 					$strvalue = $strvalue . ",";
-				}				
+				}
 
 				$strvalue = $strvalue. $field ." = '". $obj->{$field} ."'";
 			}
@@ -92,7 +93,38 @@
 			return $do_insert;
 		}
 
+		public static function setIDByUID($obj){
+			$obj->id = 0; //default insert, sampai ditemukan UID di DB
+			// $obj->name = "xxx";
+
+			$hasUID = false;
+			$fields = static::getFields();
+			foreach ($fields as $field) {
+				if ($field == "uid") $hasUID = true;
+			}
+			if (!$hasUID) return; //hanya id yg dicek
+
+			if (!isset($obj->uid))	return;
+			if (($obj->uid == null) || ($obj->uid == '')) return;
+
+			$sql = "select id from ".static::getTableName()." where uid= '" .$obj->uid."'";
+
+
+			$dbobj = DB::openQuery($sql);
+			if (isset($dbobj[0])) {
+				if (isset($dbobj[0]->id)){
+					$obj->id = $dbobj[0]->id;
+				}
+			}
+		}
+
 		public static function generateSQL($obj){
+			if (isset($obj->restclient)){
+				if ($obj->restclient){
+					static::setIDByUID($obj);
+				}
+			}
+
 			if (static::isNewTransaction($obj)) {
 				return static::generateSQLInsert($obj);
 			}else{
