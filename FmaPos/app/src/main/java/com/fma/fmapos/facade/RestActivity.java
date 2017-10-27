@@ -45,17 +45,18 @@ public class RestActivity extends BaseActivity {
         txtLog.setText("");
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.GONE);
         controllerRest = new ControllerRest(this.getApplicationContext());
 
         controllerRest.setListener(new ControllerRest.Listener() {
             @Override
             public void onSuccess(String msg) {
+                progressBar.setProgress(progressBar.getProgress()+1);
                 txtLog.append(msg + "\n");
             }
 
             @Override
             public void onError(String msg) {
+                progressBar.setProgress(progressBar.getProgress()+1);
                 txtLog.append(msg + "\n");
             }
         });
@@ -71,6 +72,8 @@ public class RestActivity extends BaseActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setMax(20);
+                progressBar.setProgress(0);
                 txtLog.setText("");
                 controllerRest.UploadCustomers();
             }

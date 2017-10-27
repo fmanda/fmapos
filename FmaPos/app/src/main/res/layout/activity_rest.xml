@@ -39,17 +39,17 @@
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="16dp" />
 
-        <TextView
-            android:id="@+id/txtLog"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
         <ProgressBar
             android:id="@+id/progressBar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txtLog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
 
     </LinearLayout>
 
