@@ -32,7 +32,7 @@ public class ControllerOrder {
         ControllerCustomer controllerCustomer = new ControllerCustomer(context);
         List<ModelOrder> orders = new ArrayList<ModelOrder>();
 
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         String sql = "select * from orders limit 1000";
         if (isHoldOrderOnly) sql = "select * from orders where status=0";
@@ -53,7 +53,7 @@ public class ControllerOrder {
 //        ControllerCustomer controllerCustomer = new ControllerCustomer(context);
 
 
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         String sql = "select * from orderitem where order_id = " + String.valueOf(modelOrder.getId());
 
@@ -72,7 +72,7 @@ public class ControllerOrder {
         ModelProduct modelProduct = controllerProduct.retrieveProduct(modelOrderItem.getProduct_id());
         modelOrderItem.setProduct(modelProduct);
 
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         String sql = "select * from ordermodifier where orderitem_id = " + String.valueOf(modelOrderItem.getId());
 
@@ -85,7 +85,7 @@ public class ControllerOrder {
     }
 
     public String generateNewNumber(){
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         String newNumber = "";
 

@@ -27,7 +27,7 @@ public class ControllerProduct {
     public List<LookupProduct> getProductListByFilter(String category, String filter){
         List<LookupProduct> products = new ArrayList<LookupProduct>();
 
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
 
         String sql = "select * from product where name like '%" + filter +"%'";
@@ -46,7 +46,7 @@ public class ControllerProduct {
     public List<ModelProduct> getProductList(){
         List<ModelProduct> products = new ArrayList<ModelProduct>();
 
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         Cursor cursor = rdb.rawQuery("select * from product", null);
         while (cursor.moveToNext()){
@@ -58,14 +58,14 @@ public class ControllerProduct {
     }
 
     public Cursor getOptionModifierCursor(){
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         Cursor cursor = rdb.rawQuery("select 1 as checked, name from product", null);
         return cursor;
     }
 
     public ModelProduct retrieveProduct(int id){
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         Cursor cursor = rdb.rawQuery("select * from product where id='"
                 + String.valueOf(id)  + "'", null);
@@ -79,7 +79,7 @@ public class ControllerProduct {
         ArrayList<String> list = new ArrayList<>();
         list.add("All Category");
 
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         ModelProduct modelProduct = new ModelProduct();
         String sql = "select distinct category from " + modelProduct.getTableName() + " order by category";
@@ -92,7 +92,7 @@ public class ControllerProduct {
     }
 
     public void loadModifier(ModelProduct modelProduct){
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         ModelModifier modelmodifier = new ModelModifier();
         String sql = "select * from " + modelmodifier.getTableName()

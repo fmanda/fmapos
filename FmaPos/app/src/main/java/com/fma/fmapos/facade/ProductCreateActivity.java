@@ -99,7 +99,7 @@ public class ProductCreateActivity extends AppCompatActivity {
             Log.d("exception", e.getMessage());
         }
 
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         SQLiteDatabase trans = db.getWritableDatabase();
         prod.saveToDBAll(trans);
 
@@ -150,7 +150,7 @@ public class ProductCreateActivity extends AppCompatActivity {
         int id = prod.getId();
         if (id == 0) return;
 
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         SQLiteDatabase trans = db.getWritableDatabase();
         prod.deleteFromDB(trans);
 

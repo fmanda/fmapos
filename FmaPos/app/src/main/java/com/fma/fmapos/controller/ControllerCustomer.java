@@ -20,7 +20,7 @@ public class ControllerCustomer {
     }
 
     public ModelCustomer getCustomer(int id){
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         Cursor cursor = rdb.rawQuery("select * from customer where id = " + String.valueOf(id), null);
         if (cursor.moveToNext()){
@@ -32,7 +32,7 @@ public class ControllerCustomer {
     }
 
     public ModelCustomer getCustomer(String uid){
-        DBHelper db = new DBHelper(context);
+        DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
         Cursor cursor = rdb.rawQuery("select * from customer where uid = " + String.valueOf(uid), null);
         if (cursor.moveToNext()){

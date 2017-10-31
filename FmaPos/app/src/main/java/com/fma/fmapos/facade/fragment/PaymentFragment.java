@@ -115,7 +115,8 @@ public class PaymentFragment extends Fragment{
     }
 
     private void savePayment() {
-        DBHelper db = new DBHelper(getActivity());
+//        DBHelper db = new DBHelper(getActivity());
+        DBHelper db = DBHelper.getInstance(getActivity())
         SQLiteDatabase trans = db.getWritableDatabase();
 
         modelOrder.setStatus(1);

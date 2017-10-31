@@ -74,7 +74,7 @@ public class PresetCreateActivity extends AppCompatActivity {
             Log.d("exception", e.getMessage());
         }
 
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         SQLiteDatabase trans = db.getWritableDatabase();
         modelOrderPreset.saveToDB(trans, true);
 
@@ -115,7 +115,7 @@ public class PresetCreateActivity extends AppCompatActivity {
         int id = modelOrderPreset.getId();
         if (id == 0) return;
 
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         SQLiteDatabase trans = db.getWritableDatabase();
         modelOrderPreset.deleteFromDB(trans);
 
