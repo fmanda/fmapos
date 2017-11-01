@@ -30,7 +30,7 @@ public class ControllerSetting {
         try {
             List<ModelSetting> settings = new ArrayList<ModelSetting>();
 
-            DBHelper db = new DBHelper(context);
+            DBHelper db = DBHelper.getInstance(context);
             SQLiteDatabase rdb = db.getReadableDatabase();
             Cursor cursor = rdb.rawQuery("select * from setting", null);
             while (cursor.moveToNext()) {
@@ -49,7 +49,7 @@ public class ControllerSetting {
         try {
             List<ModelMoneyPreset> presets = new ArrayList<ModelMoneyPreset>();
 
-            DBHelper db = new DBHelper(context);
+            DBHelper db = DBHelper.getInstance(context);
             SQLiteDatabase rdb = db.getReadableDatabase();
 
             Cursor cursor = rdb.rawQuery("select * from MoneyPreset", null);
@@ -125,7 +125,7 @@ public class ControllerSetting {
         try {
             List<ModelOrderPreset> presets = new ArrayList<ModelOrderPreset>();
 
-            DBHelper db = new DBHelper(context);
+            DBHelper db = DBHelper.getInstance(context);
             SQLiteDatabase rdb = db.getReadableDatabase();
 
             Cursor cursor = rdb.rawQuery("select * from OrderPreset", null);

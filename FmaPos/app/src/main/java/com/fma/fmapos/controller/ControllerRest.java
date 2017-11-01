@@ -30,7 +30,7 @@ public class ControllerRest {
 
     public ControllerRest(Context context) {
         this.context = context;
-        this.db = new DBHelper(context);
+        this.db = DBHelper.getInstance(context);
         this.appSingleton = AppSingleton.getInstance(context);
         this.controllerCustomer = new ControllerCustomer(context);
         this.company_id = new ControllerSetting(this.context).getCompanyID();

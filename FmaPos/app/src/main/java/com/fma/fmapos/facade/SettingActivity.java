@@ -153,14 +153,14 @@ public class SettingActivity extends BaseActivity implements SelectPrinterFragme
     }
 
     public void resetDB(){
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         db.resetDatabase(db.getWritableDatabase());
         loadData();
         Toast.makeText(this, "Local DB reset", Toast.LENGTH_SHORT).show();
     }
 
     private void dummyDB(){
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         db.dummyProduct(db.getWritableDatabase());
         loadData();
         Toast.makeText(this, "Dummy Data Pump", Toast.LENGTH_SHORT).show();
@@ -168,7 +168,7 @@ public class SettingActivity extends BaseActivity implements SelectPrinterFragme
 
     private void saveToDB(){
         updateData();
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         SQLiteDatabase trans = db.getWritableDatabase();
         try {
             for (ModelSetting setting : settings) {

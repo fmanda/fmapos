@@ -72,7 +72,7 @@ public class CustomerCreateActivity extends AppCompatActivity {
             Log.d("exception", e.getMessage());
         }
 
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         SQLiteDatabase trans = db.getWritableDatabase();
         customer.saveToDB(trans, true);
 
@@ -113,7 +113,7 @@ public class CustomerCreateActivity extends AppCompatActivity {
         int id = customer.getId();
         if (id == 0) return;
 
-        DBHelper db = new DBHelper(this);
+        DBHelper db = DBHelper.getInstance(this);
         SQLiteDatabase trans = db.getWritableDatabase();
         customer.deleteFromDB(trans);
 

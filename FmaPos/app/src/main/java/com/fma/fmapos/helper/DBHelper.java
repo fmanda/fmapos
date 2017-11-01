@@ -27,6 +27,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static DBHelper mInstance;
 
+    public static synchronized DBHelper getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (mInstance == null) {
+            mInstance = new DBHelper(context.getApplicationContext());
+        }
+        return mInstance;
+    }
+
     public DBHelper(Context context, String name) {
         super(context, name, null, 0);
         this.DATABASE_NAME = name;
