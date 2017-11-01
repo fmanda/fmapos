@@ -206,7 +206,7 @@
 			},
 			handleDelete(index, item){
 				var vm = this;
-				this.$confirm('Anda yaking menghapus data ini?', 'Warning', {
+				this.$confirm('Anda yakin menghapus data ini?', 'Warning', {
 		        	confirmButtonText: 'Ya',
 			        cancelButtonText: 'Batal',
 			        type: 'warning'

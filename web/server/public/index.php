@@ -38,5 +38,6 @@ require '../src/routes/user.php';
 require '../src/routes/product.php';
 require '../src/routes/upload.php';
 require '../src/routes/order.php';
+require '../src/routes/ordercategory.php';
 
 $app->run();

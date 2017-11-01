@@ -10,13 +10,14 @@
 			>
 		</el-alert>
 		<el-dialog
-			title="Input Units"
+			title="Input Order Category"
 			:visible.sync="dialogVisible"
 			size="tiny"
 			>
-			<el-input placeholder="Unit Name" v-model="form.name"></el-input>
-			<el-input type="textarea" placeholder="Address" v-model="form.address" style="margin-bottom:10px"></el-input>
-			<el-input type="tel" placeholder="Phone" v-model="form.phone"></el-input>
+			<el-input placeholder="Category Name" v-model="form.name"></el-input>
+			<el-input placeholder="Custom Field 1" v-model="form.customfield_1"></el-input>
+			<el-input placeholder="Custom Field 2" v-model="form.customfield_2"></el-input>
+			<el-input placeholder="Custom Field 3" v-model="form.customfield_3"></el-input>
 
 			<span slot="footer" class="dialog-footer">
 				<el-button type="primary" @click="saveData">Confirm</el-button>
@@ -68,15 +69,18 @@
 				items : [],
 				fields : [
 					{fieldname : 'name', caption : 'Unit Name', width: 200},
-					{fieldname : 'phone', caption : 'Phone Number', width: 200},
-					{fieldname : 'address', caption : 'Address', width: null}
+					{fieldname : 'customfield_1', caption : 'Custom Field 1', width: 200},
+					{fieldname : 'customfield_2', caption : 'Custom Field 2', width: 200},
+					{fieldname : 'customfield_3', caption : 'Custom Field 3', width: 200}
 				],
 				form : {
 					id: 0,
 					company_id: 0,
+					unit_id: 0,
 					name : '',
-					address : '',
-					phone : ''
+					customfield_1 : '',
+					customfield_2 : '',
+					customfield_3 : '',
 				},
 				error : {
 					status : false,
@@ -96,7 +100,7 @@
 		},
 		methods:{
 			refreshData(){
-				var url = CONFIG.rest_url + '/unitsof/' + this.selectedCompany.id;
+				var url = CONFIG.rest_url + '/ordercategoryof/' + this.selectedCompany.id;
 				var vm = this;
 				axios.get(url).then(function(response) {
 					vm.items = response.data;
@@ -110,14 +114,15 @@
 					this.form.id = 0;
 					this.form.company_id = this.selectedCompany.id;
 					this.form.name = '';
-					this.form.address = '';
-					this.form.phone = '';
+					this.form.customfield_1 = '';
+					this.form.customfield_2 = '';
+					this.form.customfield_3 = '';
 					this.dialogVisible = true;
 					return;
 				}
 
 				var vm = this;
-				axios.get(CONFIG.rest_url + '/units/' + id).then(function(response) {
+				axios.get(CONFIG.rest_url + '/ordercategory/' + id).then(function(response) {
 
 					vm.form = response.data;
 					//override company id
@@ -130,7 +135,7 @@
 			},
 			saveData(){
 				var vm = this;
-				axios.post(CONFIG.rest_url + '/units', vm.form)
+				axios.post(CONFIG.rest_url + '/ordercategory', vm.form)
 				.then(function(response) {
 					vm.$message('Data berhasil diupdate');
 					vm.refreshData(false);
@@ -166,7 +171,7 @@
 			deleteData(item){
 				var id = item.id;
 				var vm = this;
-				axios.delete(CONFIG.rest_url + '/units/' + id)
+				axios.delete(CONFIG.rest_url + '/ordercategory/' + id)
 				.then(function(response) {
 					vm.$message('Data berhasil dihapus');
 					vm.refreshData();

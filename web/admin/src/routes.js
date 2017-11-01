@@ -13,6 +13,7 @@ import ProductForm from './views/ProductForm.vue'
 import User from './views/Info.vue'
 import Order from './views/Order.vue'
 import OrderForm from './views/OrderForm.vue'
+import OrderCategory from './views/OrderCategory.vue'
 
 
 // { path: '/hidden', component: Info, name: 'Customer', hidden: true  },
@@ -46,6 +47,7 @@ let routes = [
 			{ path: '/customer', component: Customer, name: 'Customer', iconCls:'fa fa-user'},
 			{ path: '/customer/:id', component: CustomerForm, name: 'CustomerForm' , hidden: true },
 			{ path: '/product/:id', component: ProductForm, name: 'ProductForm' , hidden: true },
+			{ path: '/ordercategory', component: OrderCategory, name: 'Order Category', iconCls:'fa fa-tags'},
         ]
     },
 	{
