@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fma.fmapos.R;
+import com.fma.fmapos.controller.ControllerSetting;
 import com.fma.fmapos.helper.PrinterHelper;
 import com.fma.fmapos.model.ModelProduct;
 
@@ -16,10 +17,13 @@ import com.fma.fmapos.model.ModelProduct;
  */
 
 public class MainActivity extends BaseActivity {
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_main, this.mainframe);
-        startActivity(new Intent(this, RestActivity.class));
+        ControllerSetting controllerSetting = new ControllerSetting(this);
+
 
 //
     }

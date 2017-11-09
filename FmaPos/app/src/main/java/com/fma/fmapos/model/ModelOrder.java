@@ -1,7 +1,10 @@
 package com.fma.fmapos.model;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import com.fma.fmapos.helper.DBHelper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +20,9 @@ public class ModelOrder extends BaseModel implements Serializable{
     private String orderno = "<blank>";
     @TableField
     private int customer_id;
+
+    private String customer_uid;
+
     @TableField
     private Date orderdate = new Date();
     @TableField
@@ -30,11 +36,21 @@ public class ModelOrder extends BaseModel implements Serializable{
     @TableField
     private Double change = 0.0;
     @TableField
-    private String uuid;
+    private String uid;
     @TableField
     private int uploaded;
     @TableField
+    private Integer company_id;
+    @TableField
+    private Integer unit_id;
+    @TableField
     private int status = 0; //0:created/hold, 1:paid, 2:void
+    @TableField
+    private int customfield_1;
+    @TableField
+    private int customfield_2;
+    @TableField
+    private int customfield_3;
 
     private List<ModelOrderItem> items = new ArrayList<ModelOrderItem>();
     private ModelCustomer customer = new ModelCustomer();
@@ -211,12 +227,12 @@ public class ModelOrder extends BaseModel implements Serializable{
         this.change = change;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getuid() {
+        return uid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setuid(String uuid) {
+        this.uid = uuid;
     }
 
     public int getUploaded() {
@@ -262,6 +278,77 @@ public class ModelOrder extends BaseModel implements Serializable{
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public Integer getCompany_id() {
+        return company_id;
+    }
+
+    public void setCompany_id(Integer company_id) {
+        this.company_id = company_id;
+    }
+
+    public Integer getUnit_id() {
+        return unit_id;
+    }
+
+    public void setUnit_id(Integer unit_id) {
+        this.unit_id = unit_id;
+    }
+    public int getCustomfield_1() {
+        return customfield_1;
+    }
+
+    public void setCustomfield_1(int customfield_1) {
+        this.customfield_1 = customfield_1;
+    }
+
+    public int getCustomfield_2() {
+        return customfield_2;
+    }
+
+    public void setCustomfield_2(int customfield_2) {
+        this.customfield_2 = customfield_2;
+    }
+
+    public int getCustomfield_3() {
+        return customfield_3;
+    }
+
+    public void setCustomfield_3(int customfield_3) {
+        this.customfield_3 = customfield_3;
+    }
+
+
+
+    public void reLoadAll(SQLiteDatabase db){
+        this.items.clear();
+        String sql = "select * from orderitem where order_id = " + String.valueOf(this.getId());
+
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            ModelOrderItem modelOrderItem = new ModelOrderItem();
+            modelOrderItem.loadFromCursor(cursor);
+            modelOrderItem.reLoadAll(db);
+            this.addItem(modelOrderItem);
+        }
+    }
+
+    public void prepareUpload(SQLiteDatabase db){
+        if (customer_id > 0) {
+            ModelCustomer modelCustomer = new ModelCustomer();
+            modelCustomer.loadFromDB(db, this.customer_id);
+            this.customer_uid = modelCustomer.getUid();
+        }
+        this.reLoadAll(db);
+        for (ModelOrderItem modelOrderItem : items) {
+            modelOrderItem.prepareUpload(db);
+        }
+
+
+    }
+
 };
 
 
+//known issue: order baru dengan customer baru, upload harus didahulukan customer,
+// upload order tidak boleh masuk quee smpai customer mendapatkan uid

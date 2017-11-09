@@ -23,7 +23,6 @@ public class ProductActivity extends BaseActivity {
     private ControllerProduct controllerProduct = new ControllerProduct(this);
 //    private ModelProduct product;
 
-
     public void fabOnClick(){
         Intent intent = new Intent(this, ProductCreateActivity.class);
         startActivity(intent);
@@ -41,6 +40,7 @@ public class ProductActivity extends BaseActivity {
                 fabOnClick();
             }
         });
+        fab.setVisibility(View.GONE);
 
         productListView = (ListView) findViewById(R.id.productListView);
         productListView.setItemsCanFocus(true);

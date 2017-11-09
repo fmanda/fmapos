@@ -2,6 +2,7 @@ package com.fma.fmapos.facade;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -29,6 +30,7 @@ import com.fma.fmapos.controller.ControllerSetting;
 import com.fma.fmapos.facade.fragment.OrderFinishFragment;
 import com.fma.fmapos.facade.fragment.PickProductFragment;
 import com.fma.fmapos.helper.CurrencyHelper;
+import com.fma.fmapos.helper.DBHelper;
 import com.fma.fmapos.model.ModelCustomer;
 import com.fma.fmapos.model.ModelOrder;
 import com.fma.fmapos.model.ModelOrderPreset;
@@ -143,9 +145,10 @@ public class OrderCreateActivity extends AppCompatActivity implements CategoryLi
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.containsKey("modelOrder")) {
+                SQLiteDatabase db = DBHelper.getInstance(this).getReadableDatabase();
+
                 ModelOrder modelOrder = (ModelOrder) intent.getSerializableExtra("modelOrder");
-                ControllerOrder controllerOrder = new ControllerOrder(this);
-                controllerOrder.reLoadAll(modelOrder);
+                modelOrder.reLoadAll(db);
                 pickProductFragment.loadModelOrder(modelOrder);
                 pickProductFragment.restoreProductSelection();
                 pickProductFragment.refreshAdapter();

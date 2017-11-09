@@ -13,12 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.fma.fmapos.R;
+import com.fma.fmapos.controller.ControllerSetting;
 
-public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class BaseActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+    TextView txtCompany;
+    TextView txtUnit;
+    TextView txtUserName;
+    ControllerSetting controllerSetting;
 
     protected FrameLayout mainframe;
     @Override
@@ -27,7 +33,6 @@ public class BaseActivity extends AppCompatActivity
         setContentView(R.layout.activity_base);
 
         mainframe = (FrameLayout) findViewById(R.id.mainframe);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,6 +54,26 @@ public class BaseActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        View headerView = navigationView.getHeaderView(0);
+
+        txtCompany = (TextView) headerView.findViewById(R.id.txtCompany);
+        txtUnit = (TextView) headerView.findViewById(R.id.txtUnit);
+        txtUserName = (TextView) headerView.findViewById(R.id.txtUserName);
+
+        controllerSetting = new ControllerSetting(this);
+        txtCompany.setText(controllerSetting.getCompanyName());
+        txtUnit.setText(controllerSetting.getUnitName());
+        txtUserName.setText(controllerSetting.getUserName());
+
+        if (controllerSetting.getCompanyID() == 0){
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }else if (controllerSetting.getUnitID() == 0){
+            startActivity(new Intent(this, SelectUnitActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -113,4 +138,9 @@ public class BaseActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
 }

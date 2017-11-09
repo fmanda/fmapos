@@ -10,6 +10,7 @@ import com.fma.fmapos.model.ModelCustomer;
 import com.fma.fmapos.model.ModelModifier;
 import com.fma.fmapos.model.ModelMoneyPreset;
 import com.fma.fmapos.model.ModelOrder;
+import com.fma.fmapos.model.ModelOrderCategory;
 import com.fma.fmapos.model.ModelOrderItem;
 import com.fma.fmapos.model.ModelOrderModifier;
 import com.fma.fmapos.model.ModelOrderPreset;
@@ -58,6 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(new ModelSetting().generateMetaData());
         db.execSQL(new ModelMoneyPreset(0).generateMetaData());
         db.execSQL(new ModelOrderPreset().generateMetaData());
+        db.execSQL(new ModelOrderCategory().generateMetaData());
 
         //init
         ModelSetting.initMetaData(db);
@@ -114,6 +116,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(new ModelSetting().generateDropMetaData());
         db.execSQL(new ModelMoneyPreset(0).generateDropMetaData());
         db.execSQL(new ModelOrderPreset().generateDropMetaData());
+        db.execSQL(new ModelOrderCategory().generateDropMetaData());
     }
 
     public void resetDatabase(SQLiteDatabase db){

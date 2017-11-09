@@ -61,11 +61,11 @@ public class ProductCreateActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        menu.add(0, 0, 0, "Delete").setIcon(R.drawable.ic_menu_delete)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-
-        menu.add(0, 0, 0, "Done").setIcon(R.drawable.ic_menu_checkall)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//        menu.add(0, 0, 0, "Delete").setIcon(R.drawable.ic_menu_delete)
+//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+//
+//        menu.add(0, 0, 0, "Done").setIcon(R.drawable.ic_menu_checkall)
+//                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 

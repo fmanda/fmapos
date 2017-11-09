@@ -1,4 +1,5 @@
 package com.fma.fmapos.model;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -157,6 +158,30 @@ public class ModelOrderItem extends BaseModel implements Serializable {
 
     public void calculate() {
         this.total = this.qty * this.price;
+    }
+
+
+    private String product_uid;
+    public void prepareUpload(SQLiteDatabase db) {
+        if (product_id > 0) {
+            ModelProduct modelProduct = new ModelProduct();
+            modelProduct.loadFromDB(db, this.product_id);
+            this.product_uid = modelProduct.getUid();
+        }
+    }
+
+    public void reLoadAll(SQLiteDatabase db){
+        this.modifiers.clear();
+        this.product = new ModelProduct();
+        this.product.loadFromDB(db, this.product_id);
+        String sql = "select * from ordermodifier where orderitem_id = " + String.valueOf(this.getId());
+
+        Cursor cursor = db.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            ModelOrderModifier modelOrderModifier = new ModelOrderModifier();
+            modelOrderModifier.loadFromCursor(cursor);
+            this.addModifier(modelOrderModifier);
+        }
     }
 }
 

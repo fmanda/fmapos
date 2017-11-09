@@ -90,8 +90,31 @@ public class BaseModel implements Serializable {
 
     }
 
+    public String getUIDFromID(SQLiteDatabase db, int aID){
+        String sql = "select uid from " + this.getTableName() + " where id = "  + Integer.toString(aID) ;
+        Cursor cur = db.rawQuery(sql, null);
+        if (cur.moveToNext()) {
+            return cur.getString(0);
+        }else{
+            return "";
+        }
+
+    }
+
     public void saveToDB(SQLiteDatabase db){
         db.execSQL(this.generateSQL());
+    }
+
+    public Boolean loadFromDB(SQLiteDatabase db, int aID){
+        String sql = "select * from " + this.getTableName() + " where id = "  + Integer.toString(aID) ;
+        Cursor cur = db.rawQuery(sql, null);
+        if (cur.moveToNext()) {
+            this.loadFromCursor(cur);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     public void deleteFromDB(SQLiteDatabase db)

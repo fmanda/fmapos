@@ -77,9 +77,11 @@ public class ControllerSetting {
 //    public Boolean IsPrintToCashier(List<ModelSetting> settings){
 //        return Boolean.parseBoolean(getSettingStr(settings, "print_to_kitchen"));
 //    }
-    public void setSetting(List<ModelSetting> settings, String varname, String varvalue){
-        ModelSetting setting = getSetting(settings, varname);
+    public void updateSetting(String varname, String varvalue){
+
+        ModelSetting setting = getSetting(this.getSettings(), varname);
         if (setting != null) setting.setVarvalue(varvalue);
+        setting.saveToDB(DBHelper.getInstance(this.context).getWritableDatabase());
     }
 
     public String getSettingStr(List<ModelSetting> settings, String varname){
@@ -93,7 +95,7 @@ public class ControllerSetting {
 
     public Integer getCompanyID(){
         ModelSetting setting = getSetting(getSettings(), "company_id");
-        if (setting != null) {
+        if (setting.getVarvalue() != "")  {
             return Integer.parseInt(setting.getVarvalue());
         }else{
             return 0;
@@ -102,12 +104,40 @@ public class ControllerSetting {
 
     public Integer getUnitID(){
         ModelSetting setting = getSetting(getSettings(), "unit_id");
-        if (setting != null) {
+        if (setting.getVarvalue() != "")  {
             return Integer.parseInt(setting.getVarvalue());
         }else{
             return 0;
         }
     }
+
+    public String getUserName(){
+        ModelSetting setting = getSetting(getSettings(), "user_name");
+        if (setting.getVarvalue() != "")  {
+            return setting.getVarvalue();
+        }else{
+            return "";
+        }
+    }
+
+    public String getCompanyName(){
+        ModelSetting setting = getSetting(getSettings(), "company_name");
+        if (setting.getVarvalue() != "")  {
+            return setting.getVarvalue();
+        }else{
+            return "Unknown Company";
+        }
+    }
+
+    public String getUnitName(){
+        ModelSetting setting = getSetting(getSettings(), "unit_name");
+        if (setting.getVarvalue() != "")  {
+            return setting.getVarvalue();
+        }else{
+            return "Unknown Unit";
+        }
+    }
+
 
     public ModelSetting getSetting(List<ModelSetting> settings, String varname){
         try {
@@ -118,7 +148,7 @@ public class ControllerSetting {
         }catch(Exception ex){
             Toast.makeText(context, ex.toString(), Toast.LENGTH_SHORT).show();
         }
-        return null;
+        return new ModelSetting(varname,"");
     }
 
     public List<ModelOrderPreset> getOrderPreset(){

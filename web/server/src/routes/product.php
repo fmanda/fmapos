@@ -35,6 +35,24 @@ $app->get('/productuomof/{id}', function ($request, $response) {
 	}
 });
 
+$app->get('/productof/{id}/{unit_id}', function ($request, $response) {
+	$id = $request->getAttribute('id');
+	$unitid = $request->getAttribute('unit_id');
+	try{
+		$list = ModelProduct::retriveListOf($id, $unitid);
+
+		foreach ($list as $obj) {
+			$obj->modifiers = ModelModifier::retrieveList("product_id = " . $obj->id);
+		}
+
+		return json_encode($list);
+	}catch(Exception $e){
+		$msg = $e->getMessage();
+		return $response->withStatus(500)
+			->withHeader('Content-Type', 'text/html')
+			->write($msg);
+	}
+});
 
 $app->get('/productof/{id}', function ($request, $response) {
 	$id = $request->getAttribute('id');
@@ -79,7 +97,37 @@ $app->post('/product', function ($request, $response) {
 			$upload = $this->get('upload_directory');
 			if (!file_exists($upload)) mkdir($directory, 0777, true);
 			$upload = $upload. DIRECTORY_SEPARATOR . $filename;
-			echo $temp . "\n" . $upload;
+			// echo $temp . "\n" . $upload;
+			if (file_exists($temp)) rename($temp, $upload);
+
+		}catch(Exception $e){
+			return $response->withStatus(500)
+				->withHeader('Content-Type', 'text/html')
+				->write($e->getMessage());
+		}
+
+		return json_encode($obj);
+
+	}catch(Exception $e){
+		return $response->withStatus(500)
+			->withHeader('Content-Type', 'text/html')
+			->write($e->getMessage());
+	}
+});
+
+
+$app->post('/productclient', function ($request, $response) {
+	$json = $request->getBody();
+	$obj = json_decode($json);
+	try{
+		$str = ModelProduct::saveToDBClient($obj);
+		try{
+			$filename = $obj->img;
+			$temp = $this->get('temp_directory') . DIRECTORY_SEPARATOR . $filename ;
+			$upload = $this->get('upload_directory');
+			if (!file_exists($upload)) mkdir($directory, 0777, true);
+			$upload = $upload. DIRECTORY_SEPARATOR . $filename;
+			// echo $temp . "\n" . $upload;
 			if (file_exists($temp)) rename($temp, $upload);
 
 		}catch(Exception $e){

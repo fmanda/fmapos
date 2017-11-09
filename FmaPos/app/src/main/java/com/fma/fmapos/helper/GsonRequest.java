@@ -12,7 +12,6 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
@@ -66,7 +65,7 @@ public class GsonRequest<T> extends Request<T> {
     }
 
     protected void initialize(){
-        gsonBuilder = new GsonBuilder().setDateFormat("yyyy-mm-dd hh:mm:ss");
+        gsonBuilder = new GsonBuilder().setDateFormat("yyyy-MM-dd");
         gson = gsonBuilder.create();
     }
 

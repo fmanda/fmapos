@@ -1,25 +1,15 @@
 package com.fma.fmapos.facade;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.fma.fmapos.R;
-import com.fma.fmapos.controller.AppSingleton;
 import com.fma.fmapos.controller.ControllerRest;
-import com.fma.fmapos.helper.GsonRequest;
-import com.fma.fmapos.model.ModelCustomer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.ResourceBundle;
 
 
 /**
@@ -45,6 +35,7 @@ public class RestActivity extends BaseActivity {
         txtLog.setText("");
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
         controllerRest = new ControllerRest(this.getApplicationContext());
 
         controllerRest.setListener(new ControllerRest.Listener() {
@@ -65,7 +56,7 @@ public class RestActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 txtLog.setText("");
-                controllerRest.DownloadCustomers();
+                controllerRest.DownloadAll();
             }
         });
 
@@ -75,7 +66,7 @@ public class RestActivity extends BaseActivity {
                 progressBar.setMax(20);
                 progressBar.setProgress(0);
                 txtLog.setText("");
-                controllerRest.UploadCustomers();
+                controllerRest.UploadAll();
             }
         });
 

@@ -10,13 +10,13 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 
-public class AppSingleton {
-    private static AppSingleton mAppSingletonInstance;
+public class ControllerRequest {
+    private static ControllerRequest mControllerRequestInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private static Context mContext;
 
-    private AppSingleton(Context context) {
+    private ControllerRequest(Context context) {
         mContext = context;
         mRequestQueue = getRequestQueue();
 
@@ -37,11 +37,11 @@ public class AppSingleton {
                 });
     }
 
-    public static synchronized AppSingleton getInstance(Context context) {
-        if (mAppSingletonInstance == null) {
-            mAppSingletonInstance = new AppSingleton(context);
+    public static synchronized ControllerRequest getInstance(Context context) {
+        if (mControllerRequestInstance == null) {
+            mControllerRequestInstance = new ControllerRequest(context);
         }
-        return mAppSingletonInstance;
+        return mControllerRequestInstance;
     }
 
     public RequestQueue getRequestQueue() {

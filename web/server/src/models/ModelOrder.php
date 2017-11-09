@@ -49,9 +49,18 @@
 					throw new Exception("undeclared property unit_id on object $classname", 1);
 
 				if (!static::isNewTransaction($obj)){
+
+					//id masih pakai id client, set pakai id server
+					if (isset($obj->restclient)){
+						if ($obj->restclient){
+							static::setIDByUID($obj);
+						}
+					}
+
 					$sql = ModelOrderItem::generateSQLDelete(
 						'company_id = '. $obj->company_id .' and order_id = '. $obj->id);
 					$db->prepare($sql)->execute();
+					// throw new Exception($sql, 1);
 				}
 
 
@@ -92,6 +101,22 @@
 			}
 		}
 
+		public static function prepareUpload($obj) {
+
+			try{
+				if (isset($obj->customer_uid)) {
+					$id = ModelCustomer::getIDFromUID($obj->customer_uid);
+					if ($id>0) $obj->customer_id = $id;
+				}
+
+				foreach($obj->items as $item){
+					ModelOrderItem::prepareUpload($item);
+				}
+
+			} catch (Exception $e) {
+				throw $e;
+			}
+		}
 	}
 
 
@@ -102,6 +127,14 @@
 				"price", "discount", "tax" , "total", "notes"
 			);
 		}
-	}
 
-	
+		public static function prepareUpload($obj) {
+			if (!isset($obj->product_uid)) return;
+			try{
+				$id = ModelProduct::getIDFromUID($obj->product_uid);
+				if ($id>0) $obj->product_id = $id;			
+			} catch (Exception $e) {
+				throw $e;
+			}
+		}
+	}

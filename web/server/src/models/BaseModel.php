@@ -150,6 +150,16 @@
 			}
 		}
 
+
+		public static function getIDFromUID($uid){
+			$sql = "select id from ".static::getTableName()." where uid= '" .$uid."'";
+			$dbobj = DB::openQuery($sql);
+			if (isset($dbobj[0])) {
+				if (isset($dbobj[0]->id)){
+					return $dbobj[0]->id;
+				}
+			}
+		}
 		//master detail example :
 		// public static function saveToDB($obj){
 		// 	$db = new DB();

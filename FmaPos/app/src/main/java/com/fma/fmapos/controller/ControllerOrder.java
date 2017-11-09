@@ -49,40 +49,7 @@ public class ControllerOrder {
         return orders;
     }
 
-    public void reLoadAll(ModelOrder modelOrder){
-//        ControllerCustomer controllerCustomer = new ControllerCustomer(context);
 
-
-        DBHelper db = DBHelper.getInstance(context);
-        SQLiteDatabase rdb = db.getReadableDatabase();
-        String sql = "select * from orderitem where order_id = " + String.valueOf(modelOrder.getId());
-
-        Cursor cursor = rdb.rawQuery(sql, null);
-        while (cursor.moveToNext()){
-            ModelOrderItem modelOrderItem = new ModelOrderItem();
-            modelOrderItem.loadFromCursor(cursor);
-            reLoadAll(modelOrderItem);
-            modelOrder.addItem(modelOrderItem);
-        }
-    }
-
-    private void reLoadAll(ModelOrderItem modelOrderItem){
-        ControllerProduct controllerProduct = new ControllerProduct(context);
-
-        ModelProduct modelProduct = controllerProduct.retrieveProduct(modelOrderItem.getProduct_id());
-        modelOrderItem.setProduct(modelProduct);
-
-        DBHelper db = DBHelper.getInstance(context);
-        SQLiteDatabase rdb = db.getReadableDatabase();
-        String sql = "select * from ordermodifier where orderitem_id = " + String.valueOf(modelOrderItem.getId());
-
-        Cursor cursor = rdb.rawQuery(sql, null);
-        while (cursor.moveToNext()){
-            ModelOrderModifier modelOrderModifier = new ModelOrderModifier();
-            modelOrderModifier.loadFromCursor(cursor);
-            modelOrderItem.addModifier(modelOrderModifier);
-        }
-    }
 
     public String generateNewNumber(){
         DBHelper db = DBHelper.getInstance(context);

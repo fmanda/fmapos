@@ -2,7 +2,6 @@ package com.fma.fmapos.model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -36,7 +35,6 @@ public class ModelProduct extends BaseModel implements Serializable{
     private String uom;
     @TableField
     private String img;
-
 
     public List<ModelModifier> modifiers = new ArrayList<ModelModifier>();
 

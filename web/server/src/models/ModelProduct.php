@@ -18,6 +18,16 @@
 			return $obj;
 		}
 
+
+		public static function retriveListOf($company_id, $unit_id){
+			$sql = "select a.* from product a inner join unitproduct b on a.id=b.product_id"
+					. " where b.company_id = " . $company_id
+					. " and b.unit_id = ". $unit_id;
+
+			$obj = DB::openQuery($sql);
+			return $obj;
+		}
+
 		public static function saveToDB($obj){
 			$db = new DB();
 			$db = $db->connect();
@@ -63,6 +73,41 @@
 				$str = $str . ModelModifier::generateSQLDelete(
 					'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
 				DB::executeSQL($str);
+			} catch (Exception $e) {
+				$db->rollback();
+				throw $e;
+			}
+		}
+
+		public static function saveToDBClient($obj){ //tanpa units
+			$db = new DB();
+			$db = $db->connect();
+			$db->beginTransaction();
+			try {
+				//delete units
+				if (!static::isNewTransaction($obj)){
+
+					//id masih pakai id client, set pakai id server
+					if (isset($obj->restclient)){
+						if ($obj->restclient){
+							static::setIDByUID($obj);
+						}
+					}
+
+					$sql = ModelModifier::generateSQLDelete(
+						'company_id = '. $obj->company_id .' and product_id = '. $obj->id);
+					$db->prepare($sql)->execute();
+				}
+				static::saveObjToDB($obj, $db);
+
+				foreach($obj->modifiers as $item){
+					$item->company_id = $obj->company_id;
+					$item->product_id = $obj->id;
+					ModelModifier::saveObjToDB($item, $db);
+				}
+
+				$db->commit();
+				$db = null;
 			} catch (Exception $e) {
 				$db->rollback();
 				throw $e;

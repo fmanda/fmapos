@@ -8,6 +8,7 @@ import com.fma.fmapos.model.BaseModel;
 import com.fma.fmapos.model.TableField;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -249,7 +250,6 @@ public class ModelHelper {
             if (field == null) continue;
             field.setAccessible(true);
             try {
-
                 if (field.getType().isAssignableFrom(Integer.class) || field.getType().isAssignableFrom(int.class))  {
                     field.set(obj, cursor.getInt(i));
                 }else if (field.getType().isAssignableFrom(Double.class)

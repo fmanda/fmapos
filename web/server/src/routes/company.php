@@ -60,6 +60,28 @@ $app->get('/company/{id}', function ($request, $response, $args) {
 	return json_encode($test);
 });
 
+
+//retrieve
+$app->get('/companybyuser/{user_name}/{password}', function ($request, $response, $args) {
+	try{
+		$user = ModelUser::getUserLogin($args['user_name'], $args['password']);
+		if ($user == null){
+			throw new Exception("[User] not found \n");
+		}
+		$company = ModelCompany::retrieve($user->company_id);
+		if ($company == null){
+			throw new Exception("Company not found \n");
+		}
+		return json_encode($company);
+	}catch(Exception $e){
+		$msg = $e->getMessage();
+		return $response->withStatus(500)
+			->withHeader('Content-Type', 'text/html')
+			->write($msg);
+	}
+
+});
+
 //delete
 $app->delete('/company/{id}', function (Request $request, Response $response) {
 	$id = $request->getAttribute('id');
@@ -72,7 +94,6 @@ $app->delete('/company/{id}', function (Request $request, Response $response) {
 			->write($msg);
 	}
 });
-
 
 //units
 

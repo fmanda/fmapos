@@ -6,10 +6,22 @@ package com.fma.fmapos.model;
 
 public class ModelModifier extends BaseModel {
     @TableField
+    private String uid;
+    @TableField
     private String name;
     @TableField
     private Double price;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
     @TableField
+
     private int product_id;
 
     public Boolean checked;

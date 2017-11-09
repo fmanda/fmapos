@@ -14,6 +14,7 @@
     android:visibility="visible">
 
     <TextView
+        android:id="@+id/txtCompany"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
@@ -23,7 +24,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txtUnit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="User Login"
@@ -31,7 +32,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="user@company.com"
