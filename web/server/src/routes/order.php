@@ -2,7 +2,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require_once '../src/models/ModelORder.php';
+require_once '../src/models/ModelOrder.php';
 require_once '../src/classes/DB.php';
 
 //debug

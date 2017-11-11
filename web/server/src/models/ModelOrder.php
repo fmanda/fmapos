@@ -3,7 +3,7 @@
 
 	class ModelOrder extends BaseModel{
 		public static function getTableName(){
-			return 'Orders';
+			return 'orders';
 		}
 
 		public static function getFields(){

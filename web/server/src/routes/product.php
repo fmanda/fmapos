@@ -8,7 +8,7 @@ require_once '../src/classes/DB.php';
 $app->get('/productcategoryof/{id}', function ($request, $response) {
 	$id = $request->getAttribute('id');
 	try{
-		$sql = 'select distinct category from Product where company_id = ' . $id
+		$sql = 'select distinct category from product where company_id = ' . $id
 			.' and category is not null and category <>"" ';
 		$list = DB::openQuery($sql);
 		return json_encode($list);
@@ -23,7 +23,7 @@ $app->get('/productcategoryof/{id}', function ($request, $response) {
 $app->get('/productuomof/{id}', function ($request, $response) {
 	$id = $request->getAttribute('id');
 	try{
-		$sql = 'select distinct uom from Product where company_id = ' . $id
+		$sql = 'select distinct uom from product where company_id = ' . $id
 			.' and category is not null and category <>"" ';
 		$list = DB::openQuery($sql);
 		return json_encode($list);
@@ -73,7 +73,7 @@ $app->get('/productof/{id}/{limit}/{page}/[{fieldname}/{keyword}]', function ($r
 		$fieldname = 'name';
 		if (isset($args['keyword'])) $keyword = $args['keyword'];
 		if (isset($args['fieldname'])) $fieldname = $args['fieldname'];
-		$sql = "select * from Product where ".$fieldname." like '%" . $keyword ."%'"
+		$sql = "select * from product where ".$fieldname." like '%" . $keyword ."%'"
 			. " and company_id = ". $args['id'];
 		$data = DB::paginateQuery($sql, $args['limit'], $args['page']);
 		return json_encode($data);

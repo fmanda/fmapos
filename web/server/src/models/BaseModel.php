@@ -9,6 +9,7 @@
 		public static function getTableName(){
 			$str = get_called_class();
 			$str = str_replace("Model","",$str);
+			$str = strtolower($str);
 			return $str;
 		}
 

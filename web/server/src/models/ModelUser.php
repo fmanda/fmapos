@@ -4,7 +4,7 @@
 
 	class ModelUser extends BaseModel{
 		public static function getTableName(){
-			return 'Users';
+			return 'users';
 		}
 
 		public static function getFields(){
