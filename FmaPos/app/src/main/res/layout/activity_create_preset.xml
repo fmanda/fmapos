@@ -8,7 +8,7 @@
     android:scrollbarAlwaysDrawVerticalTrack="false"
     android:scrollbarStyle="insideOverlay"
     android:scrollbars="horizontal|vertical"
-    tools:context="com.fma.fmapos.facade.OrderCreateActivity">
+    tools:context="com.fma.kumo.facade.OrderCreateActivity">
 
     <LinearLayout
         android:layout_width="0dp"

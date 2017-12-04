@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fma.fmapos.facade.OrderFinishActivity">
+    tools:context="com.fma.kumo.facade.OrderFinishActivity">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -33,7 +33,7 @@
 
             <fragment
                 android:id="@+id/fragPayment"
-                android:name="com.fma.fmapos.facade.fragment.PaymentFragment"
+                android:name="com.fma.kumo.facade.fragment.PaymentFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:layout="@layout/fragment_payment" />

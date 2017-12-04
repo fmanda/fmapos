@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fma.fmapos">
+    package="com.fma.kumo">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -21,7 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".facade.MainActivity"
+            android:name="com.fma.kumo.facade.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -30,37 +30,37 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".facade.LoginActivity" />
-        <activity android:name=".facade.OrderCreateActivity" />
-        <activity android:name=".facade.ProductCreateActivity" />
-        <activity android:name=".facade.CustomerCreateActivity" />
-        <activity android:name=".facade.PresetCreateActivity" />
-        <activity android:name=".facade.PaymentActivity" />
+        <activity android:name="com.fma.kumo.facade.LoginActivity" />
+        <activity android:name="com.fma.kumo.facade.OrderCreateActivity" />
+        <activity android:name="com.fma.kumo.facade.ProductCreateActivity" />
+        <activity android:name="com.fma.kumo.facade.CustomerCreateActivity" />
+        <activity android:name="com.fma.kumo.facade.PresetCreateActivity" />
+        <activity android:name="com.fma.kumo.facade.PaymentActivity" />
         <activity
-            android:name=".facade.OrderFinishActivity"
+            android:name="com.fma.kumo.facade.OrderFinishActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".facade.OrderActivity"
+            android:name="com.fma.kumo.facade.OrderActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".facade.OrderHistoryActivity"
+            android:name="com.fma.kumo.facade.OrderHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".facade.ProductActivity"
+            android:name="com.fma.kumo.facade.ProductActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".facade.CustomerActivity"
+            android:name="com.fma.kumo.facade.CustomerActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".facade.SettingActivity"
+            android:name="com.fma.kumo.facade.SettingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".facade.PresetActivity"
+            android:name="com.fma.kumo.facade.PresetActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".facade.RestActivity"
+            android:name="com.fma.kumo.facade.RestActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".facade.SelectUnitActivity"></activity>
+        <activity android:name="com.fma.kumo.facade.SelectUnitActivity"></activity>
     </application>
 
 </manifest>

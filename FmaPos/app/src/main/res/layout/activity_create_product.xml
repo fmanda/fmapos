@@ -13,7 +13,7 @@
     android:scrollbars="vertical"
     android:verticalScrollbarPosition="right"
     app:layout_scrollFlags="scroll"
-    tools:context="com.fma.fmapos.facade.OrderCreateActivity">
+    tools:context="com.fma.kumo.facade.OrderCreateActivity">
 
     <ScrollView
         android:layout_width="0dp"

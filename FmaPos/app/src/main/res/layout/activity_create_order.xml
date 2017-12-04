@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fma.fmapos.facade.OrderCreateActivity"
+    tools:context="com.fma.kumo.facade.OrderCreateActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
@@ -136,7 +136,7 @@
 
         <fragment
             android:id="@+id/fragPickProduct"
-            android:name="com.fma.fmapos.facade.fragment.PickProductFragment"
+            android:name="com.fma.kumo.facade.fragment.PickProductFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"

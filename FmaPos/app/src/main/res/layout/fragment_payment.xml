@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/emptyBackground"
-    tools:context="com.fma.fmapos.facade.OrderFinishActivity"
+    tools:context="com.fma.kumo.facade.OrderFinishActivity"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp">
 
