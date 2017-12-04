@@ -33,12 +33,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    ControllerRest controllerRest;
 //    private UserLoginTask mAuthTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        controllerRest = new ControllerRest(this);
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -53,10 +55,17 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button btn_change_setting = (Button) findViewById(R.id.btn_change_setting);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+        btn_change_setting.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                attemptSetting();
             }
         });
 
@@ -65,6 +74,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private void attemptSetting() {
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
+    }
     private void attemptLogin() {
 
         mEmailView.setError(null);
@@ -91,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             showProgress(true);
-            String url = ControllerRest.getURLCompanyByUser();
+            String url = controllerRest.getURLCompanyByUser();
             url += '/' + mEmailView.getText().toString();
             url += '/' + mPasswordView.getText().toString();
 

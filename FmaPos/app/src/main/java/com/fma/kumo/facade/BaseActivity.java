@@ -25,6 +25,7 @@ public class BaseActivity extends AppCompatActivity  implements NavigationView.O
     TextView txtUnit;
     TextView txtUserName;
     ControllerSetting controllerSetting;
+    public Boolean doCheckLogin = Boolean.TRUE;
 
     protected FrameLayout mainframe;
     @Override
@@ -67,6 +68,11 @@ public class BaseActivity extends AppCompatActivity  implements NavigationView.O
         txtUnit.setText(controllerSetting.getUnitName());
         txtUserName.setText(controllerSetting.getUserName());
 
+        checkLogin();
+    }
+
+    private void checkLogin() {
+        if (!doCheckLogin) return;
         if (controllerSetting.getCompanyID() == 0){
             startActivity(new Intent(this, LoginActivity.class));
             finish();

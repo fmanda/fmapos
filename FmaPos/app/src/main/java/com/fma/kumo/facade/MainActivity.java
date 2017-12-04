@@ -14,7 +14,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_main, this.mainframe);
-        ControllerSetting controllerSetting = new ControllerSetting(this);
+//        ControllerSetting controllerSetting = new ControllerSetting(this);
 
 
 //

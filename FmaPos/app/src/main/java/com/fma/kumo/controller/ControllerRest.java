@@ -23,7 +23,7 @@ public class ControllerRest {
     private DBHelper db;
     private ControllerSetting controllerSetting;
 
-    public static String base_url = "http://10.0.2.1/";
+    public String base_url;
 
 //    private static ControllerRest mInstance;
 //
@@ -48,11 +48,11 @@ public class ControllerRest {
     private ControllerCustomer controllerCustomer;
     private Listener listener;
 
-    public static String getURLCompanyByUser(){
+    public String getURLCompanyByUser(){
         return (base_url + "companybyuser");
     }
 
-    public static String getURLUnits(){
+    public String getURLUnits(){
         return base_url + "unitsof";
     }
 
@@ -106,7 +106,7 @@ public class ControllerRest {
         this.company_id = new ControllerSetting(this.context).getCompanyID();
         this.unit_id = new ControllerSetting(this.context).getUnitID();
         this.controllerSetting = new ControllerSetting((this.context));
-        this.base_url = controllerSetting.getSettingStr("rest_url");
+        this.base_url = "http://" + controllerSetting.getSettingStr("rest_url") + "/";
     }
 
     //CUSTOMER

@@ -25,4 +25,6 @@
     <string name="caption_ok">OK</string>
     <string name="caption_save_order">SIMPAN</string>
     <string name="caption_pay_order">BAYAR</string>
+    <string name="caption_change_setting">Change App Setting</string>
+    <string name="change_app_setting">Change App Setting</string>
 </resources>

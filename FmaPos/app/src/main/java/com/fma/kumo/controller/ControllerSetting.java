@@ -143,9 +143,11 @@ public class ControllerSetting {
             DBHelper db = DBHelper.getInstance(context);
             SQLiteDatabase rdb = db.getReadableDatabase();
             Cursor cursor = rdb.rawQuery("select * from setting where varname = '" + varname + "'", null);
-            ModelSetting modelSetting = new ModelSetting(varname,"");
-            modelSetting.loadFromCursor(cursor);
-            return modelSetting;
+            ModelSetting modelSetting = new ModelSetting(varname, "");
+            if (cursor.moveToNext()) {
+                modelSetting.loadFromCursor(cursor);
+                return modelSetting;
+            }
         }catch(Exception ex){
             Toast.makeText(context, ex.toString(), Toast.LENGTH_SHORT).show();
         }
