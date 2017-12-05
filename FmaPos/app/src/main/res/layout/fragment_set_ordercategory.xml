@@ -27,7 +27,6 @@
                 android:id="@+id/txtCustomField1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:hint="CustomField1" />
         </android.support.design.widget.TextInputLayout>
 
@@ -41,7 +40,6 @@
                 android:id="@+id/txtCustomField2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:hint="CustomField2" />
         </android.support.design.widget.TextInputLayout>
 
@@ -55,7 +53,6 @@
                 android:id="@+id/txtCustomField3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="false"
                 android:hint="CustomField3" />
 
         </android.support.design.widget.TextInputLayout>

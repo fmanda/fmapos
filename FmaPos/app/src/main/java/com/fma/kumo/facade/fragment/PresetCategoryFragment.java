@@ -30,14 +30,16 @@ public class PresetCategoryFragment extends DialogFragment{
     TextView txtCustomField2;
     TextView txtCustomField3;
     PresetOrderCategoryListener presetOrderCategoryListener;
+    private ModelOrderCategory modelOrderCategory;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_pick_ordercategory, container, false);
+        View view = inflater.inflate(R.layout.fragment_set_ordercategory, container, false);
         getDialog().setTitle("Set Order Category");
 
         btnNext = (Button) view.findViewById(R.id.btnNext);
         btnBack = (Button) view.findViewById(R.id.btnBack);
+
         txtCustomField1 = (TextView) view.findViewById(R.id.txtCustomField1);
         txtCustomField2 = (TextView) view.findViewById(R.id.txtCustomField2);
         txtCustomField3 = (TextView) view.findViewById(R.id.txtCustomField3);
@@ -59,6 +61,19 @@ public class PresetCategoryFragment extends DialogFragment{
                 dismiss();
             }
         });
+
+        if (modelOrderCategory != null) {
+            txtCustomField1.setHint(modelOrderCategory.getCustomfield_1());
+            txtCustomField1.setHint(modelOrderCategory.getCustomfield_2());
+            txtCustomField1.setHint(modelOrderCategory.getCustomfield_3());
+
+            if (modelOrderCategory.getCustomfield_1().equals(""))
+                txtCustomField1.setVisibility(View.GONE);
+            if (modelOrderCategory.getCustomfield_2().equals(""))
+                txtCustomField1.setVisibility(View.GONE);
+            if (modelOrderCategory.getCustomfield_3().equals(""))
+                txtCustomField1.setVisibility(View.GONE);
+        }
 
 
         return view;
@@ -84,12 +99,7 @@ public class PresetCategoryFragment extends DialogFragment{
     }
 
     public void setOrderCategory(ModelOrderCategory category){
-        if (category.getCustomfield_1().equals(""))
-            txtCustomField1.setVisibility(View.GONE);
-        if (category.getCustomfield_2().equals(""))
-            txtCustomField1.setVisibility(View.GONE);
-        if (category.getCustomfield_3().equals(""))
-            txtCustomField1.setVisibility(View.GONE);
+        this.modelOrderCategory = category;
     }
 
 
