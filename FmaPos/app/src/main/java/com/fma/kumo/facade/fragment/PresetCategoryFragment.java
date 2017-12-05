@@ -64,15 +64,19 @@ public class PresetCategoryFragment extends DialogFragment{
 
         if (modelOrderCategory != null) {
             txtCustomField1.setHint(modelOrderCategory.getCustomfield_1());
-            txtCustomField1.setHint(modelOrderCategory.getCustomfield_2());
-            txtCustomField1.setHint(modelOrderCategory.getCustomfield_3());
+            txtCustomField2.setHint(modelOrderCategory.getCustomfield_2());
+            txtCustomField3.setHint(modelOrderCategory.getCustomfield_3());
 
             if (modelOrderCategory.getCustomfield_1().equals(""))
                 txtCustomField1.setVisibility(View.GONE);
             if (modelOrderCategory.getCustomfield_2().equals(""))
-                txtCustomField1.setVisibility(View.GONE);
+                txtCustomField2.setVisibility(View.GONE);
             if (modelOrderCategory.getCustomfield_3().equals(""))
-                txtCustomField1.setVisibility(View.GONE);
+                txtCustomField3.setVisibility(View.GONE);
+
+            txtCustomField1.setText(null);
+            txtCustomField2.setText(null);
+            txtCustomField3.setText(null);
         }
 
 
