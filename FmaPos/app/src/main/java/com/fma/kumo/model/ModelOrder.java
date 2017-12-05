@@ -44,11 +44,13 @@ public class ModelOrder extends BaseModel implements Serializable{
     @TableField
     private int status = 0; //0:created/hold, 1:paid, 2:void
     @TableField
-    private int customfield_1;
+    private String customfield_1;
     @TableField
-    private int customfield_2;
+    private String customfield_2;
     @TableField
-    private int customfield_3;
+    private String customfield_3;
+    @TableField
+    private String order_category;
 
     private List<ModelOrderItem> items = new ArrayList<ModelOrderItem>();
     private ModelCustomer customer = new ModelCustomer();
@@ -292,27 +294,27 @@ public class ModelOrder extends BaseModel implements Serializable{
     public void setUnit_id(Integer unit_id) {
         this.unit_id = unit_id;
     }
-    public int getCustomfield_1() {
+    public String getCustomfield_1() {
         return customfield_1;
     }
 
-    public void setCustomfield_1(int customfield_1) {
+    public void setCustomfield_1(String customfield_1) {
         this.customfield_1 = customfield_1;
     }
 
-    public int getCustomfield_2() {
+    public String getCustomfield_2() {
         return customfield_2;
     }
 
-    public void setCustomfield_2(int customfield_2) {
+    public void setCustomfield_2(String customfield_2) {
         this.customfield_2 = customfield_2;
     }
 
-    public int getCustomfield_3() {
+    public String getCustomfield_3() {
         return customfield_3;
     }
 
-    public void setCustomfield_3(int customfield_3) {
+    public void setCustomfield_3(String customfield_3) {
         this.customfield_3 = customfield_3;
     }
 
@@ -343,6 +345,13 @@ public class ModelOrder extends BaseModel implements Serializable{
 
     }
 
+    public String getOrder_category() {
+        return order_category;
+    }
+
+    public void setOrder_category(String order_category) {
+        this.order_category = order_category;
+    }
 };
 
 

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.fma.kumo.helper.DBHelper;
 import com.fma.kumo.model.ModelOrder;
+import com.fma.kumo.model.ModelOrderCategory;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,7 +47,6 @@ public class ControllerOrder {
     }
 
 
-
     public String generateNewNumber(){
         DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
@@ -79,5 +79,21 @@ public class ControllerOrder {
         newNumber += String.format("%05d", iorderno);
         return newNumber;
 
+    }
+
+    public List<ModelOrderCategory> getOrderCategory(){
+        List<ModelOrderCategory> cats = new ArrayList<ModelOrderCategory>();
+        DBHelper db = DBHelper.getInstance(context);
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        String sql = "select * from ordercategory";
+
+        Cursor cursor = rdb.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            ModelOrderCategory modelOrderCategory = new ModelOrderCategory();
+            modelOrderCategory.loadFromCursor(cursor);
+
+            cats.add(modelOrderCategory);
+        }
+        return cats;
     }
 }

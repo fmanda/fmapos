@@ -79,4 +79,11 @@ public class ModelOrderCategory extends BaseModel {
 
     private String customfield_3;
 
+    public boolean IsReguler() {
+        return (
+            (this.getCustomfield_1().equals(""))
+            && (this.getCustomfield_2().equals(""))
+            && (this.getCustomfield_3().equals(""))
+        );
+    }
 }

@@ -136,5 +136,8 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
 
     public void loadModelOrder(ModelOrder modelOrder) {
         this.orders.copyObject(modelOrder);
+        if (modelOrder.getId() <= 0){
+            orders.setOrderno(new ControllerOrder(getActivity()).generateNewNumber());
+        }
     }
 }

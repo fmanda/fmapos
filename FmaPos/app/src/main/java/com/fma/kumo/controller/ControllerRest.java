@@ -79,6 +79,7 @@ public class ControllerRest {
     public void DownloadAll(){
         this.DownloadProducts();
         this.DownloadCustomers();
+        this.DownloadOrderCategory();
     }
 
     public void UploadAll(){
@@ -178,11 +179,26 @@ public class ControllerRest {
             new Response.Listener<ModelOrderCategory[]>() {
                 @Override
                 public void onResponse(ModelOrderCategory[] response) {
+                    ControllerOrder controllerOrder = new ControllerOrder(context);
                     try {
                         for (ModelOrderCategory cat : response) {
                             cat.setIDFromUID(db.getReadableDatabase(), cat.getUid());
                             cat.saveToDB(db.getWritableDatabase());
                             listener.onSuccess(cat.getName() + " updated");
+                        }
+
+                        //delete others
+                        List<ModelOrderCategory> existingCategories = controllerOrder.getOrderCategory();
+
+
+                        for (ModelOrderCategory existingCat : existingCategories){
+                            Boolean isfound = false;
+                            for (ModelOrderCategory cat : response) {
+                                isfound = cat.getUid().equals(existingCat.getUid());
+                                if (isfound) break;
+                            }
+                            if (!isfound)
+                                existingCat.deleteFromDB(db.getWritableDatabase());
                         }
                     }catch(Exception e){
                         listener.onError(e.toString());

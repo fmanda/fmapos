@@ -1,5 +1,6 @@
 package com.fma.kumo.facade;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,14 +24,18 @@ import android.widget.Toast;
 import com.fma.kumo.R;
 import com.fma.kumo.adapter.CategoryListAdapter;
 import com.fma.kumo.controller.ControllerCustomer;
+import com.fma.kumo.controller.ControllerOrder;
 import com.fma.kumo.controller.ControllerProduct;
 import com.fma.kumo.controller.ControllerSetting;
 import com.fma.kumo.facade.fragment.OrderFinishFragment;
+import com.fma.kumo.facade.fragment.PickCategoryFragment;
+import com.fma.kumo.facade.fragment.PickCustomerFragment;
 import com.fma.kumo.facade.fragment.PickProductFragment;
 import com.fma.kumo.helper.CurrencyHelper;
 import com.fma.kumo.helper.DBHelper;
 import com.fma.kumo.model.ModelCustomer;
 import com.fma.kumo.model.ModelOrder;
+import com.fma.kumo.model.ModelOrderCategory;
 import com.fma.kumo.model.ModelOrderPreset;
 
 import java.util.List;
@@ -153,9 +158,6 @@ public class OrderCreateActivity extends AppCompatActivity implements CategoryLi
                 getSupportActionBar().setTitle("Update Order");
             }
         }
-
-
-
     }
 
     private void hideOnScreenKeyboard(View v) {
@@ -189,7 +191,6 @@ public class OrderCreateActivity extends AppCompatActivity implements CategoryLi
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
-
 
     }
 

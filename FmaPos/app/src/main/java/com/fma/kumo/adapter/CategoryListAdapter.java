@@ -5,11 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fma.kumo.R;
+import com.fma.kumo.model.ModelOrderCategory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by fma on 7/30/2017.
@@ -17,11 +20,11 @@ import java.util.ArrayList;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<String> categories;
+    private List<ModelOrderCategory>  categories;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
-    public CategoryListAdapter(Context context, ArrayList<String> categories) {
+    public CategoryListAdapter(Context context, List<ModelOrderCategory> categories) {
         this.context = context;
         this.categories = categories;
         this.mInflater = LayoutInflater.from(context);
@@ -37,7 +40,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.category = categories.get(i);
-        viewHolder.txtCategory.setText(viewHolder.category);
+        viewHolder.btnCategory.setText(viewHolder.category.getName());
     }
 
     @Override
@@ -47,12 +50,18 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public String category;
-        public TextView txtCategory;
+        public ModelOrderCategory category;
+        public Button btnCategory;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txtCategory = (TextView) itemView.findViewById(R.id.txtCategory);
+            btnCategory = (Button) itemView.findViewById(R.id.btnCategory);
+            btnCategory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mClickListener.onItemClick(v, getAdapterPosition());
+                }
+            });
             itemView.setOnClickListener(this);
         }
 
