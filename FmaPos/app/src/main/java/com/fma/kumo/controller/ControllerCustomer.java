@@ -59,6 +59,20 @@ public class ControllerCustomer {
         return customers;
     }
 
+    public List<ModelCustomer> getModifiedCustomerList(){
+        List<ModelCustomer> customers = new ArrayList<ModelCustomer>();
+
+        DBHelper db = new DBHelper(context);
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        Cursor cursor = rdb.rawQuery("select * from customer where is_modified = 1", null);
+        while (cursor.moveToNext()){
+            ModelCustomer customer = new ModelCustomer();
+            customer.loadFromCursor(cursor);
+            customers.add(customer);
+        }
+        return customers;
+    }
+
     public String generateNewNumber(){
         DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();

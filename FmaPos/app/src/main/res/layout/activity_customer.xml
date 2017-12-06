@@ -24,15 +24,22 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvCustomers"
+        <SearchView
+            android:id="@+id/txtSearchCustomer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/txtSummaryProductList"
+            android:layout_weight="1"
+            android:background="@color/emptyBackground"
+            android:visibility="visible"
+            app:queryHint="Search Customer">
+
+        </SearchView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabCreateCustomer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignWithParentIfMissing="false"
             android:layout_centerHorizontal="false"
             android:layout_centerInParent="false"
@@ -45,11 +52,18 @@
             app:backgroundTint="@color/colorPrimary"
             app:backgroundTintMode="src_in"
             app:fabSize="normal"
-            app:layout_constraintTop_toBottomOf="@+id/txtSummaryProductList"
+            app:layout_constraintTop_toBottomOf="@+id/txtSearchCustomer"
             app:srcCompat="@drawable/ic_menu_add"
             app:useCompatPadding="false"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvCustomers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="50dp" />
     </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

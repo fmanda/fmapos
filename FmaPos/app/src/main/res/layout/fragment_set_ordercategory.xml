@@ -17,45 +17,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.design.widget.TextInputLayout
+        <TextView
+            android:id="@+id/lbCustomField1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:text="TextView"
+            android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/txtCustomField1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="CustomField1" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/txtCustomField1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="0">
+            android:layout_weight="0" />
 
-            <EditText
-                android:id="@+id/txtCustomField2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="CustomField2" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
+        <TextView
+            android:id="@+id/lbCustomField2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:text="TextView"
+            android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/txtCustomField3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="CustomField3" />
+        <EditText
+            android:id="@+id/txtCustomField2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
 
-        </android.support.design.widget.TextInputLayout>
+        <TextView
+            android:id="@+id/lbCustomField3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="TextView"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/txtCustomField3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0" />
 
         <LinearLayout
             android:layout_width="match_parent"

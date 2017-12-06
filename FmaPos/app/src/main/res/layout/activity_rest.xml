@@ -29,13 +29,25 @@
             android:id="@+id/btnDownload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Download Data From Server" />
+            android:text="Download Data From Server"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnSync"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorSecondary"
+            android:drawableLeft="@android:drawable/ic_popup_sync"
+            android:onClick="btnSync"
+            android:text="@string/caption_sync"
+            android:textColor="@color/colorWhite" />
 
         <Button
             android:id="@+id/btnUpload"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Upload Data To Server"
+            android:visibility="gone"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="16dp" />
 
@@ -49,7 +61,8 @@
             android:id="@+id/txtLog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:visibility="visible" />
 
     </LinearLayout>
 

@@ -106,6 +106,7 @@ public class CreateCustomerFragment extends DialogFragment {
             customer.setName(txtCustName.getText().toString());
             customer.setPhone_number(txtCustTelp.getText().toString());
             customer.setAddress(txtCustAddress.getText().toString());
+            customer.setIs_modified(1);
         }catch (Exception e){
             Log.d("exception", e.getMessage());
         }

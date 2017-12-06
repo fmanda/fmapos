@@ -130,8 +130,8 @@ public class BaseActivity extends AppCompatActivity  implements NavigationView.O
             startActivity(new Intent(this, CustomerActivity.class));
         } else if (id == R.id.nav_local_setting) {
             startActivity(new Intent(this, SettingActivity.class));
-        } else if (id == R.id.nav_order_preset) {
-            startActivity(new Intent(this, PresetActivity.class));
+//        } else if (id == R.id.nav_order_preset) {
+//            startActivity(new Intent(this, PresetActivity.class));
         } else if (id == R.id.nav_order_history) {
             startActivity(new Intent(this, OrderHistoryActivity.class));
         } else if (id == R.id.nav_sync) {

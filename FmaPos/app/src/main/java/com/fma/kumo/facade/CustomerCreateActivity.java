@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.fma.kumo.R;
+import com.fma.kumo.controller.ControllerCustomer;
 import com.fma.kumo.helper.DBHelper;
 import com.fma.kumo.model.ModelCustomer;
 
@@ -31,6 +32,7 @@ public class CustomerCreateActivity extends AppCompatActivity {
     private ModelCustomer customer;
     private EditText txtCustCode;
     private EditText txtCustName;
+    private EditText txtCustTelp;
 //    private EditText txtCustCategory;
     private EditText txtCustAddress;
 
@@ -67,7 +69,9 @@ public class CustomerCreateActivity extends AppCompatActivity {
             customer.setCode(txtCustCode.getText().toString());
             customer.setName(txtCustName.getText().toString());
 //            customer.setCategory(txtCustCategory.getText().toString());
+            customer.setPhone_number(txtCustTelp.getText().toString());
             customer.setAddress(txtCustAddress.getText().toString());
+            customer.setIs_modified(1);
         }catch (Exception e){
             Log.d("exception", e.getMessage());
         }
@@ -148,6 +152,7 @@ public class CustomerCreateActivity extends AppCompatActivity {
 
         txtCustName = (EditText) findViewById(R.id.txtCustName);
         txtCustCode = (EditText) findViewById(R.id.txtCustCode);
+        txtCustTelp = (EditText) findViewById(R.id.txtCustTelp);
 //        txtCustCategory = (EditText) findViewById(R.id.txtCustCategory);
         txtCustAddress = (EditText) findViewById(R.id.txtCustAddress);
 
@@ -171,6 +176,8 @@ public class CustomerCreateActivity extends AppCompatActivity {
                 customer = (ModelCustomer) intent.getSerializableExtra("customerFromList");
                 getSupportActionBar().setTitle("Ubah Customer");
             }
+        }else{
+            txtCustCode.setText(new ControllerCustomer(this).generateNewNumber());
         }
 
         if (customer == null){

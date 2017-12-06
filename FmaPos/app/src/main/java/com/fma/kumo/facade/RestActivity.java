@@ -20,6 +20,7 @@ public class RestActivity extends BaseActivity {
 
     Button btnDownload;
     Button btnUpload;
+    Button btnSync;
     ProgressBar progressBar;
     TextView txtLog;
     Gson gson;
@@ -31,6 +32,7 @@ public class RestActivity extends BaseActivity {
 
         btnDownload = (Button) findViewById(R.id.btnDownload);
         btnUpload = (Button) findViewById(R.id.btnUpload);
+        btnSync = (Button) findViewById(R.id.btnSync);
         txtLog = (TextView) findViewById(R.id.txtLog);
         txtLog.setText("");
 
@@ -67,6 +69,13 @@ public class RestActivity extends BaseActivity {
                 progressBar.setProgress(0);
                 txtLog.setText("");
                 controllerRest.UploadAll();
+            }
+        });
+
+        btnSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controllerRest.SyncData();
             }
         });
 

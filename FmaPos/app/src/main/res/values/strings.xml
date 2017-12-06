@@ -27,4 +27,5 @@
     <string name="caption_pay_order">BAYAR</string>
     <string name="caption_change_setting">Change App Setting</string>
     <string name="change_app_setting">Change App Setting</string>
+    <string name="caption_sync">Synchronize Data</string>
 </resources>

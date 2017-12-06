@@ -26,6 +26,8 @@ public class ModelCustomer extends BaseModel implements Serializable{
     private Integer unit_id;
     @TableField
     private String phone_number;
+    @TableField
+    private Integer is_modified;
 
     @Override
     public String getTableName() {
@@ -106,5 +108,13 @@ public class ModelCustomer extends BaseModel implements Serializable{
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+
+    public Integer getIs_modified() {
+        return is_modified;
+    }
+
+    public void setIs_modified(Integer is_modified) {
+        this.is_modified = is_modified;
     }
 }

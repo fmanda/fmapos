@@ -6,6 +6,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.SearchView;
+
 import com.fma.kumo.R;
 import com.fma.kumo.adapter.CustomerListAdapter;
 import com.fma.kumo.controller.ControllerCustomer;
@@ -23,6 +25,7 @@ public class CustomerActivity extends BaseActivity implements CustomerListAdapte
     private ControllerCustomer controllerCustomer = new ControllerCustomer(this);
     CustomerListAdapter customerListAdapter;
     RecyclerView recyclerView;
+    SearchView txtSearchCustomer;
 
     public void fabOnClick(){
         Intent intent = new Intent(this, CustomerCreateActivity.class);
@@ -45,6 +48,7 @@ public class CustomerActivity extends BaseActivity implements CustomerListAdapte
         controllerCustomer = new ControllerCustomer(this);
         customers = controllerCustomer.getCustomerList();
         customerListAdapter = new CustomerListAdapter(this, customers);
+        txtSearchCustomer = (SearchView) this.findViewById(R.id.txtSearchCustomer);
 
         recyclerView = (RecyclerView) this.findViewById(R.id.rvCustomers);
         int numberOfColumns = 1;
@@ -52,6 +56,20 @@ public class CustomerActivity extends BaseActivity implements CustomerListAdapte
         recyclerView.setAdapter(customerListAdapter);
 
         customerListAdapter.setClickListener(this);
+
+        txtSearchCustomer = (SearchView) this.findViewById(R.id.txtSearchCustomer);
+        txtSearchCustomer.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                searchCustomer(s);
+                return false;
+            }
+        });
     }
 
     public void showEditor(ModelCustomer customer){
@@ -64,4 +82,13 @@ public class CustomerActivity extends BaseActivity implements CustomerListAdapte
     public void onItemClick(View view, int position) {
         showEditor(customers.get(position));
     }
+
+    private void searchCustomer(String customername){
+        customers.clear();
+        customers.addAll(
+                controllerCustomer.getCustomerByFilter(customername)
+        );
+        recyclerView.getAdapter().notifyDataSetChanged();
+    }
+
 }

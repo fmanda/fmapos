@@ -85,9 +85,19 @@ public class ControllerRest {
     public void UploadAll(){
         //mater first;
 //        this.UploadProducts(); //product tidak di upload
-//        this.UploadCustomers();
+        this.UploadCustomers();
         this.UploadOrders();
     }
+
+    public void SyncData(){
+        //master
+        this.DownloadProducts();
+        this.DownloadOrderCategory();
+        this.UploadCustomers(); //modified customer only
+        this.DownloadCustomers();
+        this.UploadOrders();
+    }
+
 
 
     public interface Listener {
@@ -141,7 +151,7 @@ public class ControllerRest {
 
     public void UploadCustomers(){
         ControllerCustomer controllerCustomer = new ControllerCustomer(this.context);
-        List<ModelCustomer> customers = controllerCustomer.getCustomerList();
+        List<ModelCustomer> customers = controllerCustomer.getModifiedCustomerList();
         for (final ModelCustomer cust : customers) {
             cust.setCompany_id(this.company_id);
             cust.setUnit_id(this.unit_id);

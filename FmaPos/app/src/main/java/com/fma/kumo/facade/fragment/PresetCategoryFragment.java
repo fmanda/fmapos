@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.fma.kumo.R;
@@ -16,6 +17,8 @@ import com.fma.kumo.adapter.CategoryListAdapter;
 import com.fma.kumo.controller.ControllerOrder;
 import com.fma.kumo.model.ModelOrder;
 import com.fma.kumo.model.ModelOrderCategory;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -26,9 +29,12 @@ import java.util.List;
 public class PresetCategoryFragment extends DialogFragment{
     Button btnNext;
     Button btnBack;
-    TextView txtCustomField1;
-    TextView txtCustomField2;
-    TextView txtCustomField3;
+    EditText txtCustomField1;
+    EditText txtCustomField2;
+    EditText txtCustomField3;
+    TextView lbCustomField1;
+    TextView lbCustomField2;
+    TextView lbCustomField3;
     PresetOrderCategoryListener presetOrderCategoryListener;
     private ModelOrderCategory modelOrderCategory;
 
@@ -40,9 +46,13 @@ public class PresetCategoryFragment extends DialogFragment{
         btnNext = (Button) view.findViewById(R.id.btnNext);
         btnBack = (Button) view.findViewById(R.id.btnBack);
 
-        txtCustomField1 = (TextView) view.findViewById(R.id.txtCustomField1);
-        txtCustomField2 = (TextView) view.findViewById(R.id.txtCustomField2);
-        txtCustomField3 = (TextView) view.findViewById(R.id.txtCustomField3);
+        txtCustomField1 = (EditText) view.findViewById(R.id.txtCustomField1);
+        txtCustomField2 = (EditText) view.findViewById(R.id.txtCustomField2);
+        txtCustomField3 = (EditText) view.findViewById(R.id.txtCustomField3);
+
+        lbCustomField1 = (TextView) view.findViewById(R.id.lbCustomField1);
+        lbCustomField2 = (TextView) view.findViewById(R.id.lbCustomField2);
+        lbCustomField3 = (TextView) view.findViewById(R.id.lbCustomField3);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,16 +73,20 @@ public class PresetCategoryFragment extends DialogFragment{
         });
 
         if (modelOrderCategory != null) {
-            txtCustomField1.setHint(modelOrderCategory.getCustomfield_1());
-            txtCustomField2.setHint(modelOrderCategory.getCustomfield_2());
-            txtCustomField3.setHint(modelOrderCategory.getCustomfield_3());
-
+            lbCustomField1.setText(modelOrderCategory.getCustomfield_1());
+            lbCustomField2.setText(modelOrderCategory.getCustomfield_2());
+            lbCustomField3.setText(modelOrderCategory.getCustomfield_3());
+//
             if (modelOrderCategory.getCustomfield_1().equals(""))
                 txtCustomField1.setVisibility(View.GONE);
             if (modelOrderCategory.getCustomfield_2().equals(""))
                 txtCustomField2.setVisibility(View.GONE);
             if (modelOrderCategory.getCustomfield_3().equals(""))
                 txtCustomField3.setVisibility(View.GONE);
+
+            lbCustomField1.setVisibility(txtCustomField1.getVisibility());
+            lbCustomField2.setVisibility(txtCustomField2.getVisibility());
+            lbCustomField3.setVisibility(txtCustomField3.getVisibility());
 
             txtCustomField1.setText(null);
             txtCustomField2.setText(null);

@@ -157,6 +157,7 @@
             android:layout_toLeftOf="@+id/txtSummaryProductList"
             android:layout_weight="0"
             android:background="@color/colorPrimary"
+            android:visibility="gone"
             app:tabIndicatorColor="@color/colorWhite"
             app:tabSelectedTextColor="@color/colorWhite"
             app:tabTextColor="@color/colorWhite"
