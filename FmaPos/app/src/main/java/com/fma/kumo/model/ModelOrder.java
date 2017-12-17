@@ -16,6 +16,8 @@ import java.util.List;
 public class ModelOrder extends BaseModel implements Serializable{
     @TableField
     private String orderno = "<blank>";
+//    @TableField
+//    private String counterno;
     @TableField
     private int customer_id;
 
@@ -352,6 +354,19 @@ public class ModelOrder extends BaseModel implements Serializable{
     public void setOrder_category(String order_category) {
         this.order_category = order_category;
     }
+
+    public String getStatusString(){
+        if (this.getStatus() == 0){
+            return "CREATED";
+        }else if (this.getStatus() == 1){
+            return "PAID";
+        }else if (this.getStatus() == 2){
+            return "VOID";
+        }else{
+            return "";
+        }
+    }
+
 };
 
 

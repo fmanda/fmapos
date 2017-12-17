@@ -49,12 +49,20 @@ public class PickCustomerFragment extends DialogFragment implements CustomerList
         customerListAdapter.setClickListener(this);
 
         Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
+        Button btnSkip = (Button) view.findViewById(R.id.btnSkip);
         Button btnNewCustomer = (Button) view.findViewById(R.id.btnNewCustomer);
 
         btnCancel.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 dismiss();
+            }
+        });
+
+        btnSkip.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                customerSelectListener.OnSelectCustomer(null);
             }
         });
 
