@@ -80,7 +80,7 @@ public class RestActivity extends BaseActivity {
         });
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("yyyy-mm-dd hh:mm:ss");
+        gsonBuilder.setDateFormat("yyyy-MM-dd hh:mm:ss");
         gson = gsonBuilder.create();
 
     }

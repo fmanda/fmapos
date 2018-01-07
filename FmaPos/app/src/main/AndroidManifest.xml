@@ -60,6 +60,9 @@
         <activity
             android:name="com.fma.kumo.facade.RestActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.fma.kumo.facade.ReconcileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="com.fma.kumo.facade.SelectUnitActivity"></activity>
     </application>
 

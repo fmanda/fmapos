@@ -136,6 +136,8 @@ public class BaseActivity extends AppCompatActivity  implements NavigationView.O
             startActivity(new Intent(this, OrderHistoryActivity.class));
         } else if (id == R.id.nav_sync) {
             startActivity(new Intent(this, RestActivity.class));
+        } else if (id == R.id.nav_reconcile) {
+            startActivity(new Intent(this, ReconcileActivity.class));
         }
         this.finish();
 

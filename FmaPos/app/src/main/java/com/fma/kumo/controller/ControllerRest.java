@@ -260,6 +260,8 @@ public class ControllerRest {
         final SQLiteDatabase db = DBHelper.getInstance(this.context).getReadableDatabase();
         final SQLiteDatabase dbw = DBHelper.getInstance(this.context).getWritableDatabase();
 
+        //tambahkan yg diedit saja
+
 //        GsonBuilder gsonBuilder;
 //        Gson gson;
 //        gsonBuilder = new GsonBuilder().setDateFormat("yyyy-mm-dd hh:mm:ss");
