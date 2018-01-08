@@ -43,7 +43,7 @@ $app->get('/orderof/{id}/{date1}/{date2}/{limit}/{page}/[{fieldname}/{keyword}]'
 		}
 		$sql = $sql ." where ".$fieldname." like '%" . $keyword ."%'";
 		$sql = $sql . " and a.company_id = ". $args['id'];
-		$sql = $sql . " and a.orderdate between '". $args['date1'] . "' and '" . $args['date2']. "'";
+		$sql = $sql . " and Date(a.orderdate) between '". $args['date1'] . "' and '" . $args['date2']. "'";
 
 		$data = DB::paginateQuery($sql, $args['limit'], $args['page']);
 		return json_encode($data);

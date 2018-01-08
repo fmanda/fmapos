@@ -28,4 +28,8 @@
     <string name="caption_change_setting">Change App Setting</string>
     <string name="change_app_setting">Change App Setting</string>
     <string name="caption_sync">Synchronize Data</string>
+    <string name="cash_in_caption">Kas Masuk</string>
+    <string name="cash_out_caption">Kas Keluar</string>
+    <string name="new_cash_trans_caption">Kas Masuk / Keluar</string>
+    <string name="reconcile_caption">Rekap Kas</string>
 </resources>
