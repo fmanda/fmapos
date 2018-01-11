@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.fma.kumo.model.ModelCashTrans;
 import com.fma.kumo.model.ModelCustomer;
 import com.fma.kumo.model.ModelModifier;
 import com.fma.kumo.model.ModelMoneyPreset;
@@ -13,6 +14,7 @@ import com.fma.kumo.model.ModelOrderItem;
 import com.fma.kumo.model.ModelOrderModifier;
 import com.fma.kumo.model.ModelOrderPreset;
 import com.fma.kumo.model.ModelProduct;
+import com.fma.kumo.model.ModelReconcile;
 import com.fma.kumo.model.ModelSetting;
 
 /**
@@ -58,6 +60,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(new ModelMoneyPreset(0).generateMetaData());
         db.execSQL(new ModelOrderPreset().generateMetaData());
         db.execSQL(new ModelOrderCategory().generateMetaData());
+        db.execSQL(new ModelCashTrans().generateMetaData());
+        db.execSQL(new ModelReconcile().generateMetaData());
 
         //init
         ModelSetting.initMetaData(db);
@@ -115,6 +119,8 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(new ModelMoneyPreset(0).generateDropMetaData());
         db.execSQL(new ModelOrderPreset().generateDropMetaData());
         db.execSQL(new ModelOrderCategory().generateDropMetaData());
+        db.execSQL(new ModelCashTrans().generateDropMetaData());
+        db.execSQL(new ModelReconcile().generateDropMetaData());
     }
 
     public void resetDatabase(SQLiteDatabase db){
