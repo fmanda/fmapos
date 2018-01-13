@@ -10,10 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fma.kumo.R;
+import com.fma.kumo.helper.CurrencyHelper;
 import com.fma.kumo.model.ModelCashTrans;
 import com.fma.kumo.model.ModelCustomer;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by fma on 7/30/2017.
@@ -41,12 +44,15 @@ public class CashTransAdapter extends RecyclerView.Adapter<CashTransAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.cashTrans = cashTrans.get(i);
-        viewHolder.txtAmount.setText(viewHolder.cashTrans.getAmount().toString());
+        viewHolder.txtAmount.setText(CurrencyHelper.format(viewHolder.cashTrans.getAmount()));
+        viewHolder.txtDate.setText(viewHolder.dtf.format(viewHolder.cashTrans.getTransdate()));
         viewHolder.txtNotes.setText(viewHolder.cashTrans.getNotes().toString());
         if (viewHolder.cashTrans.getAmount() > 0){
-            viewHolder.txtAmount.setTextColor(context.getResources().getColor(R.color.colorLightGreen));
+            viewHolder.txtType.setText("Kas Masuk");
+            viewHolder.txtType.setTextColor(context.getResources().getColor(R.color.colorLightGreen));
         }else{
-            viewHolder.txtAmount.setTextColor(context.getResources().getColor(R.color.colorLightRed));
+            viewHolder.txtType.setText("Kas Keluar");
+            viewHolder.txtType.setTextColor(context.getResources().getColor(R.color.colorLightRed));
         }
     }
 
@@ -60,12 +66,17 @@ public class CashTransAdapter extends RecyclerView.Adapter<CashTransAdapter.View
         public ModelCashTrans cashTrans;
         public TextView txtAmount;
         public TextView txtNotes;
+        public TextView txtType;
+        public TextView txtDate;
+        public SimpleDateFormat dtf = new SimpleDateFormat("dd-MMM-yy H:mm", new Locale("id", "ID"));
 //        public LinearLayout layoutCashTrans;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txtAmount = (TextView) itemView.findViewById(R.id.txtAmount);
             txtNotes = (TextView) itemView.findViewById(R.id.txtNotes);
+            txtType = (TextView) itemView.findViewById(R.id.txtType);
+            txtDate = (TextView) itemView.findViewById(R.id.txtDate);
 //            layoutCashTrans = (LinearLayout) itemView.findViewById(R.id.layoutCashTrans);
             itemView.setOnClickListener(this);
         }

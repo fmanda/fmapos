@@ -31,7 +31,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/txtDateCaption"
+                    android:id="@+id/txtStatusCaption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -39,7 +39,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/txtTimeCaption"
+                    android:id="@+id/txtDateCaption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -47,12 +47,13 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/txtStatusCaption"
+                    android:id="@+id/txtTimeCaption"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/caption_time"
                     android:textSize="16sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -60,6 +61,15 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtDate"
@@ -79,14 +89,6 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtStatus"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TextView"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
 

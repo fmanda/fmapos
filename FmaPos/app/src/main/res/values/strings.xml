@@ -35,4 +35,16 @@
     <string name="caption_status">Status</string>
     <string name="caption_date">Tanggal</string>
     <string name="caption_time">Jam</string>
+    <string name="caption_amount">Amount</string>
+    <string name="caption_type">Tipe</string>
+    <string name="caption_note">Notes</string>
+    <string name="caption_jumlah">Jumlah</string>
+    <string name="caption_print_reconcile">Cetak Rekap Kas</string>
+    <string name="caption_sales">Penjualan</string>
+    <string name="caption_void">Void</string>
+    <string name="caption_system_income">Penerimaan System</string>
+    <string name="caption_actual_income">Penerimaan Aktual</string>
+    <string name="caption_cash">Tunai</string>
+    <string name="caption_card">Kartu</string>
+    <string name="caption_variant">Selisih</string>
 </resources>
