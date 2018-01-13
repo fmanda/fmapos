@@ -32,4 +32,7 @@
     <string name="cash_out_caption">Kas Keluar</string>
     <string name="new_cash_trans_caption">Kas Masuk / Keluar</string>
     <string name="reconcile_caption">Rekap Kas</string>
+    <string name="caption_status">Status</string>
+    <string name="caption_date">Tanggal</string>
+    <string name="caption_time">Jam</string>
 </resources>

@@ -2,8 +2,10 @@ package com.fma.kumo.facade;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -19,7 +21,7 @@ import java.util.List;
  * Created by fma on 7/30/2017.
  */
 
-public class ReconcileCreateActivity extends BaseActivity {
+public class ReconcileCreateActivity extends AppCompatActivity {
     Button btnCashTrans;
     CashTransAdapter cashTransAdapter;
     RecyclerView rvCashTrans;
@@ -28,7 +30,7 @@ public class ReconcileCreateActivity extends BaseActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getLayoutInflater().inflate(R.layout.activity_create_reconcile, this.mainframe);
+        setContentView(R.layout.activity_create_reconcile);
         btnCashTrans = (Button) findViewById(R.id.btnCashTrans);
         btnCashTrans.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,6 +45,26 @@ public class ReconcileCreateActivity extends BaseActivity {
         cashTrans = controllerReconcile.getCashTransList(0);
         cashTransAdapter = new CashTransAdapter(this, cashTrans);
         rvCashTrans.setAdapter(cashTransAdapter);
+
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
+            getSupportActionBar().setTitle("Rekap Kas");
+
+        }
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
 
     }
 

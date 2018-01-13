@@ -9,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.fma.kumo.R;
 import com.fma.kumo.model.ModelReconcile;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by fma on 7/30/2017.
@@ -37,16 +40,20 @@ public class ReconcileAdapter extends RecyclerView.Adapter<ReconcileAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        SimpleDateFormat dtf = new SimpleDateFormat("dd-MMM-yy", new Locale("id", "ID"));
+        SimpleDateFormat tmf = new SimpleDateFormat("H:mm", new Locale("id", "ID"));
         if (i == 0) {
             viewHolder.modelReconcile = null;
-            viewHolder.txtDate.setText((new Date()).toString());
+            viewHolder.txtDate.setText(dtf.format(new Date()));
+            viewHolder.txtTime.setText("-");
             viewHolder.txtStatus.setText("OPEN");
-            viewHolder.txtStatus.setTextColor(Color.GREEN);
+            viewHolder.txtStatus.setTextColor(context.getResources().getColor(R.color.colorLightGreen));
         }else{
             viewHolder.modelReconcile = reconcileList.get(i-1);
-            viewHolder.txtDate.setText(viewHolder.modelReconcile.getTransdate().toString());
+            viewHolder.txtDate.setText(dtf.format(viewHolder.modelReconcile.getTransdate()));
+            viewHolder.txtTime.setText(tmf.format(viewHolder.modelReconcile.getTransdate()));
             viewHolder.txtStatus.setText("CLOSED");
-            viewHolder.txtStatus.setTextColor(Color.RED);
+            viewHolder.txtStatus.setTextColor(context.getResources().getColor(R.color.colorLightRed));
         }
    }
 
@@ -59,12 +66,14 @@ public class ReconcileAdapter extends RecyclerView.Adapter<ReconcileAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ModelReconcile modelReconcile;
         public TextView txtDate;
+        public TextView txtTime;
         public TextView txtStatus;
 //        public LinearLayout layoutCashTrans;
 
         public ViewHolder(View itemView) {
             super(itemView);
             txtDate = (TextView) itemView.findViewById(R.id.txtDate);
+            txtTime = (TextView) itemView.findViewById(R.id.txtTime);
             txtStatus = (TextView) itemView.findViewById(R.id.txtStatus);
 //            layoutCashTrans = (LinearLayout) itemView.findViewById(R.id.layoutCashTrans);
             itemView.setOnClickListener(this);

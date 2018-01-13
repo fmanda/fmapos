@@ -70,5 +70,10 @@ public class ReconcileActivity extends BaseActivity {
 //        rvReconcile.getAdapter().notifyDataSetChanged();
 //    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Toast.makeText(this, "Restarted", Toast.LENGTH_SHORT).show();
+    }
 }
 

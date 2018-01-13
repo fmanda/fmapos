@@ -36,6 +36,7 @@
         <activity android:name="com.fma.kumo.facade.CustomerCreateActivity" />
         <activity android:name="com.fma.kumo.facade.PresetCreateActivity" />
         <activity android:name="com.fma.kumo.facade.PaymentActivity" />
+        <activity android:name="com.fma.kumo.facade.ReconcileCreateActivity" />
         <activity
             android:name="com.fma.kumo.facade.OrderFinishActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -59,9 +60,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.fma.kumo.facade.RestActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.fma.kumo.facade.ReconcileCreateActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.fma.kumo.facade.ReconcileActivity"

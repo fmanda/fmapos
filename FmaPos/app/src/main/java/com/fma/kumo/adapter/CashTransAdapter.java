@@ -44,9 +44,9 @@ public class CashTransAdapter extends RecyclerView.Adapter<CashTransAdapter.View
         viewHolder.txtAmount.setText(viewHolder.cashTrans.getAmount().toString());
         viewHolder.txtNotes.setText(viewHolder.cashTrans.getNotes().toString());
         if (viewHolder.cashTrans.getAmount() > 0){
-            viewHolder.txtAmount.setTextColor(Color.GREEN);
+            viewHolder.txtAmount.setTextColor(context.getResources().getColor(R.color.colorLightGreen));
         }else{
-            viewHolder.txtAmount.setTextColor(Color.RED);
+            viewHolder.txtAmount.setTextColor(context.getResources().getColor(R.color.colorLightRed));
         }
     }
 
