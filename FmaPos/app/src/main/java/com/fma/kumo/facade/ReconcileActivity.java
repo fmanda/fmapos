@@ -9,9 +9,11 @@ import android.widget.Button;
 
 import com.fma.kumo.R;
 import com.fma.kumo.adapter.CashTransAdapter;
+import com.fma.kumo.adapter.ReconcileAdapter;
 import com.fma.kumo.controller.ControllerReconcile;
 import com.fma.kumo.facade.fragment.CashTransFragment;
 import com.fma.kumo.model.ModelCashTrans;
+import com.fma.kumo.model.ModelReconcile;
 
 import java.util.List;
 
@@ -20,50 +22,31 @@ import java.util.List;
  */
 
 public class ReconcileActivity extends BaseActivity {
-    Button btnCashTrans;
-    CashTransAdapter cashTransAdapter;
-    RecyclerView rvCashTrans;
-    private List<ModelCashTrans> cashTrans;
+    ReconcileAdapter reconcileAdapter;
+    RecyclerView rvReconcile;
+    private List<ModelReconcile> reconcileList;
     private ControllerReconcile controllerReconcile = new ControllerReconcile(this);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getLayoutInflater().inflate(R.layout.activity_reconcile, this.mainframe);
-        btnCashTrans = (Button) findViewById(R.id.btnCashTrans);
-        btnCashTrans.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogCashTrans();
-            }
-        });
-        rvCashTrans = (RecyclerView) this.findViewById(R.id.rvCashTrans);
+
+        rvReconcile = (RecyclerView) this.findViewById(R.id.rvReconcile);
         int numberOfColumns = 1;
-        rvCashTrans.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
+        rvReconcile.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
 
-        cashTrans = controllerReconcile.getCashTransList(0);
-        cashTransAdapter = new CashTransAdapter(this, cashTrans);
-        rvCashTrans.setAdapter(cashTransAdapter);
+        reconcileList = controllerReconcile.getReconcileList();
+        reconcileAdapter = new ReconcileAdapter(this, reconcileList);
+        rvReconcile.setAdapter(reconcileAdapter);
 
-    }
-
-    private void showDialogCashTrans(){
-        FragmentManager fm = getFragmentManager();
-        CashTransFragment cashTransFragment = new CashTransFragment();
-        cashTransFragment.SetDialogListiner(new CashTransFragment.CashTransDialogListener() {
-            @Override
-            public void OnFinishDialog() {
-                refreshData();
-            }
-        });
-        cashTransFragment.show(fm, "Input Cash Trans");
     }
 
     public void refreshData(){
-        cashTrans.clear();
-        cashTrans.addAll(
-                controllerReconcile.getCashTransList(0)
+        reconcileList.clear();
+        reconcileList.addAll(
+                controllerReconcile.getReconcileList()
         );
-        rvCashTrans.getAdapter().notifyDataSetChanged();
+        rvReconcile.getAdapter().notifyDataSetChanged();
     }
 
 }

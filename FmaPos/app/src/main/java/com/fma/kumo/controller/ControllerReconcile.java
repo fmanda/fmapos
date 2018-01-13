@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.fma.kumo.helper.DBHelper;
 import com.fma.kumo.model.ModelCashTrans;
 import com.fma.kumo.model.ModelCustomer;
+import com.fma.kumo.model.ModelReconcile;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,6 +62,22 @@ public class ControllerReconcile {
             cashtrans.add(cashTrans);
         }
         return cashtrans;
+    }
+
+    public List<ModelReconcile> getReconcileList(){
+        List<ModelReconcile> reconcileList = new ArrayList<ModelReconcile>();
+
+        DBHelper db = new DBHelper(context);
+        SQLiteDatabase rdb = db.getReadableDatabase();
+
+        String sql = "select * from reconcile order by id desc limit 10";
+        Cursor cursor = rdb.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            ModelReconcile modelReconcile  = new ModelReconcile();
+            modelReconcile.loadFromCursor(cursor);
+            reconcileList.add(modelReconcile);
+        }
+        return reconcileList;
     }
 
 
