@@ -1,11 +1,13 @@
 package com.fma.kumo.facade;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.fma.kumo.R;
 import com.fma.kumo.adapter.CashTransAdapter;
@@ -39,15 +41,34 @@ public class ReconcileActivity extends BaseActivity {
         reconcileAdapter = new ReconcileAdapter(this, reconcileList);
         rvReconcile.setAdapter(reconcileAdapter);
 
+        reconcileAdapter.setClickListener(new ReconcileAdapter.ItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (position == 0){
+                    createReconcile();
+                }else{
+                    loadReconcile(reconcileList.get(position-1));
+                }
+            }
+        });
+
     }
 
-    public void refreshData(){
-        reconcileList.clear();
-        reconcileList.addAll(
-                controllerReconcile.getReconcileList()
-        );
-        rvReconcile.getAdapter().notifyDataSetChanged();
+    private void createReconcile(){
+        startActivity(new Intent(this, ReconcileCreateActivity.class));
     }
+
+    private void loadReconcile(ModelReconcile modelReconcile){
+        Toast.makeText(this, modelReconcile.getNotes(), Toast.LENGTH_SHORT).show();
+    }
+
+//    public void refreshData(){
+//        reconcileList.clear();
+//        reconcileList.addAll(
+//                controllerReconcile.getReconcileList()
+//        );
+//        rvReconcile.getAdapter().notifyDataSetChanged();
+//    }
 
 }
 

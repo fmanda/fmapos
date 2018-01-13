@@ -43,7 +43,7 @@ public class ReconcileAdapter extends RecyclerView.Adapter<ReconcileAdapter.View
             viewHolder.txtStatus.setText("OPEN");
             viewHolder.txtStatus.setTextColor(Color.GREEN);
         }else{
-            viewHolder.modelReconcile = reconcileList.get(i);
+            viewHolder.modelReconcile = reconcileList.get(i-1);
             viewHolder.txtDate.setText(viewHolder.modelReconcile.getTransdate().toString());
             viewHolder.txtStatus.setText("CLOSED");
             viewHolder.txtStatus.setTextColor(Color.RED);
@@ -52,7 +52,7 @@ public class ReconcileAdapter extends RecyclerView.Adapter<ReconcileAdapter.View
 
     @Override
     public int getItemCount() {
-        return reconcileList.size();
+        return reconcileList.size() + 1;
     }
 
     // stores and recycles views as they are scrolled off screen
