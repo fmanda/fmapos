@@ -9,9 +9,9 @@
 		public static function getFields(){
 			return array(
 				"uid", "company_id", "unit_id", "orderno", "orderdate", "amount",
-				"tax", "payment", "cashamount", "cardamount", "changeamount", "uploaded",
+				"tax", "payment", "cashamount", "cardamount", "changeamount", 
 				"customer_id", "customfield_1", "customfield_2", "customfield_3",
-				"user_create", "device", "notes"
+				"user_create", "device", "notes", "reconcile_id"
 			);
 		}
 
@@ -108,6 +108,10 @@
 					$id = ModelCustomer::getIDFromUID($obj->customer_uid);
 					if ($id>0) $obj->customer_id = $id;
 				}
+				if (isset($obj->reconcile_uid)) {
+					$id = ModelReconcile::getIDFromUID($obj->reconcile_uid);
+					if ($id>0) $obj->reconcile_id = $id;
+				}
 
 				foreach($obj->items as $item){
 					ModelOrderItem::prepareUpload($item);
@@ -132,7 +136,7 @@
 			if (!isset($obj->product_uid)) return;
 			try{
 				$id = ModelProduct::getIDFromUID($obj->product_uid);
-				if ($id>0) $obj->product_id = $id;			
+				if ($id>0) $obj->product_id = $id;
 			} catch (Exception $e) {
 				throw $e;
 			}

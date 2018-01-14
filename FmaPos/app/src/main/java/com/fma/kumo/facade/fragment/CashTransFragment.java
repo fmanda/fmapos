@@ -123,6 +123,7 @@ public class CashTransFragment extends DialogFragment {
 
         DBHelper db = DBHelper.getInstance(this.context);
 
+        modelCashTrans.setUploaded(0);
         modelCashTrans.saveToDB(db.getWritableDatabase());
 
 

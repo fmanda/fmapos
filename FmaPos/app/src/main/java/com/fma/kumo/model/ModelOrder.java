@@ -22,6 +22,7 @@ public class ModelOrder extends BaseModel implements Serializable{
     private int customer_id;
 
     private String customer_uid;
+    private String reconcile_uid;
 
     @TableField
     private Date orderdate = new Date();
@@ -53,6 +54,8 @@ public class ModelOrder extends BaseModel implements Serializable{
     private String customfield_3;
     @TableField
     private String order_category;
+    @TableField
+    private int reconcile_id = 0;
 
     private List<ModelOrderItem> items = new ArrayList<ModelOrderItem>();
     private ModelCustomer customer = new ModelCustomer();
@@ -339,11 +342,16 @@ public class ModelOrder extends BaseModel implements Serializable{
             modelCustomer.loadFromDB(db, this.customer_id);
             this.customer_uid = modelCustomer.getUid();
         }
+        if (reconcile_id > 0) {
+            ModelReconcile modelReconcile = new ModelReconcile();
+            modelReconcile.loadFromDB(db, this.reconcile_id);
+            this.reconcile_uid = modelReconcile.getUid();
+        }
+
         this.reLoadAll(db);
         for (ModelOrderItem modelOrderItem : items) {
             modelOrderItem.prepareUpload(db);
         }
-
 
     }
 
@@ -365,6 +373,14 @@ public class ModelOrder extends BaseModel implements Serializable{
         }else{
             return "";
         }
+    }
+
+    public int getReconcile_id() {
+        return reconcile_id;
+    }
+
+    public void setReconcile_id(int reconcile_id) {
+        this.reconcile_id = reconcile_id;
     }
 
 };

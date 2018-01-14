@@ -7,10 +7,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.fma.kumo.helper.DBHelper;
 import com.fma.kumo.helper.GsonRequest;
+import com.fma.kumo.model.ModelCashTrans;
 import com.fma.kumo.model.ModelCustomer;
 import com.fma.kumo.model.ModelOrder;
 import com.fma.kumo.model.ModelOrderCategory;
 import com.fma.kumo.model.ModelProduct;
+import com.fma.kumo.model.ModelReconcile;
 
 import java.util.List;
 
@@ -76,6 +78,13 @@ public class ControllerRest {
         return base_url + "orderfromclient";
     }
 
+    public String cashtrans_post_url(){
+        return base_url + "cashtransfromclient";
+    }
+
+    public String reconcile_post_url(){
+        return base_url + "reconcilefromclient";
+    }
     public void DownloadAll(){
         this.DownloadProducts();
         this.DownloadCustomers();
@@ -85,11 +94,17 @@ public class ControllerRest {
     public void UploadAll(){
         //mater first;
 //        this.UploadProducts(); //product tidak di upload
+        this.UploadReconcile();
+        this.UploadCashTrans();
         this.UploadCustomers();
         this.UploadOrders();
     }
 
     public void SyncData(){
+        //reconcile
+        this.UploadReconcile();
+        this.UploadCashTrans();
+
         //master
         this.DownloadProducts();
         this.DownloadOrderCategory();
@@ -164,6 +179,7 @@ public class ControllerRest {
                         //update ID
                         try{
                             cust.setUid(response.getUid());
+                            cust.setIs_modified(0);
                             cust.saveToDB(db.getWritableDatabase());
                             listener.onSuccess(response.getName() + " updated");
                         }catch (Exception e){
@@ -256,7 +272,7 @@ public class ControllerRest {
 
     public void UploadOrders(){
         ControllerOrder controllerorder = new ControllerOrder(this.context);
-        List<ModelOrder> orders = controllerorder.getOrderList(false);
+        List<ModelOrder> orders = controllerorder.getModifiedOrders();
         final SQLiteDatabase db = DBHelper.getInstance(this.context).getReadableDatabase();
         final SQLiteDatabase dbw = DBHelper.getInstance(this.context).getWritableDatabase();
 
@@ -280,6 +296,7 @@ public class ControllerRest {
                         //update ID
                         try{
                             modelOrder.setuid(response.getuid());
+                            modelOrder.setUploaded(1);
                             modelOrder.saveToDB(dbw);
                             listener.onSuccess(response.getOrderno() + " updated");
                         }catch (Exception e){
@@ -294,6 +311,93 @@ public class ControllerRest {
                         listener.onError(error.toString());
                     }
                 }
+            );
+            this.controllerRequest.addToRequestQueue(gsonReq,customer_post_url());
+        }
+
+        //test
+
+
+    }
+
+
+    public void UploadReconcile(){
+        ControllerReconcile controllerReconcile = new ControllerReconcile(this.context);
+        List<ModelReconcile> reconcileList = controllerReconcile.getModifiedReconcile();
+        final SQLiteDatabase db = DBHelper.getInstance(this.context).getReadableDatabase();
+        final SQLiteDatabase dbw = DBHelper.getInstance(this.context).getWritableDatabase();
+
+        for (final ModelReconcile modelReconcile : reconcileList) {
+            modelReconcile.setCompany_id(this.company_id);
+            modelReconcile.setUnit_id(this.unit_id);
+//            Toast.makeText(context, debug, Toast.LENGTH_SHORT).show();
+
+            GsonRequest<ModelReconcile> gsonReq = new GsonRequest<ModelReconcile>(reconcile_post_url(), modelReconcile,
+                    new Response.Listener<ModelReconcile>() {
+                        @Override
+                        public void onResponse(ModelReconcile response) {
+                            //update ID
+                            try{
+                                modelReconcile.setUid(response.getUid());
+                                modelReconcile.setUploaded(1);
+                                modelReconcile.saveToDB(dbw);
+                                listener.onSuccess(response.getUid() + " updated");
+                            }catch (Exception e){
+                                listener.onError(e.toString());
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            listener.onError(error.toString());
+                        }
+                    }
+            );
+            this.controllerRequest.addToRequestQueue(gsonReq,customer_post_url());
+        }
+
+        //test
+
+
+    }
+
+
+    public void UploadCashTrans(){
+        ControllerReconcile controllerReconcile = new ControllerReconcile(this.context);
+        List<ModelCashTrans> cashTransList = controllerReconcile.getModifiedCashTrans();
+        final SQLiteDatabase db = DBHelper.getInstance(this.context).getReadableDatabase();
+        final SQLiteDatabase dbw = DBHelper.getInstance(this.context).getWritableDatabase();
+
+        for (final ModelCashTrans modelCashTrans : cashTransList) {
+            modelCashTrans.setCompany_id(this.company_id);
+            modelCashTrans.setUnit_id(this.unit_id);
+            modelCashTrans.prepareUpload(db);
+//            Toast.makeText(context, debug, Toast.LENGTH_SHORT).show();
+
+            GsonRequest<ModelCashTrans> gsonReq = new GsonRequest<ModelCashTrans>(cashtrans_post_url(), modelCashTrans,
+                    new Response.Listener<ModelCashTrans>() {
+                        @Override
+                        public void onResponse(ModelCashTrans response) {
+                            //update ID
+                            try{
+                                modelCashTrans.setUid(response.getUid());
+                                modelCashTrans.setUploaded(1);
+                                modelCashTrans.saveToDB(dbw);
+                                listener.onSuccess(response.getUid() + " updated");
+                            }catch (Exception e){
+                                listener.onError(e.toString());
+                            }
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            listener.onError(error.toString());
+                        }
+                    }
             );
             this.controllerRequest.addToRequestQueue(gsonReq,customer_post_url());
         }

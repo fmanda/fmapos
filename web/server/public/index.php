@@ -39,5 +39,6 @@ require '../src/routes/product.php';
 require '../src/routes/upload.php';
 require '../src/routes/order.php';
 require '../src/routes/ordercategory.php';
+require '../src/routes/reconcile.php';
 
 $app->run();

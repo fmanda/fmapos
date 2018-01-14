@@ -59,7 +59,10 @@ public class ReconcileActivity extends BaseActivity {
     }
 
     private void loadReconcile(ModelReconcile modelReconcile){
-        Toast.makeText(this, modelReconcile.getNotes(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, ReconcileDetailActivity.class);
+        intent.putExtra("modelReconcile", modelReconcile);
+        startActivity(intent);
+
     }
 
 //    public void refreshData(){

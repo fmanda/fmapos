@@ -12,12 +12,15 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.fma.kumo.R;
+import com.fma.kumo.controller.ControllerReconcile;
 import com.fma.kumo.controller.ControllerSetting;
 import com.fma.kumo.helper.DBHelper;
 import com.fma.kumo.model.ModelCashTrans;
+import com.fma.kumo.model.ModelOrder;
 import com.fma.kumo.model.ModelReconcile;
 
 import java.util.Date;
+import java.util.List;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -35,6 +38,7 @@ public class ActualReconcileFragment extends DialogFragment {
     Button btnSave;
     Button btnCancel;
     Context context;
+    ModelReconcile modelReconcile;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class ActualReconcileFragment extends DialogFragment {
         txtCard = (EditText) view.findViewById(R.id.txtCard);
         btnSave = (Button) view.findViewById(R.id.btnSave);
         btnCancel = (Button) view.findViewById(R.id.btnCancel);
+        modelReconcile = new ModelReconcile();
 
         this.context = getActivity().getApplicationContext();
 
@@ -53,7 +58,7 @@ public class ActualReconcileFragment extends DialogFragment {
             public void onClick(View v) {
                 saveData();
                 dismiss();
-                actReconcileDialogListener.OnFinishDialog();
+                actReconcileDialogListener.OnFinishDialog(modelReconcile);
             }
         });
 
@@ -80,7 +85,7 @@ public class ActualReconcileFragment extends DialogFragment {
 
 
     public interface ActReconcileDialogListener{
-        void OnFinishDialog();
+        void OnFinishDialog(ModelReconcile modelReconcile);
     }
 
     public void SetDialogListener(ActReconcileDialogListener actReconcileDialogListener){
@@ -89,21 +94,26 @@ public class ActualReconcileFragment extends DialogFragment {
 
 
     public void saveData(){
+        modelReconcile.setId(0);
+
         int company_id = new ControllerSetting(this.context).getCompanyID();
         int unit_id = new ControllerSetting(this.context).getUnitID();
+        ControllerReconcile controllerReconcile = new ControllerReconcile(this.context);
+        List<ModelOrder> orderList = controllerReconcile.getOrderList();
+        List<ModelCashTrans> cashTransList = controllerReconcile.getCashTransList(0);
 
-        ModelReconcile modelReconcile = new ModelReconcile();
 
-        //rekap sales, void, cash in, cash out
-        modelReconcile.setCash_amount(Double.parseDouble(txtCash.getText().toString()));
-        modelReconcile.setCard_amount(Double.parseDouble(txtCard.getText().toString()));
+        if (!txtCash.getText().toString().isEmpty())
+            modelReconcile.setCash_amount(Double.parseDouble(txtCash.getText().toString()));
+        if (!txtCard.getText().toString().isEmpty())
+            modelReconcile.setCard_amount(Double.parseDouble(txtCard.getText().toString()));
 
         modelReconcile.setCompany_id(company_id);
         modelReconcile.setUnit_id(unit_id);
         modelReconcile.setTransdate(new Date());
+        modelReconcile.setUploaded(0);
 
         DBHelper db = DBHelper.getInstance(this.context);
-
-        modelReconcile.saveToDB(db.getWritableDatabase());
+        modelReconcile.saveToDBAll(db.getWritableDatabase(), orderList, cashTransList);
     }
 }

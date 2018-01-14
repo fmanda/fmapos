@@ -120,6 +120,7 @@ public class PaymentFragment extends Fragment{
         SQLiteDatabase trans = db.getWritableDatabase();
 
         modelOrder.setStatus(1);
+        modelOrder.setUploaded(0);
         modelOrder.saveToDBAll(trans);
 
         OrderPrinterHelper printer = new OrderPrinterHelper(getActivity());

@@ -1,5 +1,7 @@
 package com.fma.kumo.model;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.Date;
 
 /**
@@ -21,6 +23,10 @@ public class ModelCashTrans extends BaseModel {
     private String notes;
     @TableField
     private Integer reconcile_id;
+    @TableField
+    private Integer uploaded;
+
+    private String reconcile_uid;
 
     public String getUid() {
         return uid;
@@ -76,5 +82,22 @@ public class ModelCashTrans extends BaseModel {
 
     public void setReconcile_id(Integer reconcile_id) {
         this.reconcile_id = reconcile_id;
+    }
+
+    public void prepareUpload(SQLiteDatabase db){
+        if (reconcile_id > 0) {
+            ModelReconcile modelReconcile = new ModelReconcile();
+            modelReconcile.loadFromDB(db, this.reconcile_id);
+            this.reconcile_uid = modelReconcile.getUid();
+        }
+
+    }
+
+    public Integer getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(Integer uploaded) {
+        this.uploaded = uploaded;
     }
 }

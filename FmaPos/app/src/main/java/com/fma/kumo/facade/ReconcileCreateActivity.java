@@ -112,8 +112,8 @@ public class ReconcileCreateActivity extends AppCompatActivity {
         ActualReconcileFragment actualReconcileFragment = new ActualReconcileFragment();
         actualReconcileFragment.SetDialogListener(new ActualReconcileFragment.ActReconcileDialogListener() {
             @Override
-            public void OnFinishDialog() {
-
+            public void OnFinishDialog(ModelReconcile modelReconcile) {
+                showReconcile(modelReconcile);
             }
         });
         actualReconcileFragment.show(fm, "Input Actual Reconcile");

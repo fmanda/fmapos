@@ -109,6 +109,7 @@ public class OrderFinishFragment extends Fragment{
     private void saveData(){
         DBHelper db = DBHelper.getInstance(getActivity());
         SQLiteDatabase trans = db.getWritableDatabase();
+        modelOrder.setUploaded(0);
         modelOrder.saveToDBAll(trans);
 //        OrderPrinterHelper printer = new OrderPrinterHelper(getActivity());
 //        printer.PrintOrder(modelOrder);

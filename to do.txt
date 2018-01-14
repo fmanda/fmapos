@@ -1,5 +1,5 @@
 To Do :
-1. Rekap Kasir
+1. Rekap Kasir => done
 2. No Urut Nota
 3. Gambar blm tampil 
 4. Auto complete modifier

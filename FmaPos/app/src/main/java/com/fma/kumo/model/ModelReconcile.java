@@ -1,6 +1,10 @@
 package com.fma.kumo.model;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by fma on 8/11/2017.
@@ -16,23 +20,27 @@ public class ModelReconcile extends BaseModel {
     @TableField
     private Date transdate = new Date();
     @TableField
-    private Double sales_amount;
+    private Double sales_amount = 0.0;
     @TableField
-    private Double void_amount;
+    private Double void_amount = 0.0;
     @TableField
-    private Double cash_amount;
+    private Double cash_amount = 0.0;
     @TableField
-    private Double card_amount;
+    private Double card_amount = 0.0;
     @TableField
-    private Double cash_in;
+    private Double cash_in = 0.0;
     @TableField
-    private Double cash_out;
+    private Double cash_out = 0.0;
     @TableField
     private String notes;
     @TableField
     private Integer counter;
     @TableField
+    private Integer total_order;
+    @TableField
     private String user_name;
+    @TableField
+    private Integer uploaded;
 
     public String getUid() {
         return uid;
@@ -136,5 +144,76 @@ public class ModelReconcile extends BaseModel {
 
     public void setUser_name(String user_name) {
         this.user_name = user_name;
+    }
+
+    public Integer getTotal_order() {
+        return total_order;
+    }
+
+    public void setTotal_order(Integer total_order) {
+        this.total_order = total_order;
+    }
+
+    public void saveToDBAll(SQLiteDatabase db, List<ModelOrder> orderList, List<ModelCashTrans> cashTransList) {
+        Log.d("DB","Reconcile.saveToDBAll");
+
+        this.UpdateOrderBalance(orderList, cashTransList);
+
+        db.beginTransaction();
+        try {
+            super.saveToDB(db ,true);
+
+            for (ModelOrder modelOrder : orderList){
+                modelOrder.setReconcile_id(this.id);
+                modelOrder.saveToDB(db);
+            }
+
+            for (ModelCashTrans modelCashTrans : cashTransList){
+                modelCashTrans.setReconcile_id(this.id);
+                modelCashTrans.saveToDB(db);
+            }
+
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    private void UpdateOrderBalance(List<ModelOrder> orderList, List<ModelCashTrans> cashTransList){
+        for (ModelOrder modelOrder : orderList){
+            if (modelOrder.getAmount() > 0){
+                this.setSales_amount(this.getSales_amount() + modelOrder.getAmount());
+            }else{
+                this.setVoid_amount(this.getVoid_amount() + modelOrder.getAmount());
+            }
+        }
+
+        for (ModelCashTrans modelCashTrans : cashTransList){
+            if (modelCashTrans.getAmount() > 0){
+                this.setCash_amount(this.getCash_in() + modelCashTrans.getAmount());
+            }else{
+                this.setCash_out(this.getCash_out() + modelCashTrans.getAmount());
+            }
+        }
+    }
+
+    public Double getSysIncome(){
+        return sales_amount - void_amount + cash_in - cash_out;
+    }
+
+    public Double getActIncome(){
+        return cash_amount + card_amount;
+    }
+
+    public Double getVariant(){
+        return getSysIncome() - getActIncome();
+    }
+
+    public Integer getUploaded() {
+        return uploaded;
+    }
+
+    public void setUploaded(Integer uploaded) {
+        this.uploaded = uploaded;
     }
 }

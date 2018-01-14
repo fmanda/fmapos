@@ -17,7 +17,9 @@ import com.fma.kumo.controller.ControllerReconcile;
 import com.fma.kumo.controller.ControllerSetting;
 import com.fma.kumo.facade.fragment.ActualReconcileFragment;
 import com.fma.kumo.facade.fragment.CashTransFragment;
+import com.fma.kumo.helper.CurrencyHelper;
 import com.fma.kumo.model.ModelCashTrans;
+import com.fma.kumo.model.ModelOrder;
 import com.fma.kumo.model.ModelReconcile;
 
 import java.text.SimpleDateFormat;
@@ -30,6 +32,19 @@ import java.util.Locale;
  */
 
 public class ReconcileDetailActivity extends AppCompatActivity {
+
+    TextView txtSales;
+    TextView txtVoid;
+    TextView txtCashIn;
+    TextView txtCashOut;
+    TextView txtCash;
+    TextView txtCard;
+    TextView txtSysIncome;
+    TextView txtActIncome;
+    TextView txtVariant;
+    TextView txtHeader;
+    TextView txtSubHeader;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +60,26 @@ public class ReconcileDetailActivity extends AppCompatActivity {
 
         }
 
+        txtSales = (TextView) findViewById(R.id.txtSales);
+        txtVoid = (TextView) findViewById(R.id.txtVoid);
+        txtCashIn = (TextView) findViewById(R.id.txtCashIn);
+        txtCashOut = (TextView) findViewById(R.id.txtCashOut);
+        txtCash = (TextView) findViewById(R.id.txtCash);
+        txtCard = (TextView) findViewById(R.id.txtCard);
+        txtSysIncome = (TextView) findViewById(R.id.txtSysIncome);
+        txtActIncome = (TextView) findViewById(R.id.txtActIncome);
+        txtVariant = (TextView) findViewById(R.id.txtVariant);
+        txtHeader = (TextView) findViewById(R.id.txtHeader);
+        txtSubHeader = (TextView) findViewById(R.id.txtSubHeader);
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey("modelReconcile")) {
+                ModelReconcile modelReconcile = (ModelReconcile) intent.getSerializableExtra("modelReconcile");
+                loadData(modelReconcile);
+            }
+        }
 
     }
 
@@ -58,6 +93,32 @@ public class ReconcileDetailActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        startActivity(new Intent(this, ReconcileActivity.class));
+        finish();
+
+    }
+
+
+    public void loadData(ModelReconcile modelReconcile){
+        txtSales.setText(CurrencyHelper.format(modelReconcile.getSales_amount()));
+        txtVoid.setText(CurrencyHelper.format(modelReconcile.getVoid_amount()));
+        txtCashIn.setText(CurrencyHelper.format(modelReconcile.getCash_in()));
+        txtCashOut.setText(CurrencyHelper.format(modelReconcile.getCash_out()));
+        txtCash.setText(CurrencyHelper.format(modelReconcile.getCash_amount()));
+        txtCard.setText(CurrencyHelper.format(modelReconcile.getCard_amount()));
+        txtSysIncome.setText(CurrencyHelper.format(modelReconcile.getSysIncome()));
+        txtActIncome.setText(CurrencyHelper.format(modelReconcile.getActIncome()));
+        txtVariant.setText(CurrencyHelper.format(modelReconcile.getVariant()));
+
+        txtHeader.setText(new ControllerSetting(this).getUnitName());
+        SimpleDateFormat dtf = new SimpleDateFormat("dd-MMM-yy H:mm", new Locale("id", "ID"));
+        txtSubHeader.setText(dtf.format(modelReconcile.getTransdate()));
+    }
 
 
 }

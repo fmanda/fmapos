@@ -123,11 +123,34 @@ public class ControllerOrder {
         //void order
         modelOrder.reLoadAll(rdb);
         modelOrder.setId(0);
+        modelOrder.setUploaded(0);
         modelOrder.setOrderdate(new Date());
         modelOrder.setAmount(modelOrder.getAmount() * -1);
         for (ModelOrderItem modelOrderItem : modelOrder.getItems()){
             modelOrderItem.setQty(modelOrderItem.getQty() * -1);
         }
+        modelOrder.setUploaded(0);
         modelOrder.saveToDBAll(wdb);
     }
+
+    public List<ModelOrder> getModifiedOrders(){
+        ControllerCustomer controllerCustomer = new ControllerCustomer(context);
+        List<ModelOrder> orders = new ArrayList<ModelOrder>();
+
+        DBHelper db = DBHelper.getInstance(context);
+        SQLiteDatabase rdb = db.getReadableDatabase();
+        String sql = "select * from orders where uploaded is null or uploaded = 0";
+
+        Cursor cursor = rdb.rawQuery(sql, null);
+        while (cursor.moveToNext()){
+            ModelOrder modelOrder = new ModelOrder();
+            modelOrder.loadFromCursor(cursor);
+            if (modelOrder.getCustomer_id()>0){
+                modelOrder.setCustomer(controllerCustomer.getCustomer(modelOrder.getCustomer_id()));
+            }
+            orders.add(modelOrder);
+        }
+        return orders;
+    }
+
 }
