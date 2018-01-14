@@ -62,18 +62,16 @@ public class ControllerOrder {
         return  gen.nextString();
     }
 
-    public String generateCounter(){
+    public Integer generateCounter(){
         DBHelper db = DBHelper.getInstance(context);
         SQLiteDatabase rdb = db.getReadableDatabase();
-        String newNumber = "";
 
-        Calendar c = Calendar.getInstance();   // this takes current date
-        //c.set(Calendar.DAY_OF_MONTH, 1);
+        Calendar c = Calendar.getInstance();
         Date d = c.getTime();
 
         int iorderno = 0;
         try {
-            String sql = "select max(orderno) from orders where orderdate >= " + String.valueOf(d.getTime());
+            String sql = "select max(day_counter) from orders where orderdate = " + String.valueOf(d.getTime());
             Cursor cursor = rdb.rawQuery("select max(orderno) from orders ", null);
             if (cursor.moveToNext()) {
                 String str = cursor.getString(0);
@@ -84,8 +82,8 @@ public class ControllerOrder {
         }
 
         iorderno++;
-        newNumber += String.format("%05d", iorderno);
-        return newNumber;
+//        newNumber += String.format("%05d", iorderno);
+        return iorderno;
 
     }
 

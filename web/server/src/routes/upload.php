@@ -36,6 +36,11 @@ $app->post('/upload', function ($request, $response) {
 $app->get('/upload/{filename}', function ($request, $response) {
 	$filename = $request->getAttribute('filename');
 	$filename = $this->get('upload_directory'). DIRECTORY_SEPARATOR .$filename;
+
+	if (strpos($filename, '.jpg') === false) {
+		$filename = $filename . ".jpg";
+	}
+
 	$image = @file_get_contents($filename);
 	$response->write($image);
 	return $response->withHeader('Content-Type', FILEINFO_MIME_TYPE);

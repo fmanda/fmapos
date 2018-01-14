@@ -1,4 +1,5 @@
 package com.fma.kumo.facade;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.fma.kumo.R;
@@ -16,7 +17,7 @@ public class MainActivity extends BaseActivity {
         getLayoutInflater().inflate(R.layout.activity_main, this.mainframe);
 //        ControllerSetting controllerSetting = new ControllerSetting(this);
 
-
+        startActivity(new Intent(this, OrderActivity.class));
 //
     }
 

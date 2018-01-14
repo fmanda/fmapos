@@ -56,6 +56,8 @@ public class ModelOrder extends BaseModel implements Serializable{
     private String order_category;
     @TableField
     private int reconcile_id = 0;
+    @TableField
+    private int day_counter = 0;
 
     private List<ModelOrderItem> items = new ArrayList<ModelOrderItem>();
     private ModelCustomer customer = new ModelCustomer();
@@ -383,6 +385,13 @@ public class ModelOrder extends BaseModel implements Serializable{
         this.reconcile_id = reconcile_id;
     }
 
+    public int getDay_counter() {
+        return day_counter;
+    }
+
+    public void setDay_counter(int day_counter) {
+        this.day_counter = day_counter;
+    }
 };
 
 

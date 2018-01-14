@@ -363,7 +363,8 @@
                 android:layout_weight="1"
                 android:background="@color/colorSecondary"
                 android:text="Dummy Data"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:visibility="gone" />
 
         </LinearLayout>
 

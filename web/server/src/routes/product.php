@@ -35,6 +35,21 @@ $app->get('/productuomof/{id}', function ($request, $response) {
 	}
 });
 
+
+$app->get('/modifierof/{id}', function ($request, $response) {
+	$id = $request->getAttribute('id');
+	try{
+		$sql = 'select distinct name from modifier where company_id = ' . $id;
+		$list = DB::openQuery($sql);
+		return json_encode($list);
+	}catch(Exception $e){
+		$msg = $e->getMessage();
+		return $response->withStatus(500)
+			->withHeader('Content-Type', 'text/html')
+			->write($msg);
+	}
+});
+
 $app->get('/productof/{id}/{unit_id}', function ($request, $response) {
 	$id = $request->getAttribute('id');
 	$unitid = $request->getAttribute('unit_id');

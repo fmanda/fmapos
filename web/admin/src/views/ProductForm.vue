@@ -82,7 +82,15 @@
 				</tr></thead>
 				<tbody>
 					<tr v-for="item in form.modifiers">
-						<td style="padding:5px"><el-input v-model="item.name"></el-input></td>
+						<td style="padding:5px">
+							<el-select v-model="item.name" filterable allow-create placeholder="Select">
+								<el-option v-for="mod in modifiers" :key="mod.name" :label="mod.name" :value="mod.name">
+								</el-option>
+							</el-select>
+
+							<!-- <el-input v-model="item.name"> -->
+
+						</el-input></td>
 						<td style="padding:5px"><currencyinput v-model="item.price" style="width:150px"></currencyinput></td>
 						<td>
 							<el-button @click="delModifier(item)" type="text" style="float:right;margin-right:10px">
@@ -116,6 +124,7 @@
 				imgPOSTURL : CONFIG.rest_url + '/upload',
 				selectedCompany : {id : 0},
 				uoms : [],
+				modifiers : [],
 				categories : [],
 				imageUrl: '',
 				form : {
@@ -153,6 +162,9 @@
 			})
 			axios.get(CONFIG.rest_url + '/productuomof/' + this.selectedCompany.id).then(function(response) {
 				if (response.data)	vm.uoms = response.data;
+			})
+			axios.get(CONFIG.rest_url + '/modifierof/' + this.selectedCompany.id).then(function(response) {
+				if (response.data)	vm.modifiers = response.data;
 			})
 
 			axios.get(CONFIG.rest_url + '/unitsof/' + this.selectedCompany.id).then(function(response) {

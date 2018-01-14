@@ -190,7 +190,7 @@ public class ModelReconcile extends BaseModel {
 
         for (ModelCashTrans modelCashTrans : cashTransList){
             if (modelCashTrans.getAmount() > 0){
-                this.setCash_amount(this.getCash_in() + modelCashTrans.getAmount());
+                this.setCash_in(this.getCash_in() + modelCashTrans.getAmount());
             }else{
                 this.setCash_out(this.getCash_out() + modelCashTrans.getAmount());
             }
@@ -198,7 +198,7 @@ public class ModelReconcile extends BaseModel {
     }
 
     public Double getSysIncome(){
-        return sales_amount - void_amount + cash_in - cash_out;
+        return sales_amount + void_amount + cash_in + cash_out;
     }
 
     public Double getActIncome(){

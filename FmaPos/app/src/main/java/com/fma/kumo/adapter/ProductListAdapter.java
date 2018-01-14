@@ -57,7 +57,7 @@ public class ProductListAdapter extends ArrayAdapter<ModelProduct> {
         holder.productListPrice.setText(CurrencyHelper.format(holder.product.getPrice()));
         holder.linearLayoutProductList.setTag(holder.product);
 
-        img.setFileName(String.valueOf(holder.product.getId()));
+        img.setFileName(holder.product.getImg());
         Bitmap bmp = img.load();
         if (bmp != null) {
             holder.productListImage.setImageBitmap(bmp);

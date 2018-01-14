@@ -2,11 +2,18 @@ package com.fma.kumo.controller;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.fma.kumo.helper.DBHelper;
 import com.fma.kumo.helper.GsonRequest;
+import com.fma.kumo.helper.ImageHelper;
 import com.fma.kumo.model.ModelCashTrans;
 import com.fma.kumo.model.ModelCustomer;
 import com.fma.kumo.model.ModelOrder;
@@ -14,7 +21,11 @@ import com.fma.kumo.model.ModelOrderCategory;
 import com.fma.kumo.model.ModelProduct;
 import com.fma.kumo.model.ModelReconcile;
 
+import org.json.JSONObject;
+
 import java.util.List;
+
+import static android.widget.ImageView.ScaleType.CENTER_CROP;
 
 /**
  * Created by fma on 10/26/2017.
@@ -89,6 +100,10 @@ public class ControllerRest {
         this.DownloadProducts();
         this.DownloadCustomers();
         this.DownloadOrderCategory();
+    }
+
+    public String image_get_url(String uid){
+        return base_url + "upload/" + uid + ".jpg";
     }
 
     public void UploadAll(){
@@ -249,9 +264,19 @@ public class ControllerRest {
                 @Override
                 public void onResponse(ModelProduct[] response) {
                     try {
+                        ImageHelper img = new ImageHelper(context);
                         for (ModelProduct prod : response) {
                             prod.setIDFromUID(db.getReadableDatabase(), prod.getUid());
+                            prod.setImg(prod.getImg().replace(".jpg","")); //server contain .jpg
                             prod.saveToDBAll(db.getWritableDatabase());
+
+                            //replace format to png
+                            if (!prod.getImg().equals("")) {
+                                img.setFileName(prod.getImg());
+                                if (!img.checFileExist()) {
+                                    DownloadProductImage(prod.getImg());
+                                }
+                            }
                             listener.onSuccess(prod.getName() + " updated");
                         }
                     }catch(Exception e){
@@ -408,4 +433,36 @@ public class ControllerRest {
     }
 
 
+    public void DownloadProductImage(final String img_name){
+        RequestQueue requestQueue = Volley.newRequestQueue(this.context);
+        String get_url = image_get_url(img_name);
+
+        // Initialize a new ImageRequest
+        ImageRequest imageRequest = new ImageRequest(
+                get_url, // Image URL
+                new Response.Listener<Bitmap>() { // Bitmap listener
+                    @Override
+                    public void onResponse(Bitmap response) {
+                        // Do something with response
+                        ImageHelper img = new ImageHelper(context);
+                        img.setFileName(img_name);
+                        img.save(response);
+                    }
+                },
+                0, // Image width
+                0, // Image height
+                CENTER_CROP, // Image scale type
+                Bitmap.Config.RGB_565, //Image decode configuration
+                new Response.ErrorListener() { // Error listener
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Do something with error response
+                        listener.onError(error.toString());
+//                        error.printStackTrace();
+                    }
+                }
+        );
+
+        this.controllerRequest.addToRequestQueue(imageRequest,image_get_url(img_name));
+    }
 }

@@ -86,7 +86,7 @@ public class ReconcileDetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home){
-            this.finish();
+            onBackPressed();
         }
 
         return super.onOptionsItemSelected(item);

@@ -45,7 +45,7 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_pick_product, container, false);
         controllerProduct = new ControllerProduct(getActivity());
-        orders.setOrderno(new ControllerOrder(getActivity()).generateNewNumber());
+//        orders.setOrderno(new ControllerOrder(getActivity()).generateNewNumber());
         products = controllerProduct.getProductListByFilter("","");
         restoreProductSelection();
 
@@ -137,7 +137,10 @@ public class PickProductFragment extends Fragment implements  OrderPickAdapter.I
     public void loadModelOrder(ModelOrder modelOrder) {
         this.orders.copyObject(modelOrder);
         if (modelOrder.getId() <= 0){
-            orders.setOrderno(new ControllerOrder(getActivity()).generateNewNumber());
+            ControllerOrder controllerOrder = new ControllerOrder(getActivity());
+            orders.setOrderno(controllerOrder.generateNewNumber());
+            orders.setDay_counter(controllerOrder.generateCounter());
         }
+
     }
 }

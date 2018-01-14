@@ -26,7 +26,7 @@
                 android:padding="10dp">
 
                 <TextView
-                    android:id="@+id/txtOrderNo"
+                    android:id="@+id/txtCounterNo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

@@ -65,18 +65,19 @@ public class ReconcileActivity extends BaseActivity {
 
     }
 
-//    public void refreshData(){
-//        reconcileList.clear();
-//        reconcileList.addAll(
-//                controllerReconcile.getReconcileList()
-//        );
-//        rvReconcile.getAdapter().notifyDataSetChanged();
-//    }
+    public void refreshData(){
+        reconcileList.clear();
+        reconcileList.addAll(
+                controllerReconcile.getReconcileList()
+        );
+        rvReconcile.getAdapter().notifyDataSetChanged();
+    }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Toast.makeText(this, "Restarted", Toast.LENGTH_SHORT).show();
+        refreshData();
+//        Toast.makeText(this, "Restarted", Toast.LENGTH_SHORT).show();
     }
 }
 

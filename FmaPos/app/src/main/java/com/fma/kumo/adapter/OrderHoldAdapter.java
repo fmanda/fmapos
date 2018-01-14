@@ -48,7 +48,7 @@ public class OrderHoldAdapter extends RecyclerView.Adapter<OrderHoldAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         viewHolder.modelOrder = orders.get(i);
-        viewHolder.txtOrderNo.setText("#" + viewHolder.modelOrder.getOrderno());
+        viewHolder.txtCounterNo.setText("#" + String.format("%03d", viewHolder.modelOrder.getDay_counter()));
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yy H:mm", new Locale("id", "ID"));
 
@@ -63,14 +63,14 @@ public class OrderHoldAdapter extends RecyclerView.Adapter<OrderHoldAdapter.View
 
     public class ViewHolder  extends RecyclerView.ViewHolder implements View.OnClickListener{
         ModelOrder modelOrder;
-        TextView txtOrderNo;
+        TextView txtCounterNo;
         TextView txtOrderDate;
         TextView txtOrderAmount;
         TextView txtCustomer;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            txtOrderNo = (TextView) itemView.findViewById(R.id.txtOrderNo);
+            txtCounterNo = (TextView) itemView.findViewById(R.id.txtCounterNo);
             txtOrderDate = (TextView) itemView.findViewById(R.id.txtOrderDate);
             txtOrderAmount = (TextView) itemView.findViewById(R.id.txtOrderAmount);
             txtCustomer = (TextView) itemView.findViewById(R.id.txtCustomer);

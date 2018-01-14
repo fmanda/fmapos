@@ -67,7 +67,7 @@ public class OrderPickAdapter extends RecyclerView.Adapter<OrderPickAdapter.View
         }else{
             holder.cvProduct.setCardBackgroundColor(Color.WHITE );
 
-            img.setFileName(String.valueOf(product.getId()));
+            img.setFileName(String.valueOf(product.getImg()));
             Bitmap bmp = img.load();
             if (bmp != null) {
                 holder.productListImage.setImageBitmap(bmp);

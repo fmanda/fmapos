@@ -14,6 +14,7 @@ import User from './views/Info.vue'
 import Order from './views/Order.vue'
 import OrderForm from './views/OrderForm.vue'
 import OrderCategory from './views/OrderCategory.vue'
+import Reconcile from './views/Reconcile.vue'
 
 
 // { path: '/hidden', component: Info, name: 'Customer', hidden: true  },
@@ -66,7 +67,7 @@ let routes = [
 		name: 'Reports',
         iconCls: 'fa fa-file-text',
         children: [
-            { path: '/reports', component: User, name: 'Sales Report', iconCls:'fa fa-file-text'},
+            { path: '/reconcile', component: Reconcile, name: 'Reconcile', iconCls:'fa fa-file-text'},
         ]
     },
 	{

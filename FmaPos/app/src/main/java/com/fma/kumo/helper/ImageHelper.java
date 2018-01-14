@@ -28,6 +28,7 @@ public class ImageHelper {
     }
 
     public ImageHelper setFileName(String fileName) {
+//        fileName = fileName.replace(".jpg","");
         this.fileName = fileName + ".png";
         return this;
     }
@@ -111,5 +112,9 @@ public class ImageHelper {
             }
         }
         return null;
+    }
+
+    public Boolean checFileExist(){
+        return createFile().exists();
     }
 }

@@ -31,6 +31,7 @@ public class OrderFinishFragment extends Fragment{
     TextView txtOrderFinishPPN;
     TextView txtOrderFinishTotal;
     TextView txtOrderNo;
+    TextView txtCounterNo;
 
 //    Button btnSaveOrder;
     Button btnPayOrder;
@@ -53,6 +54,7 @@ public class OrderFinishFragment extends Fragment{
         txtOrderFinishPPN = (TextView) view.findViewById(R.id.txtOrderFinishPPN);
         txtOrderFinishTotal = (TextView) view.findViewById(R.id.txtOrderFinishTotal);
         txtOrderNo = (TextView) view.findViewById(R.id.txtOrderNo);
+        txtCounterNo = (TextView) view.findViewById(R.id.txtCounterNo);
 
 
 //        btnSaveOrder = (Button) view.findViewById(R.id.btnSaveOrder);
@@ -103,7 +105,8 @@ public class OrderFinishFragment extends Fragment{
         txtOrderFinishSubTotal.setText(CurrencyHelper.format(modelOrder.getSubTotal()));
         txtOrderFinishPPN.setText(CurrencyHelper.format(modelOrder.getTax()));
         txtOrderFinishTotal.setText(CurrencyHelper.format(modelOrder.getSummary()));
-        txtOrderNo.setText("#" + modelOrder.getOrderno());
+        txtOrderNo.setText(modelOrder.getOrderno());
+        txtCounterNo.setText("#" + String.format("%03d", modelOrder.getDay_counter()));
     }
 
     private void saveData(){
