@@ -94,7 +94,7 @@
 <script>
 	import axios from 'axios';
 	import currencyinput from '../components/CurrencyInput.vue'
-	var CONFIG = require('../../config.json');
+	var CONFIG = require('Config');
 
 	export default {
 		components: {

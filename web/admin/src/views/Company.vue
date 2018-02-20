@@ -90,7 +90,7 @@
 
 <script>
 	import axios from 'axios';
-	var CONFIG = require('../../config.json');
+	var CONFIG = require('Config');
 
 	export default {
 		data () {
