@@ -162,11 +162,16 @@ public class ModelOrderItem extends BaseModel implements Serializable {
 
 
     private String product_uid;
+
     public void prepareUpload(SQLiteDatabase db) {
         if (product_id > 0) {
             ModelProduct modelProduct = new ModelProduct();
             modelProduct.loadFromDB(db, this.product_id);
             this.product_uid = modelProduct.getUid();
+        }
+        this.reLoadAll(db);
+        for (ModelOrderModifier modelOrderModifier : this.modifiers){
+            modelOrderModifier.prepareUpload(db);
         }
     }
 

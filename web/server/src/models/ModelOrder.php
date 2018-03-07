@@ -9,7 +9,7 @@
 		public static function getFields(){
 			return array(
 				"uid", "company_id", "unit_id", "orderno", "orderdate", "amount",
-				"tax", "payment", "cashamount", "cardamount", "changeamount", 
+				"tax", "payment", "cashamount", "cardamount", "changeamount",
 				"customer_id", "customfield_1", "customfield_2", "customfield_3",
 				"user_create", "device", "notes", "reconcile_id"
 			);
@@ -57,10 +57,17 @@
 						}
 					}
 
+
 					$sql = ModelOrderItem::generateSQLDelete(
 						'company_id = '. $obj->company_id .' and order_id = '. $obj->id);
+
 					$db->prepare($sql)->execute();
-					// throw new Exception($sql, 1);
+
+					$sql = 'delete from ordermodifier where company_id = '. $obj->company_id .
+						' and orderitem_id in (select id from orderitem where order_id = '. $obj->id .')';
+
+					$db->prepare($sql)->execute();
+
 				}
 
 
@@ -90,7 +97,7 @@
 				static::saveObjToDB($obj, $db);
 				foreach($obj->items as $item){
 					$item->order_id = $obj->id;
-					ModelOrderItem::saveObjToDB($item, $db);
+					ModelOrderItem::saveToDB($item, $db);
 				}
 				$db->commit();
 				$db = null;
@@ -133,12 +140,78 @@
 		}
 
 		public static function prepareUpload($obj) {
-			if (!isset($obj->product_uid)) return;
-			try{
-				$id = ModelProduct::getIDFromUID($obj->product_uid);
-				if ($id>0) $obj->product_id = $id;
+
+			if (isset($obj->product_uid)){
+				try{
+					$id = ModelProduct::getIDFromUID($obj->product_uid);
+					if ($id>0) $obj->product_id = $id;
+				} catch (Exception $e) {
+					throw $e;
+				}
+			}
+
+			if (isset($obj->modifiers)){
+				try{
+					foreach($obj->modifiers as $item){
+						ModelOrderModifier::prepareUpload($item);
+					}
+				} catch (Exception $e) {
+					throw $e;
+				}
+			}
+
+		}
+
+		public static function saveToDB($obj, $db){
+
+			try {
+				//delete units
+				if (!isset($obj->company_id))
+					throw new Exception("undeclared property company_id on object $classname", 1);
+				if (!isset($obj->unit_id))
+					throw new Exception("undeclared property unit_id on object $classname", 1);
+
+
+				foreach($obj->modifiers as $item){
+					$item->id = 0; //force insert;
+					$item->company_id = $obj->company_id;
+					$item->unit_id = $obj->unit_id;
+
+				}
+				// $sql = static::generateSQL($obj);
+				// throw new Exception($sql, 1);
+
+				static::saveObjToDB($obj, $db);
+
+				foreach($obj->modifiers as $item){
+					$item->orderitem_id = $obj->id;
+					ModelOrderModifier::saveObjToDB($item, $db);
+				}
+
 			} catch (Exception $e) {
+				// $db->rollback();
 				throw $e;
+			}
+		}
+	}
+
+	class ModelOrderModifier extends BaseModel{
+		public static function getFields(){
+			return array(
+				"uid", "company_id", "unit_id", "orderitem_id", "modifier_id", "modifier",  "price"
+			);
+		}
+
+		public static function prepareUpload($obj) {
+			// throw new Exception("Test" . json_encode($obj), 1);
+
+			if (isset($obj->modifier_uid)){
+				try{
+					$id = ModelModifier::getIDFromUID($obj->modifier_uid);
+					if ($id>0) $obj->modifier_id = $id;
+				} catch (Exception $e) {
+					throw $e;
+				}
 			}
 		}
 	}

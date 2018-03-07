@@ -1,5 +1,7 @@
 package com.fma.kumo.model;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.io.Serializable;
 
 public class ModelOrderModifier extends BaseModel implements Serializable {
@@ -11,6 +13,8 @@ public class ModelOrderModifier extends BaseModel implements Serializable {
     private String modifier;
     @TableField
     private Double price;
+
+    private String modifier_uid;
 
     public ModelOrderModifier(ModelModifier modifier) {
         this.setModifier(modifier.getName());
@@ -52,4 +56,13 @@ public class ModelOrderModifier extends BaseModel implements Serializable {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+    public void prepareUpload(SQLiteDatabase db) {
+        if (modifier_id > 0) {
+            ModelModifier modelModifier = new ModelModifier();
+            modelModifier.loadFromDB(db, this.modifier_id);
+            this.modifier_uid = modelModifier.getUid();
+        }
+    }
+
 }

@@ -102,6 +102,7 @@
 				static::saveObjToDB($obj, $db);
 
 				foreach($obj->modifiers as $item){
+					$item->id = 0; //force insert;
 					$item->company_id = $obj->company_id;
 					$item->product_id = $obj->id;
 					ModelModifier::saveObjToDB($item, $db);

@@ -16,6 +16,7 @@ import com.fma.kumo.helper.GsonRequest;
 import com.fma.kumo.helper.ImageHelper;
 import com.fma.kumo.model.ModelCashTrans;
 import com.fma.kumo.model.ModelCustomer;
+import com.fma.kumo.model.ModelModifier;
 import com.fma.kumo.model.ModelOrder;
 import com.fma.kumo.model.ModelOrderCategory;
 import com.fma.kumo.model.ModelProduct;
@@ -267,8 +268,32 @@ public class ControllerRest {
                         ImageHelper img = new ImageHelper(context);
                         for (ModelProduct prod : response) {
                             prod.setIDFromUID(db.getReadableDatabase(), prod.getUid());
+
+                            ModelProduct oldProduct = new ModelProduct();
+                            oldProduct.loadFromDB(db.getReadableDatabase(), prod.getId());
+
+                            //delete old modifier
+                            Boolean isFound = false;
+                            for (ModelModifier oldmodifier : oldProduct.modifiers){
+                                isFound = false;
+                                for (ModelModifier newmodifier : prod.modifiers) {
+                                    if (newmodifier.getUid() == oldmodifier.getUid()){
+                                        isFound = true;
+                                        continue;
+                                    }
+                                }
+                                if (!isFound) oldmodifier.deleteFromDB(db.getWritableDatabase());
+                            }
+
                             prod.setImg(prod.getImg().replace(".jpg","")); //server contain .jpg
-                            prod.saveToDBAll(db.getWritableDatabase());
+                            prod.saveToDB(db.getWritableDatabase());
+
+                            for (ModelModifier modelModifier : prod.modifiers){
+                                modelModifier.setIDFromUID(db.getReadableDatabase(), modelModifier.getUid());
+                                modelModifier.setProduct_id(prod.getId());
+                                modelModifier.saveToDB(db.getWritableDatabase());
+                            }
+
 
                             //replace format to png
                             if (!prod.getImg().equals("")) {

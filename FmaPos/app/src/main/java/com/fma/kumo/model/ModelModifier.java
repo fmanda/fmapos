@@ -21,7 +21,6 @@ public class ModelModifier extends BaseModel {
     }
 
     @TableField
-
     private int product_id;
 
     public Boolean checked;
